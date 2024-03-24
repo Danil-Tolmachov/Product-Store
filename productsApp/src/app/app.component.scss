@@ -70,7 +70,7 @@ main {
     display: flex;
     justify-content: space-around;
     width: 100%;
-    max-width: 700px;
+    max-width: 900px;
     margin-bottom: 3rem;
 }
 
@@ -120,38 +120,11 @@ main {
     background: color-mix(in srgb, var(--pill-accent) 15%, transparent);
 }
 
-.pill-group .pill:nth-child(6n + 1) {
-    --pill-accent: var(--bright-blue);
-}
-
-.pill-group .pill:nth-child(6n + 2) {
-    --pill-accent: var(--french-violet);
-}
-
-.pill-group .pill:nth-child(6n + 3),
-.pill-group .pill:nth-child(6n + 4),
-.pill-group .pill:nth-child(6n + 5) {
-    --pill-accent: var(--hot-red);
-}
-
-.pill-group svg {
-    margin-inline-start: 0.25rem;
-}
-
-.social-links {
+.product-list {
+    width: 900px;
     display: flex;
-    align-items: center;
-    gap: 0.73rem;
-    margin-top: 1.5rem;
-}
-
-.social-links path {
-    transition: fill 0.3s ease;
-    fill: var(--gray-400);
-}
-
-.social-links a:hover svg path {
-    fill: var(--gray-900);
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
 @media screen and (max-width: 650px) {
