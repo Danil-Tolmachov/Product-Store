@@ -8,7 +8,7 @@
         ]; track item.title) {
             <li class="nav-link-button">
                 <div class="pill" style="--pill-accent: var({{ item.color }});">
-                    <a href="{{ item.link }}">{{ item.title }}</a>
+                    <a [routerLink]=item.link>{{ item.title }}</a>
                 </div>
             </li>
         }
