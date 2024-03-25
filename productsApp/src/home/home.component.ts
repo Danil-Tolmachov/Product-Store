@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { ProductItemBriefComponent } from './product-item-brief/product-item-brief.component';
 
 @Component({
-  selector: 'app-main',
+  selector: 'app-home',
   standalone: true,
   imports: [ProductItemBriefComponent],
-  templateUrl: './main.component.html',
-  styleUrl: './main.component.scss'
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss'
 })
-export class MainComponent {
+export class HomeComponent {
 
 }
