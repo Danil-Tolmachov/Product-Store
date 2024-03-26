@@ -60,6 +60,8 @@ main {
     padding: 1rem;
     box-sizing: inherit;
     position: relative;
+
+    user-select: none;
 }
 
 .angular-logo {

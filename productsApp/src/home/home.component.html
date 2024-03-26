@@ -1,3 +1,5 @@
 <div class="product-list">
-    <app-product-item-brief imageSrc=""></app-product-item-brief>
+    @for (product of productsList; track product.id) {
+        <app-product-item-brief [product]="product"></app-product-item-brief>
+    }
 </div>

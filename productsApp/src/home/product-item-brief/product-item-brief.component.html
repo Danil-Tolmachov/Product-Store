@@ -1,12 +1,14 @@
-<div class="product-item-brief">
-    <p class="product-brief-id">1</p>
-    <div class="image-container">
-        <img *ngIf="imageSrc" alt="product image" [src]="imageSrc">
-        <img *ngIf="!imageSrc" src="assets\no-pic.svg" class="no-pic">
+<a>
+    <div class="product-item-brief">
+        <p class="product-brief-id">{{ product.id }}</p>
+        <div class="image-container">
+            <img *ngIf="product.imageUrl" alt="product image" [src]="product.imageUrl.toString()">
+            <img *ngIf="!product.imageUrl" src="assets\no-pic.svg" class="no-pic">
+        </div>
+        <p class="product-brief-name" [title]="product.name">{{ product.name }}</p>
+        <div class="bottom">
+            <p class="product-brief-price" title="{{ '$' + product.price }}">{{ '$' + product.price }}</p>
+            <button>Add</button>
+        </div>
     </div>
-    <p class="product-brief-name">ProductName</p>
-    <div class="bottom">
-        <p class="product-brief-price">$255.00</p>
-        <button>Add</button>
-    </div>
-</div>
+</a>

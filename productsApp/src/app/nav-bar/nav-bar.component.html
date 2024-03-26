@@ -7,9 +7,11 @@
           { title: 'Home', link: '/home', color: '--french-violet'},
         ]; track item.title) {
             <li class="nav-link-button">
-                <div routerLinkActive="pill-active" class="pill" style="--pill-accent: var({{ item.color }});">
-                    <a [routerLink]=item.link>{{ item.title }}</a>
-                </div>
+                <a [routerLink]=item.link>
+                    <div routerLinkActive="pill-active" class="pill" style="--pill-accent: var({{ item.color }});">
+                        {{ item.title }}
+                    </div>
+                </a>
             </li>
         }
 
