@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Product } from '../../interfaces/Product';
+import { Product } from '../../../interfaces/Product';
 
 @Component({
     selector: 'app-product-item-brief',

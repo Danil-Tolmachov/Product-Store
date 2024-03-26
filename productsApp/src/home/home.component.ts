@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { ProductItemBriefComponent } from './product-item-brief/product-item-brief.component';
+import { ProductListComponent } from '../app/product-list/product-list.component';
 import { Product } from '../interfaces/Product';
 
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [ProductItemBriefComponent],
+    imports: [ ProductListComponent ],
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss'
 })

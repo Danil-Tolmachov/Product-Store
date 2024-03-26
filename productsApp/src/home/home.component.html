@@ -1,5 +1,1 @@
-<div class="product-list">
-    @for (product of productsList; track product.id) {
-        <app-product-item-brief [product]="product"></app-product-item-brief>
-    }
-</div>
+<app-product-list [productsList]="productsList" />
