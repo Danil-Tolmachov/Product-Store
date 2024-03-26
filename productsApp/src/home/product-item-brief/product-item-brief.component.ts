@@ -17,6 +17,7 @@ export class ProductItemBriefComponent {
         price: 0,
         discount: 0,
         imageUrl: null,
+        category: null,
         description: 'Description1',
         specifications: [
             { name: 'Name1', value: 'Value1' }

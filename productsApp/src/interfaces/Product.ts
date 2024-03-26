@@ -1,4 +1,5 @@
 import { Specification } from './Specification';
+import { Category } from './Category';
 
 export interface Product {
     id: number;
@@ -6,6 +7,7 @@ export interface Product {
     name: string;
     price: number;
     discount: number;
+    category: Category | null;
     description: string;
     specifications: Specification[];
 }
