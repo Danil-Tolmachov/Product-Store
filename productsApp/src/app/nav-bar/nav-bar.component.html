@@ -1,22 +1,35 @@
 <nav>
     <ul>
         @for (item of [
-          { title: 'About Us', link: '/about-us', color: '--french-violet'},
-          { title: 'Delivery', link: '/delivery', color: '--french-violet'},
-          { title: 'Categories', link: '/categories', color: '--french-violet'},
-          { title: 'Home', link: '/home', color: '--french-violet'},
+        { title: 'About Us', link: '/about-us', styles: {
+            '--pill-accent': 'var(--french-violet)',
+        }},
+        { title: 'Delivery', link: '/delivery', styles: {
+            '--pill-accent': 'var(--french-violet)',
+        }},
+        { title: 'Categories', link: '/categories', styles: {
+            '--pill-accent': 'var(--french-violet)',
+        }},
+        { title: 'Home', link: '/home', styles: {
+            '--pill-accent': 'var(--french-violet)',
+        }},
         ]; track item.title) {
-            <li class="nav-link-button">
-                <a [routerLink]=item.link>
-                    <div routerLinkActive="pill-active" class="pill" style="--pill-accent: var({{ item.color }});">
-                        {{ item.title }}
-                    </div>
-                </a>
-            </li>
+        <li class="nav-link-button">
+            <a [routerLink]=item.link>
+                <div routerLinkActive="pill-active" class="pill" [ngStyle]="item.styles">
+                    {{ item.title }}
+                </div>
+            </a>
+        </li>
         }
 
         <li class="nav-logo">
             <a href="">Product Store</a>
         </li>
     </ul>
+    <button class="cart-button">
+        <div class="pill" style="--pill-accent: var(--french-violet)">
+            Cart
+        </div>
+    </button>
 </nav>

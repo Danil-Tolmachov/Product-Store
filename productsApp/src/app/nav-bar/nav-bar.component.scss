@@ -1,7 +1,7 @@
 
 nav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 
     position: sticky;
     top: 0;
@@ -16,7 +16,7 @@ nav {
 
 nav > ul {
     display: flex;
-    margin: 0;
+    margin: auto;
     padding: 0;
 
     flex-direction: row-reverse;
@@ -24,6 +24,17 @@ nav > ul {
     grid-gap: 8px;
 
     height: 100%;
+}
+
+.cart-button {
+    border: none;
+    background-color: transparent;
+
+    font-family: var(--inter-font);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: -0.00875rem;
 }
 
 .nav-logo {
