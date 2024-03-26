@@ -1,10 +1,10 @@
 <nav>
     <ul>
         @for (item of [
-          { title: 'About Us', link: '/about-us', color: '--hot-red'},
+          { title: 'About Us', link: '/about-us', color: '--french-violet'},
           { title: 'Delivery', link: '/delivery', color: '--french-violet'},
-          { title: 'Categories', link: '/categories', color: '--bright-blue'},
-          { title: 'Home', link: '/home', color: '--hot-red'},
+          { title: 'Categories', link: '/categories', color: '--french-violet'},
+          { title: 'Home', link: '/home', color: '--french-violet'},
         ]; track item.title) {
             <li class="nav-link-button">
                 <div routerLinkActive="pill-active" class="pill" style="--pill-accent: var({{ item.color }});">

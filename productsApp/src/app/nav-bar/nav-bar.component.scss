@@ -40,6 +40,11 @@ nav > ul {
     display: block;
 }
 
+a {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
 .nav-logo a {
     line-height: 40px;
     text-decoration: none;
@@ -61,15 +66,19 @@ nav > ul {
     --pill-accent: var(--hot-red);
     background: color-mix(in srgb, var(--pill-accent) 5%, transparent);
     color: var(--pill-accent);
+
     padding-inline: 0.75rem;
     border-radius: 2.75rem;
     border: 0;
     transition: background 0.3s ease;
+
     font-family: var(--inter-font);
     font-size: 0.875rem;
     font-style: normal;
     font-weight: 500;
     letter-spacing: -0.00875rem;
+
+    cursor: pointer;
 }
 
 .pill a {

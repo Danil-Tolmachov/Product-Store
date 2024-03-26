@@ -1,7 +1,8 @@
 <div class="product-item-brief">
     <p class="product-brief-id">1</p>
     <div class="image-container">
-        <img alt="product image" [src]="imageSrc">
+        <img *ngIf="imageSrc" alt="product image" [src]="imageSrc">
+        <img *ngIf="!imageSrc" src="assets\no-pic.svg" class="no-pic">
     </div>
     <p class="product-brief-name">ProductName</p>
     <div class="bottom">
