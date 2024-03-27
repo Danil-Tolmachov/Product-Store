@@ -1,12 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { PillButtonComponent } from '../../../ui/pill-button/pill-button.component';
 
 @Component({
     selector: 'app-cart-panel',
     standalone: true,
-    imports: [ CommonModule, PillButtonComponent ],
+    imports: [ CommonModule ],
     templateUrl: './cart-panel.component.html',
     styleUrl: './cart-panel.component.scss',
     animations: [
