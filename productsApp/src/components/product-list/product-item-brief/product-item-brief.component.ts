@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Product } from '../../../interfaces/Product';
+import { ImageContainerComponent } from '../../image-container/image-container.component';
 
 @Component({
     selector: 'app-product-item-brief',
     standalone: true,
-    imports: [CommonModule, RouterLink],
+    imports: [ CommonModule, RouterLink, ImageContainerComponent ],
     templateUrl: './product-item-brief.component.html',
     styleUrl: './product-item-brief.component.scss'
 })

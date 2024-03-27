@@ -1,10 +1,7 @@
 <a>
     <div class="product-item-brief">
         <p class="product-brief-id">{{ product.id }}</p>
-        <div class="image-container">
-            <img *ngIf="product.imageUrl" alt="product image" [src]="product.imageUrl.toString()">
-            <img *ngIf="!product.imageUrl" src="assets\no-pic.svg" class="no-pic">
-        </div>
+        <app-image-container [imageUrl]="product.imageUrl?.toString() ?? ''" />
         <p class="product-brief-name" [title]="product.name">{{ product.name }}</p>
         <div class="bottom">
             <p class="product-brief-price" title="{{ '$' + product.price }}">{{ '$' + product.price }}</p>
