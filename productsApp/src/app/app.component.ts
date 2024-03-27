@@ -7,8 +7,8 @@ import { ProductItemBriefComponent } from './product-list/product-item-brief/pro
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet,
-            NavBarComponent,
-            ProductItemBriefComponent],
+            NavBarComponent, 
+            ProductItemBriefComponent ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

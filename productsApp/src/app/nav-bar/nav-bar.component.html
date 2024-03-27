@@ -27,9 +27,12 @@
             <a href="">Product Store</a>
         </li>
     </ul>
-    <button class="cart-button">
-        <div class="pill" style="--pill-accent: var(--french-violet)">
+    <button class="cart-button" (click)="cartButtonClick()">
+        <div [ngClass]="cartButtonClasses" style="--pill-accent: var(--french-violet)">
             Cart
         </div>
     </button>
 </nav>
+<app-cart-panel class="cart-panel">
+
+</app-cart-panel>

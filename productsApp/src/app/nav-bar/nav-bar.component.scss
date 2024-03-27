@@ -12,6 +12,12 @@ nav {
 
     background-color: white;
     z-index: 10000;
+
+    box-shadow: 0px -2px 5px black;
+}
+
+.cart-panel {
+    z-index: 9999;
 }
 
 nav > ul {
@@ -35,6 +41,8 @@ nav > ul {
     font-style: normal;
     font-weight: 500;
     letter-spacing: -0.00875rem;
+
+    user-select: none;
 }
 
 .nav-logo {

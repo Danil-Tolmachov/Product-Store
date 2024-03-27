@@ -1,0 +1,9 @@
+<div *ngIf="isActive" [@fadeInOutAnimation] class="container">
+    <div class="bottom">
+        <p>Summary: </p>
+        <button>Checkout</button>
+    </div>
+</div>
+
+<button *ngIf="isActive" (click)="switchCartPanel()" class="close-trigger">
+</button>
