@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ProductListComponent } from '../../components/product-list/product-list.component';
 import { Product } from '../../interfaces/Product';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-home',
@@ -10,6 +11,7 @@ import { Product } from '../../interfaces/Product';
     styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+    title: string = 'Product Store';
     productsList: Product[] = [
         { 
             id: 1, 
@@ -36,4 +38,9 @@ export class HomeComponent {
             ] 
         },
     ];
+
+    constructor(private titleService: Title) {
+        // Set Title
+        titleService.setTitle(this.title);
+    }
 }
