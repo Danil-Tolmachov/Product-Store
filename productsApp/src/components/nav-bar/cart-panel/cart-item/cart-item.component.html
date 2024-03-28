@@ -1,1 +1,13 @@
-<p>cart-item works!</p>
+<div class="container">
+    <app-image-container [imageUrl]="item.product.imageUrl?.toString() ?? ''" />
+    <div class="right">
+        <p>{{ item.product.name }}</p>
+        <div class="controls">
+            <p title="${{ item.product.price }}">Price: ${{ item.product.price }}</p>
+            <input type="number" value="{{ item.quantity }}">
+            <button>
+                <div class="pill">Delete</div>
+            </button>
+        </div>
+    </div>
+</div>

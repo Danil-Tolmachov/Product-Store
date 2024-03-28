@@ -30,6 +30,11 @@
     z-index: 9999;
 }
 
+.cart-item-list {
+    height: calc(100vh - 56px - 40px);
+    overflow-y: auto;
+}
+
 .bottom {
     width: 100%;
     height: 40px;
@@ -38,7 +43,6 @@
     bottom: 0;
 
     display: flex;
-    background-color: #8806ce26;
 }
 
 .bottom > * {
