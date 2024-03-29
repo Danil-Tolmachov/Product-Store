@@ -9,3 +9,7 @@ body {
     background-color: whitesmoke;
     margin: 0;
 }
+
+router-outlet {
+    position: absolute;
+}

@@ -1,0 +1,14 @@
+<div *ngIf="isActive" [@fadeInOutAnimation] class="container">
+    <div class="cart-item-list">
+        @for (item of cartProducts; track item.product) {
+            <app-cart-item [item]="item"></app-cart-item>
+        }
+    </div>
+    <div class="bottom">
+        <p>Summary: </p>
+        <button>Checkout</button>
+    </div>
+</div>
+
+<button *ngIf="isActive" (click)="switchCartPanel()" class="close-trigger">
+</button>

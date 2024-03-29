@@ -1,0 +1,113 @@
+
+nav {
+    display: flex;
+    justify-content: space-between;
+
+    position: sticky;
+    top: 0;
+    left: 0;
+
+    height: 40px;
+    padding: 8px;
+
+    background-color: white;
+    z-index: 10000;
+
+    box-shadow: 0px -2px 5px black;
+}
+
+.cart-panel {
+    z-index: 9999;
+}
+
+nav > ul {
+    display: flex;
+    margin: auto;
+    padding: 0;
+
+    flex-direction: row-reverse;
+    justify-content: center;
+    grid-gap: 8px;
+
+    height: 100%;
+}
+
+.cart-button {
+    border: none;
+    background-color: transparent;
+
+    font-family: var(--inter-font);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: -0.00875rem;
+
+    user-select: none;
+}
+
+.nav-logo {
+    display: block;
+    margin-right: 20px;
+
+    font-family: var(--inter-font);
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.nav-link-button {
+    display: block;
+}
+
+a {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.nav-logo a {
+    line-height: 40px;
+    text-decoration: none;
+    color: black;
+}
+
+.nav-link-button a {
+    line-height: calc(40px - 1.4rem);
+    text-decoration: none;
+    color: black;
+}
+
+.pill {
+    display: flex;
+    align-items: center;
+
+    height: 100%;
+
+    --pill-accent: var(--hot-red);
+    background: color-mix(in srgb, var(--pill-accent) 5%, transparent);
+    color: var(--pill-accent);
+
+    padding-inline: 0.75rem;
+    border-radius: 2.75rem;
+    border: 0;
+    transition: background 0.3s ease;
+
+    font-family: var(--inter-font);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: -0.00875rem;
+
+    cursor: pointer;
+}
+
+.pill a {
+    color: var(--pill-accent);
+}
+
+.pill-active {
+    background: color-mix(in srgb, var(--pill-accent) 15%, transparent);
+}
+
+.pill:hover {
+    background: color-mix(in srgb, var(--pill-accent) 15%, transparent);
+}

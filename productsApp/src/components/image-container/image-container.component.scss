@@ -1,0 +1,27 @@
+:host {
+    display: flex;
+    justify-content: center;
+
+    user-select: none;
+
+    width: 100px;
+    height: 100px;
+}
+
+img {
+    padding: 6px;
+    display: flex;
+    justify-content: center;
+
+    user-select: none;
+
+    max-width: calc(100% - 12px);
+    max-height: calc(100% - 12px);
+}
+
+.no-pic {
+    filter: invert(76%);
+
+    user-select: none;
+    -webkit-user-drag: none;
+}

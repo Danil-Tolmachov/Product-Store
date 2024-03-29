@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    margin: auto;
+    width: 500px;
+    margin-bottom: 10px;
+}
+
+.container > * {
+    text-align: center;
+    color: gray;
+    
+    margin: 0;
+}
+
+h2 {
+    font-weight: 400;
+    font-size: 1rem;
+
+    margin-bottom: 10px !important;
+}
+
+p {
+    font-size: 0.7rem;
+}
