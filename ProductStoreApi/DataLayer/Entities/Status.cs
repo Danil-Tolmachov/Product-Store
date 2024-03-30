@@ -8,6 +8,8 @@ namespace StoreDAL.Entities
 {
 	public class Status : BaseEntity
 	{
+		public string Name { get; set; } = string.Empty;
+
 		public Status(int id) : base(id) { }
 	}
 }

@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Microsoft.VisualBasic;
 
 namespace StoreDAL.Entities
 {
 	public class Category : BaseEntity
 	{
+		public string Name { get; set; } = string.Empty;
+
+		public virtual IEnumerable<Product> Products { get; set; } = Enumerable.Empty<Product>();
+
 		public Category(int id) : base(id) { }
 	}
 }

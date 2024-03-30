@@ -8,6 +8,15 @@ namespace StoreDAL.Entities
 {
 	public class Person : BaseEntity
 	{
+		public string FirstName { get; set; } = string.Empty;
+		public string LastName { get; set; } = string.Empty;
+
+		public decimal Discount { get; set; }
+		public string Address { get; set; } = string.Empty;
+
+		public virtual User User { get; set; } = null!;
+		public virtual Cart Cart { get; set; } = null!;
+
 		public Person(int id) : base(id) { }
 	}
 }
