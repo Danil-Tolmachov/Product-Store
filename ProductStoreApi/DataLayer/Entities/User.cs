@@ -14,7 +14,7 @@ namespace StoreDAL.Entities
 		public string Password { get; set; } = null!;
 
 		public virtual Person Person { get; set; } = null!;
-
+		public virtual Cart Cart { get; set; } = null!;
 		public virtual IEnumerable<Order> Orders { get; set; } = Enumerable.Empty<Order>();
 
 		public User(int id) : base(id) { }

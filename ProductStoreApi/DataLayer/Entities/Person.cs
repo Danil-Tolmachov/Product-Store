@@ -15,7 +15,7 @@ namespace StoreDAL.Entities
 		public string Address { get; set; } = string.Empty;
 
 		public virtual User User { get; set; } = null!;
-		public virtual Cart Cart { get; set; } = null!;
+		public virtual IEnumerable<Contact> Contacts { get; set; } = Enumerable.Empty<Contact>();
 
 		public Person(int id) : base(id) { }
 	}

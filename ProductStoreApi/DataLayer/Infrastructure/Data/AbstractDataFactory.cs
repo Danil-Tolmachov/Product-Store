@@ -1,4 +1,4 @@
-﻿using StoreDAL.Entities;
+﻿using StoreDAL.Interfaces.Repositories;
 
 namespace StoreDAL.Infrastructure.Data
 {

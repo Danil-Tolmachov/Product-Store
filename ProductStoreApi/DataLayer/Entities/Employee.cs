@@ -14,6 +14,8 @@ namespace StoreDAL.Entities
 		public virtual User User { get; set; } = null!;
 		public virtual Position Position { get; set; } = null!;
 
+		public virtual IEnumerable<Order> Orders { get; set; }
+
 		public Employee(int id) : base(id) { }
 	}
 }
