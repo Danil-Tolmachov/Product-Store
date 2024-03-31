@@ -14,6 +14,6 @@ namespace StoreDAL.Entities
 
 		public virtual Person Person { get; set; } = null!;
 
-		public Contact(int id) : base(id) { }
+		public Contact(long id) : base(id) { }
 	}
 }

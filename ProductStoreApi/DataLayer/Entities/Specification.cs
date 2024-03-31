@@ -11,8 +11,8 @@ namespace StoreDAL.Entities
 		public string Name { get; set; } = string.Empty;
 		public string Value { get; set; } = string.Empty;
 
-		public virtual IEnumerable<Product> Products { get; set; } = Enumerable.Empty<Product>();
+		public virtual IEnumerable<Product> Products { get; set; } = new List<Product>();
 
-		public Specification(int id) : base(id) { }
+		public Specification(long id) : base(id) { }
 	}
 }

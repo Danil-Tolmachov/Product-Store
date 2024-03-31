@@ -19,7 +19,9 @@ namespace StoreDAL.Infrastructure
         }
         public DbContextOptions<StoreDbContext> CreateOptions()
         {
-            throw new NotImplementedException();
-        }
+			return new DbContextOptionsBuilder<StoreDbContext>()
+				.UseInMemoryDatabase(Guid.NewGuid().ToString())
+				.Options;
+		}
     }
 }

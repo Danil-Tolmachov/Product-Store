@@ -11,7 +11,7 @@ namespace StoreDAL.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly StoreDbContext _context = null!;
+        private readonly StoreDbContext _context;
         private ICartItemRepository cartItemRepository = null!;
 		private ICartRepository cartRepository = null!;
 		private ICategoryRepository categoryRepository = null!;
@@ -31,7 +31,9 @@ namespace StoreDAL.Infrastructure
         {
             get
             {
-                throw new NotImplementedException();
+				cartItemRepository ??= new CartItemRepository(_context);
+
+				return cartItemRepository;
             }
         }
 
@@ -39,7 +41,9 @@ namespace StoreDAL.Infrastructure
 		{
 			get
 			{
-				throw new NotImplementedException();
+				cartRepository ??= new CartRepository(_context);
+
+				return cartRepository;
 			}
 		}
 
@@ -47,7 +51,9 @@ namespace StoreDAL.Infrastructure
 		{
 			get
 			{
-				throw new NotImplementedException();
+				categoryRepository ??= new CategoryRepository(_context);
+
+				return categoryRepository;
 			}
 		}
 
@@ -55,7 +61,9 @@ namespace StoreDAL.Infrastructure
 		{
 			get
 			{
-				throw new NotImplementedException();
+				contactRepository ??= new ContactRepository(_context);
+
+				return contactRepository;
 			}
 		}
 
@@ -63,7 +71,9 @@ namespace StoreDAL.Infrastructure
 		{
 			get
 			{
-				throw new NotImplementedException();
+				employeeRepository ??= new EmployeeRepository(_context);
+
+				return employeeRepository;
 			}
 		}
 
@@ -71,7 +81,9 @@ namespace StoreDAL.Infrastructure
 		{
 			get
 			{
-				throw new NotImplementedException();
+				orderDetailRepository ??= new OrderDetailRepository(_context);
+
+				return orderDetailRepository;
 			}
 		}
 
@@ -79,7 +91,9 @@ namespace StoreDAL.Infrastructure
 		{
 			get
 			{
-				throw new NotImplementedException();
+				orderRepository ??= new OrderRepository(_context);
+
+				return orderRepository;
 			}
 		}
 
@@ -87,7 +101,9 @@ namespace StoreDAL.Infrastructure
 		{
 			get
 			{
-				throw new NotImplementedException();
+				personRepository ??= new PersonRepository(_context);
+
+				return personRepository;
 			}
 		}
 
@@ -95,7 +111,9 @@ namespace StoreDAL.Infrastructure
 		{
 			get
 			{
-				throw new NotImplementedException();
+				positionRepository ??= new PositionRepository(_context);
+
+				return positionRepository;
 			}
 		}
 
@@ -103,7 +121,9 @@ namespace StoreDAL.Infrastructure
 		{
 			get
 			{
-				throw new NotImplementedException();
+				productRepository ??= new ProductRepository(_context);
+
+				return productRepository;
 			}
 		}
 
@@ -111,7 +131,9 @@ namespace StoreDAL.Infrastructure
 		{
 			get
 			{
-				throw new NotImplementedException();
+				specificationRepository ??= new SpecificationRepository(_context);
+
+				return specificationRepository;
 			}
 		}
 
@@ -119,7 +141,9 @@ namespace StoreDAL.Infrastructure
 		{
 			get
 			{
-				throw new NotImplementedException();
+				statusRepository ??= new StatusRepository(_context);
+
+				return statusRepository;
 			}
 		}
 
@@ -127,7 +151,9 @@ namespace StoreDAL.Infrastructure
 		{
 			get
 			{
-				throw new NotImplementedException();
+				userRepository ??= new UserRepository(_context);
+
+				return userRepository;
 			}
 		}
 

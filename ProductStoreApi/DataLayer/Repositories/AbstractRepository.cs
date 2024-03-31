@@ -59,7 +59,7 @@ namespace StoreDAL.Repositories
             return await dbSet.Skip(entitiesToSkip).Take(rowCount).ToListAsync();
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(int id)
+        public virtual async Task<TEntity> GetByIdAsync(long id)
         {
             try
             {
@@ -103,7 +103,7 @@ namespace StoreDAL.Repositories
             context.SaveChanges();
         }
 
-        public virtual async Task DeleteByIdAsync(int id)
+        public virtual async Task DeleteByIdAsync(long id)
         {
             TEntity entity = await dbSet.FirstAsync(e => e.Id == id);
             dbSet.Remove(entity);

@@ -1,18 +1,22 @@
-﻿using StoreDAL.Interfaces.Repositories;
+﻿using StoreDAL.Entities;
 
 namespace StoreDAL.Infrastructure.Data
 {
     public abstract class AbstractDataFactory : IDataFactory
     {
-		public abstract IContactRepository[] GetContactData();
-		public abstract IPersonRepository[] GetPersonData();
-		public abstract IUserRepository[] GetUserData();
-		public abstract IPositionRepository[] GetPositionData();
-		public abstract IEmployeeRepository[] GetEmployeeData();
-		public abstract ICategoryRepository[] GetCategoryData();
-		public abstract ISpecificationRepository[] GetSpecificationData();
-		public abstract IProductRepository[] GetProductData();
-		public abstract IOrderRepository[] GetOrderData();
-		public abstract IOrderDetailRepository[] GetOrderDetailData();
+		public abstract Contact[] GetContactData();
+		public abstract Person[] GetPersonData();
+		public abstract User[] GetUserData();
+		public abstract Position[] GetPositionData();
+		public abstract Employee[] GetEmployeeData();
+		public abstract Category[] GetCategoryData();
+		public abstract Specification[] GetSpecificationData();
+		public abstract Product[] GetProductData();
+		public abstract Order[] GetOrderData();
+		public abstract OrderDetail[] GetOrderDetailData();
+		public abstract Status[] GetStatusData();
+		public abstract Cart[] GetCartData();
+		public abstract CartItem[] GetCartItemData();
+		public abstract object[] GetProductSpecificationData();
 	}
 }

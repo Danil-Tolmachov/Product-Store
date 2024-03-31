@@ -10,6 +10,6 @@ namespace StoreDAL.Entities
 	{
 		public string Name { get; set; } = string.Empty;
 
-		public Status(int id) : base(id) { }
+		public Status(long id) : base(id) { }
 	}
 }

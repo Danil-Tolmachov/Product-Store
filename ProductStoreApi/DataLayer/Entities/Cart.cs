@@ -9,8 +9,8 @@ namespace StoreDAL.Entities
 
 		public virtual User User { get; set; } = null!;
 
-		public virtual IEnumerable<CartItem> CartItems { get; set; } = Enumerable.Empty<CartItem>();
+		public virtual IEnumerable<CartItem> CartItems { get; set; } = new List<CartItem>();
 
-		public Cart(int id) : base(id) { }
+		public Cart(long id) : base(id) { }
 	}
 }

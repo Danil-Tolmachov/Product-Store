@@ -11,12 +11,12 @@ namespace StoreDAL.Interfaces
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<IEnumerable<TEntity>> GetAllAsync(int pageNumber, int rowCount);
-        Task<TEntity> GetByIdAsync(int id);
+        Task<TEntity> GetByIdAsync(long id);
         Task<int> Count();
 
         Task AddAsync(TEntity entity);
         void Delete(TEntity entity);
-        Task DeleteByIdAsync(int id);
+        Task DeleteByIdAsync(long id);
         void Update(TEntity entity);
     }
 }

@@ -10,8 +10,8 @@ namespace StoreDAL.Entities
 	{
 		public string Name { get; set; } = string.Empty;
 
-		public virtual IEnumerable<Employee> Employees { get; set; } = Enumerable.Empty<Employee>();
+		public virtual IEnumerable<Employee> Employees { get; set; } = new List<Employee>();
 
-		public Position(int id) : base(id) { }
+		public Position(long id) : base(id) { }
 	}
 }

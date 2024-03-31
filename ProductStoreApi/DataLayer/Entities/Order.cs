@@ -17,8 +17,8 @@ namespace StoreDAL.Entities
 		public virtual Employee Employee { get; set; } = null!;
 		public virtual Status Status { get; set; } = null!;
 
-		public virtual IEnumerable<OrderDetail> Details { get; set; } = Enumerable.Empty<OrderDetail>();
+		public virtual IEnumerable<OrderDetail> Details { get; set; } = new List<OrderDetail>();
 
-		public Order(int id) : base(id) { }
+		public Order(long id) : base(id) { }
 	}
 }

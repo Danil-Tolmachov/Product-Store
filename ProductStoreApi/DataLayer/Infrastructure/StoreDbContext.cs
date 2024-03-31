@@ -9,19 +9,19 @@ namespace StoreDAL.Infrastructure
     {
         private readonly IDataFactory factory;
 
-        public DbSet<ICartRepository> Carts { get; set; } = null!;
-        public DbSet<ICartItemRepository> CartItems { get; set; } = null!;
-        public DbSet<ICategoryRepository> Categories { get; set; } = null!;
-        public DbSet<IContactRepository> Contacts { get; set; } = null!;
-		public DbSet<IEmployeeRepository> Employees { get; set; } = null!;
-		public DbSet<IOrderRepository> Orders { get; set; } = null!;
-		public DbSet<IOrderDetailRepository> OrderDetails { get; set; } = null!;
-		public DbSet<IPersonRepository> Persons { get; set; } = null!;
-		public DbSet<IPositionRepository> Positions { get; set; } = null!;
-		public DbSet<IProductRepository> Products { get; set; } = null!;
-		public DbSet<ISpecificationRepository> Specifications { get; set; } = null!;
-		public DbSet<IStatusRepository> Statuses { get; set; } = null!;
-		public DbSet<IUserRepository> Users { get; set; } = null!;
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+		public DbSet<Employee> Employees { get; set; }
+		public DbSet<Order> Orders { get; set; }
+		public DbSet<OrderDetail> OrderDetails { get; set; }
+		public DbSet<Person> Persons { get; set; }
+		public DbSet<Position> Positions { get; set; }
+		public DbSet<Product> Products { get; set; }
+		public DbSet<Specification> Specifications { get; set; }
+		public DbSet<Status> Statuses { get; set; }
+		public DbSet<User> Users { get; set; }
 
 		public StoreDbContext(DbContextOptions options, IDataFactory factory) : base(options)
         {
@@ -31,16 +31,19 @@ namespace StoreDAL.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 			// Seed database
-			modelBuilder.Entity<IContactRepository>().HasData(factory.GetContactData());
-			modelBuilder.Entity<IPersonRepository>().HasData(factory.GetPersonData());
-			modelBuilder.Entity<IUserRepository>().HasData(factory.GetUserData());
-			modelBuilder.Entity<IPositionRepository>().HasData(factory.GetPositionData());
-			modelBuilder.Entity<IEmployeeRepository>().HasData(factory.GetEmployeeData());
-			modelBuilder.Entity<ICategoryRepository>().HasData(factory.GetCategoryData());
-			modelBuilder.Entity<ISpecificationRepository>().HasData(factory.GetSpecificationData());
-			modelBuilder.Entity<IProductRepository>().HasData(factory.GetProductData());
-			modelBuilder.Entity<IOrderRepository>().HasData(factory.GetOrderData());
-			modelBuilder.Entity<IOrderDetailRepository>().HasData(factory.GetOrderDetailData());
+			modelBuilder.Entity<Contact>().HasData(factory.GetContactData());
+			modelBuilder.Entity<Person>().HasData(factory.GetPersonData());
+			modelBuilder.Entity<User>().HasData(factory.GetUserData());
+			modelBuilder.Entity<Position>().HasData(factory.GetPositionData());
+			modelBuilder.Entity<Employee>().HasData(factory.GetEmployeeData());
+			modelBuilder.Entity<Category>().HasData(factory.GetCategoryData());
+			modelBuilder.Entity<Specification>().HasData(factory.GetSpecificationData());
+			modelBuilder.Entity<Product>().HasData(factory.GetProductData());
+			modelBuilder.Entity<Order>().HasData(factory.GetOrderData());
+			modelBuilder.Entity<OrderDetail>().HasData(factory.GetOrderDetailData());
+			modelBuilder.Entity<Status>().HasData(factory.GetStatusData());
+			//modelBuilder.Entity<Cart>().HasData(factory.GetOrderData());
+			//modelBuilder.Entity<CartItem>().HasData(factory.GetOrderDetailData());
 
 			// Configure entities
 			modelBuilder.Entity<Contact>(entity =>
@@ -114,7 +117,10 @@ namespace StoreDAL.Infrastructure
 					  .HasForeignKey(p => p.CategoryId);
 
 				entity.HasMany(p => p.Specifications)
-					  .WithMany(s => s.Products);
+					  .WithMany(s => s.Products)
+					  .UsingEntity(e => 
+						e.HasData(factory.GetProductSpecificationData())
+					  );
 			});
 
 			modelBuilder.Entity<Order>(entity =>

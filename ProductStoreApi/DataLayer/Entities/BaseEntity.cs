@@ -12,9 +12,9 @@ namespace StoreDAL.Entities
     {
         [Key]
 		[Column("id")]
-		public int Id { get; set; }
+		public long Id { get; set; }
 
-        protected BaseEntity(int id)
+        protected BaseEntity(long id)
         {
             this.Id = id;
         }

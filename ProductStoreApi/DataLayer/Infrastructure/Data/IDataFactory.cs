@@ -1,18 +1,23 @@
-﻿using StoreDAL.Interfaces.Repositories;
+﻿using StoreDAL.Entities;
 
 namespace StoreDAL.Infrastructure.Data
 {
     public interface IDataFactory
     {
-		IContactRepository[] GetContactData();
-		IPersonRepository[] GetPersonData();
-		IUserRepository[] GetUserData();
-		IPositionRepository[] GetPositionData();
-		IEmployeeRepository[] GetEmployeeData();
-		ICategoryRepository[] GetCategoryData();
-		ISpecificationRepository[] GetSpecificationData();
-		IProductRepository[] GetProductData();
-		IOrderRepository[] GetOrderData();
-		IOrderDetailRepository[] GetOrderDetailData();
+		Contact[] GetContactData();
+		Person[] GetPersonData();
+		User[] GetUserData();
+		Position[] GetPositionData();
+		Employee[] GetEmployeeData();
+		Category[] GetCategoryData();
+		Specification[] GetSpecificationData();
+		Product[] GetProductData();
+		Order[] GetOrderData();
+		OrderDetail[] GetOrderDetailData();
+		Status[] GetStatusData();
+		Cart[] GetCartData();
+		CartItem[] GetCartItemData();
+
+		object[] GetProductSpecificationData();
 	}
 }

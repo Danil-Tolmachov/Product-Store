@@ -27,4 +27,8 @@
     <ProjectReference Include="..\ProductStoreApi\ProductStoreApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DAL\Repositories\" />
+  </ItemGroup>
+
 </Project>

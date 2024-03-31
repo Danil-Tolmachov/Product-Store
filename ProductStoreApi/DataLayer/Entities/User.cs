@@ -15,8 +15,8 @@ namespace StoreDAL.Entities
 
 		public virtual Person Person { get; set; } = null!;
 		public virtual Cart Cart { get; set; } = null!;
-		public virtual IEnumerable<Order> Orders { get; set; } = Enumerable.Empty<Order>();
+		public virtual IEnumerable<Order> Orders { get; set; } = new List<Order>();
 
-		public User(int id) : base(id) { }
+		public User(long id) : base(id) { }
 	}
 }

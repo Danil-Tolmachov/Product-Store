@@ -10,6 +10,6 @@ namespace StoreDAL.Entities
 		public virtual Cart Cart { get; set; } = null!;
 		public virtual Product Product { get; set; } = null!;
 
-		public CartItem(int id) : base(id) { }
+		public CartItem(long id) : base(id) { }
 	}
 }
