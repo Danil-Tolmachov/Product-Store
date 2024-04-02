@@ -42,8 +42,6 @@ namespace StoreDAL.Infrastructure
 			modelBuilder.Entity<Order>().HasData(factory.GetOrderData());
 			modelBuilder.Entity<OrderDetail>().HasData(factory.GetOrderDetailData());
 			modelBuilder.Entity<Status>().HasData(factory.GetStatusData());
-			//modelBuilder.Entity<Cart>().HasData(factory.GetOrderData());
-			//modelBuilder.Entity<CartItem>().HasData(factory.GetOrderDetailData());
 
 			// Configure entities
 			modelBuilder.Entity<Contact>(entity =>
