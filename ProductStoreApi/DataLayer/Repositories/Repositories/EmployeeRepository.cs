@@ -1,8 +1,8 @@
 ﻿using StoreDAL.Entities;
 using StoreDAL.Infrastructure;
-using StoreDAL.Repositories;
+using StoreDAL.Interfaces.Repositories;
 
-namespace StoreDAL.Interfaces.Repositories
+namespace StoreDAL.Repositories.Repositories
 {
 	public class EmployeeRepository : AbstractRepository<Employee>, IEmployeeRepository
 	{

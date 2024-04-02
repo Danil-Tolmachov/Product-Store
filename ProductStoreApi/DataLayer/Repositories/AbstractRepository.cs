@@ -64,7 +64,7 @@ namespace StoreDAL.Repositories
             try
             {
                 return await this.dbSet
-                    .FirstAsync(e => e.Id == id);
+                    .SingleAsync(e => e.Id == id);
             }
             catch (InvalidOperationException ex)
             {
@@ -75,39 +75,25 @@ namespace StoreDAL.Repositories
         public virtual async Task AddAsync(TEntity entity)
         {
             await this.dbSet.AddAsync(entity);
-            await this.context.SaveChangesAsync();
         }
 
-        public virtual void Update(TEntity entity)
+        public virtual async Task Update(TEntity entity)
         {
-            var existingEntity = dbSet.Single(x => x.Id == entity.Id);
-            var entityType = typeof(TEntity);
-            var properties = entityType.GetProperties();
+            var existingEntity = await dbSet.SingleAsync(x => x.Id == entity.Id);
 
-            foreach (var property in properties)
-            {
-                if (!property.PropertyType.IsGenericType)
-                {
-                    var value = property.GetValue(entity);
-                    property.SetValue(existingEntity, value);
-                }
-            }
-
-            context.SaveChanges();
+            context.Entry(existingEntity).CurrentValues.SetValues(entity);
         }
 
 
         public virtual void Delete(TEntity entity)
         {
             dbSet.Remove(entity);
-            context.SaveChanges();
         }
 
         public virtual async Task DeleteByIdAsync(long id)
         {
-            TEntity entity = await dbSet.FirstAsync(e => e.Id == id);
+            TEntity entity = await dbSet.SingleAsync(e => e.Id == id);
             dbSet.Remove(entity);
-            await context.SaveChangesAsync();
         }
     }
 }

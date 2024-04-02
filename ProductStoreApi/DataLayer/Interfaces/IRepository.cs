@@ -17,6 +17,6 @@ namespace StoreDAL.Interfaces
         Task AddAsync(TEntity entity);
         void Delete(TEntity entity);
         Task DeleteByIdAsync(long id);
-        void Update(TEntity entity);
+        Task Update(TEntity entity);
     }
 }
