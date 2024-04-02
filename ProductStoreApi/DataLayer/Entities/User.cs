@@ -10,8 +10,8 @@ namespace StoreDAL.Entities
 	{
 		public long PersonId { get; set; }
 		public bool IsActive { get; set; } = true;
-		public string Username { get; set; } = null!;
-		public string Password { get; set; } = null!;
+		public string Username { get; set; } = string.Empty;
+		public string Password { get; set; } = string.Empty;
 
 		public virtual Person Person { get; set; } = null!;
 		public virtual Cart Cart { get; set; } = null!;
