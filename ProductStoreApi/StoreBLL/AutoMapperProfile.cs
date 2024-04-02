@@ -8,6 +8,9 @@ namespace StoreBLL
 	{
 		public AutomapperProfile()
 		{
+			CreateMap<Contact, ContactModel>()
+				.ReverseMap();
+
 			CreateMap<Category, CategoryModel>()
 				.ReverseMap();
 
@@ -15,6 +18,7 @@ namespace StoreBLL
 				.ReverseMap();
 
 			CreateMap<Product, ProductModel>()
+				.ForMember(pm => pm.Images, p => p.MapFrom(x => x.Images.Select(i => i.Image)))
 				.ReverseMap();
 
 			CreateMap<Cart, CartModel>()
