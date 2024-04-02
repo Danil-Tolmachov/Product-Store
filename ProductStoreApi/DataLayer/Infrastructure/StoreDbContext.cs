@@ -121,6 +121,17 @@ namespace StoreDAL.Infrastructure
 					  .UsingEntity(e => 
 						e.HasData(factory.GetProductSpecificationData())
 					  );
+
+				entity.HasMany(p => p.Images)
+					  .WithOne(i => i.Product)
+					  .HasForeignKey(i => i.ProductId);
+			});
+
+			modelBuilder.Entity<ProductImage>(entity =>
+			{
+				entity.HasOne(i => i.Product)
+					  .WithMany(p => p.Images)
+					  .HasForeignKey(i => i.ProductId);
 			});
 
 			modelBuilder.Entity<Order>(entity =>
