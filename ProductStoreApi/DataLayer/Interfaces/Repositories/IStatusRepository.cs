@@ -2,7 +2,7 @@
 
 namespace StoreDAL.Interfaces.Repositories
 {
-	public interface IStatusRepository : IRepository<Status>
+	public interface IStatusRepository : ISingleKeyRepository<Status>
 	{
 	}
 }

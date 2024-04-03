@@ -59,41 +59,16 @@ namespace StoreDAL.Repositories
             return await dbSet.Skip(entitiesToSkip).Take(rowCount).ToListAsync();
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(long id)
-        {
-            try
-            {
-                return await this.dbSet
-                    .SingleAsync(e => e.Id == id);
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new ArgumentException("Provided id does not exist", ex);
-            }
-        }
-
         public virtual async Task AddAsync(TEntity entity)
         {
             await this.dbSet.AddAsync(entity);
         }
-
-        public virtual async Task Update(TEntity entity)
-        {
-            var existingEntity = await dbSet.SingleAsync(x => x.Id == entity.Id);
-
-            context.Entry(existingEntity).CurrentValues.SetValues(entity);
-        }
-
 
         public virtual void Delete(TEntity entity)
         {
             dbSet.Remove(entity);
         }
 
-        public virtual async Task DeleteByIdAsync(long id)
-        {
-            TEntity entity = await dbSet.SingleAsync(e => e.Id == id);
-            dbSet.Remove(entity);
-        }
-    }
+		public abstract Task Update(TEntity entity);
+	}
 }

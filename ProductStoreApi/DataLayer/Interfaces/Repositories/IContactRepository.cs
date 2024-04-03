@@ -2,7 +2,7 @@
 
 namespace StoreDAL.Interfaces.Repositories
 {
-	public interface IContactRepository : IRepository<Contact>
+	public interface IContactRepository : ISingleKeyRepository<Contact>
 	{
 	}
 }

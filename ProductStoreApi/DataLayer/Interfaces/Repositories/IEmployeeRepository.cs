@@ -2,7 +2,8 @@
 
 namespace StoreDAL.Interfaces.Repositories
 {
-	public interface IEmployeeRepository : IRepository<Employee>
+	public interface IEmployeeRepository : ISingleKeyRepository<Employee>
 	{
+		Task<Employee> GetWithLeastOrders();
 	}
 }

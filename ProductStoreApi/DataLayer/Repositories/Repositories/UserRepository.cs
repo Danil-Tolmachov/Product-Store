@@ -6,7 +6,7 @@ using StoreDAL.Interfaces.Repositories;
 
 namespace StoreDAL.Repositories.Repositories
 {
-	public class UserRepository : AbstractRepository<User>, IUserRepository
+	public class UserRepository : AbstractSingleKeyRepository<User>, IUserRepository
 	{
 		private readonly IPasswordHasher _hasher;
 

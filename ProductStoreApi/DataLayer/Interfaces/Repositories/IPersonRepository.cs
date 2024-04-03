@@ -2,7 +2,7 @@
 
 namespace StoreDAL.Interfaces.Repositories
 {
-	public interface IPersonRepository : IRepository<Person>
+	public interface IPersonRepository : ISingleKeyRepository<Person>
 	{
 	}
 }

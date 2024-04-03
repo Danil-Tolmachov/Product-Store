@@ -1,7 +1,9 @@
 ﻿
+using StoreBLL.Interfaces.Services;
+
 namespace StoreBLL.Services
 {
-	public class CategoryService
+	public class CategoryService : ICategoryService
 	{
 	}
 }

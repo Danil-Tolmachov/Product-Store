@@ -27,6 +27,12 @@ namespace StoreBLL
 			CreateMap<CartItem, CartItemModel>()
 				.ReverseMap();
 
+			CreateMap<CartItemModel, OrderDetailModel>()
+				.ForMember(om => om.Product, o => o.MapFrom(x => x.Product))
+				.ForMember(om => om.Quantity, o => o.MapFrom(x => x.Quantity))
+				.ForMember(om => om.UnitPrice, o => o.MapFrom(x => x.Product.Price - (x.Product.Price * x.Product.Discount)))
+				.ReverseMap();
+
 			CreateMap<Order, OrderModel>()
 				.ForMember(om => om.Status, o => o.MapFrom(x => x.Status.Name))
 				.ReverseMap();

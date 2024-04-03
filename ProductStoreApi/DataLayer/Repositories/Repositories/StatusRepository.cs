@@ -4,7 +4,7 @@ using StoreDAL.Interfaces.Repositories;
 
 namespace StoreDAL.Repositories.Repositories
 {
-	public class StatusRepository : AbstractRepository<Status>, IStatusRepository
+	public class StatusRepository : AbstractSingleKeyRepository<Status>, IStatusRepository
 	{
 		public StatusRepository(StoreDbContext context) : base(context) { }
 	}

@@ -14,4 +14,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DataLayer\StoreDAL.csproj" />
+    <ProjectReference Include="..\StoreBLL\StoreBLL.csproj" />
+  </ItemGroup>
+
 </Project>

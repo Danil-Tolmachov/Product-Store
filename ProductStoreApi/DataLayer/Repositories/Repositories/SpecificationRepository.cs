@@ -4,7 +4,7 @@ using StoreDAL.Interfaces.Repositories;
 
 namespace StoreDAL.Repositories.Repositories
 {
-	public class SpecificationRepository : AbstractRepository<Specification>, ISpecificationRepository
+	public class SpecificationRepository : AbstractSingleKeyRepository<Specification>, ISpecificationRepository
 	{
 		public SpecificationRepository(StoreDbContext context) : base(context) { }
 	}

@@ -2,7 +2,7 @@
 
 namespace StoreDAL.Interfaces.Repositories
 {
-	public interface IProductRepository : IRepository<Product>
+	public interface IProductRepository : ISingleKeyRepository<Product>
 	{
 	}
 }
