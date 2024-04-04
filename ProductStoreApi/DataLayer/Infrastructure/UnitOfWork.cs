@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StoreDAL.Interfaces;
+﻿using StoreDAL.Interfaces;
 using StoreDAL.Interfaces.Repositories;
-using StoreDAL.Repositories;
+using StoreDAL.Repositories.Repositories;
 
 namespace StoreDAL.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly StoreDbContext _context;
+		private readonly IPasswordHasher _hasher;
+
         private ICartItemRepository cartItemRepository = null!;
 		private ICartRepository cartRepository = null!;
 		private ICategoryRepository categoryRepository = null!;
@@ -151,14 +148,14 @@ namespace StoreDAL.Infrastructure
 		{
 			get
 			{
-				userRepository ??= new UserRepository(_context);
+				userRepository ??= new UserRepository(_context, _hasher);
 
 				return userRepository;
 			}
 		}
 
 
-		public UnitOfWork(StoreDbContext context)
+		public UnitOfWork(StoreDbContext context, IPasswordHasher passwordHasher)
         {
             if (context is null)
             {
@@ -166,6 +163,7 @@ namespace StoreDAL.Infrastructure
             }
 
             this._context = context;
+			this._hasher = passwordHasher;
         }
 
         public async Task SaveAsync()

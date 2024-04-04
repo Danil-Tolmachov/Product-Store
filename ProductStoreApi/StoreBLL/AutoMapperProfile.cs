@@ -4,9 +4,9 @@ using StoreDAL.Entities;
 
 namespace StoreBLL
 {
-	public class AutomapperProfile : Profile
+	public class AutoMapperProfile : Profile
 	{
-		public AutomapperProfile()
+		public AutoMapperProfile()
 		{
 			CreateMap<Contact, ContactModel>()
 				.ReverseMap();
@@ -28,6 +28,8 @@ namespace StoreBLL
 				.ReverseMap();
 
 			CreateMap<CartItemModel, OrderDetailModel>()
+				.ForMember(om => om.Id, o => o.Ignore())
+				.ForMember(om => om.Order, o => o.Ignore())
 				.ForMember(om => om.Product, o => o.MapFrom(x => x.Product))
 				.ForMember(om => om.Quantity, o => o.MapFrom(x => x.Quantity))
 				.ForMember(om => om.UnitPrice, o => o.MapFrom(x => x.Product.Price - (x.Product.Price * x.Product.Discount)))
@@ -51,11 +53,11 @@ namespace StoreBLL
 				.ReverseMap();
 		}
 
-		public IMapper CreateMapper()
+		public static IMapper CreateMapper()
 		{
 			MapperConfiguration config = new MapperConfiguration(cfg =>
 			{
-				cfg.AddProfile<AutomapperProfile>();
+				cfg.AddProfile<AutoMapperProfile>();
 			});
 
 			config.AssertConfigurationIsValid();
