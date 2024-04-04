@@ -105,7 +105,10 @@ namespace StoreDAL.Infrastructure
 			modelBuilder.Entity<Specification>(entity =>
 			{
 				entity.HasMany(s => s.Products)
-					  .WithMany(p => p.Specifications);
+					  .WithMany(p => p.Specifications)
+					  .UsingEntity(e =>
+						e.HasData(factory.GetProductSpecificationData())
+					  );
 			});
 
 			modelBuilder.Entity<Product>(entity =>
@@ -115,10 +118,7 @@ namespace StoreDAL.Infrastructure
 					  .HasForeignKey(p => p.CategoryId);
 
 				entity.HasMany(p => p.Specifications)
-					  .WithMany(s => s.Products)
-					  .UsingEntity(e => 
-						e.HasData(factory.GetProductSpecificationData())
-					  );
+					  .WithMany(s => s.Products);
 
 				entity.HasMany(p => p.Images)
 					  .WithOne(i => i.Product)

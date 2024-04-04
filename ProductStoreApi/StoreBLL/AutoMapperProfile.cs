@@ -14,41 +14,70 @@ namespace StoreBLL
 			CreateMap<Category, CategoryModel>()
 				.ReverseMap();
 
-			CreateMap<Specification, SpecificationModel>()
-				.ReverseMap();
+			CreateMap<IEnumerable<Specification>, Dictionary<string, string>>()
+				.ConvertUsing(list => SpecsToDictionary()(list));
 
 			CreateMap<Product, ProductModel>()
-				.ForMember(pm => pm.Images, p => p.MapFrom(x => x.Images.Select(i => i.Image)))
-				.ReverseMap();
+				.ForMember(pm => pm.Images, p => p.MapFrom(x => x.Images.Select(i => i.Id)))
+				.PreserveReferences();
 
 			CreateMap<Cart, CartModel>()
+				.ForMember(pm => pm.UserId, p => p.MapFrom(x => x.UserId))
+				.ForMember(pm => pm.CartItems, p => p.MapFrom(x => x.CartItems))
 				.ReverseMap();
 
 			CreateMap<CartItem, CartItemModel>()
+				.ForMember(im => im.CartId, i => i.MapFrom(x => x.CartId))
+				.ForMember(im => im.ProductId, i => i.MapFrom(x => x.ProductId))
+				.ForMember(im => im.CartUserId, i => i.MapFrom(x => x.Cart.UserId))
+				.ForMember(im => im.ProductName, i => i.MapFrom(x => x.Product.Name))
+				.ForMember(im => im.ProductDescription, i => i.MapFrom(x => x.Product.Description))
+				.ForMember(im => im.ProductCategoryId, i => i.MapFrom(x => x.Product.CategoryId))
+				.ForMember(im => im.ProductCategoryName, i => i.MapFrom(x => x.Product.Category.Name))
+				.ForMember(im => im.ProductDiscount, i => i.MapFrom(x => x.Product.Discount))
+				.ForMember(im => im.ProductPrice, i => i.MapFrom(x => x.Product.Price))
 				.ReverseMap();
 
 			CreateMap<CartItemModel, OrderDetailModel>()
-				.ForMember(om => om.Id, o => o.Ignore())
-				.ForMember(om => om.Order, o => o.Ignore())
-				.ForMember(om => om.Product, o => o.MapFrom(x => x.Product))
-				.ForMember(om => om.Quantity, o => o.MapFrom(x => x.Quantity))
-				.ForMember(om => om.UnitPrice, o => o.MapFrom(x => x.Product.Price - (x.Product.Price * x.Product.Discount)))
-				.ReverseMap();
+				.ForMember(od => od.OrderId, o => o.Ignore())
+				.ForMember(od => od.ProductName, c => c.MapFrom(x => x.ProductName))
+				.ForMember(od => od.ProductDescription, c => c.MapFrom(x => x.ProductDescription))
+				.ForMember(od => od.ProductCategoryId, c => c.MapFrom(x => x.ProductCategoryId))
+				.ForMember(od => od.ProductCategoryName, c => c.MapFrom(x => x.ProductCategoryName))
+				.ForMember(od => od.Quantity, o => o.MapFrom(x => x.Quantity))
+				.ForMember(od => od.UnitPrice, o => o.MapFrom(x => x.ProductPrice - (x.ProductPrice * x.ProductDiscount)));
 
 			CreateMap<Order, OrderModel>()
 				.ForMember(om => om.Status, o => o.MapFrom(x => x.Status.Name))
 				.ReverseMap();
 
 			CreateMap<OrderDetail, OrderDetailModel>()
+				.ForMember(dm => dm.OrderId, d => d.MapFrom(x => x.Order.Id))
+				.ForMember(dm => dm.ProductId, d => d.MapFrom(x => x.Product.Id))
+				.ForMember(dm => dm.ProductName, d => d.MapFrom(x => x.Product.Name))
+				.ForMember(dm => dm.ProductDescription, d => d.MapFrom(x => x.Product.Description))
+				.ForMember(dm => dm.ProductCategoryId, d => d.MapFrom(x => x.Product.Category.Id))
+				.ForMember(dm => dm.ProductCategoryName, d => d.MapFrom(x => x.Product.Category.Name))
+				.ForMember(dm => dm.ProductName, d => d.MapFrom(x => x.Product.Name))
 				.ReverseMap();
 
 			CreateMap<Person, PersonModel>()
 				.ReverseMap();
 
 			CreateMap<User, UserModel>()
+				.ForMember(um => um.FirstName, u => u.MapFrom(x => x.Person.FirstName))
+				.ForMember(um => um.LastName, u => u.MapFrom(x => x.Person.LastName))
+				.ForMember(um => um.Discount, u => u.MapFrom(x => x.Person.Discount))
+				.ForMember(um => um.Address, u => u.MapFrom(x => x.Person.Address))
+				.ForMember(um => um.CartId, u => u.MapFrom(x => x.Cart.Id))
+				.ForMember(um => um.CartItems, u => u.MapFrom(x => x.Cart.CartItems))
+				.ForMember(um => um.Contacts, u => u.MapFrom(x => x.Person.Contacts))
 				.ReverseMap();
 
 			CreateMap<Employee, EmployeeModel>()
+				.ForMember(em => em.Username, e => e.MapFrom(x => x.User.Username))
+				.ForMember(em => em.FirstName, e => e.MapFrom(x => x.User.Person.FirstName))
+				.ForMember(em => em.LastName, e => e.MapFrom(x => x.User.Person.LastName))
 				.ForMember(em => em.Position, e => e.MapFrom(x => x.Position.Name))
 				.ReverseMap();
 		}
@@ -64,6 +93,23 @@ namespace StoreBLL
 			IMapper mapper = config.CreateMapper();
 
 			return mapper;
+		}
+
+		private static Func<IEnumerable<Specification>, Dictionary<string, string>> SpecsToDictionary()
+		{
+			Func<IEnumerable<Specification>, Dictionary<string, string>> func = list =>
+			{
+                var dict = new Dictionary<string, string>();
+
+				foreach (var item in list)
+				{
+					dict.Add(item.Name, item.Value);
+				}
+
+				return dict;
+			};
+
+			return func;
 		}
 	}
 }

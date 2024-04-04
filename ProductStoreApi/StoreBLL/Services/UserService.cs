@@ -4,6 +4,7 @@ using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
 using StoreBLL.Services.Abstractions;
 using StoreDAL.Entities;
+using StoreDAL.Infrastructure;
 using StoreDAL.Interfaces;
 
 namespace StoreBLL.Services
@@ -17,6 +18,18 @@ namespace StoreBLL.Services
 		{
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
+		}
+
+		public async Task<IEnumerable<UserModel>> GetAllWithDetails()
+		{
+			List<User> entities = (await _unitOfWork.UserRepository.GetAllWithDetails()).ToList();
+			return _mapper.Map<IList<UserModel>>(entities);
+		}
+
+		public async Task<IEnumerable<UserModel>> GetAllWithDetails(int pageNumber, int rowCount)
+		{
+			List<User> entities = (await _unitOfWork.UserRepository.GetAllWithDetails(pageNumber, rowCount)).ToList();
+			return _mapper.Map<IList<UserModel>>(entities);
 		}
 
 		public Task ChangePassword(long userId, string oldPassword, string newPassword)

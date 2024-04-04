@@ -11,7 +11,56 @@ namespace StoreDAL.Repositories.Repositories
 
 		public async Task<IEnumerable<Product>> GetByCategoryId(long id)
 		{
-			return await dbSet.Where(p => p.CategoryId == id).ToListAsync();
+			return await dbSet.Where(p => p.CategoryId == id)
+							  .Include(p => p.Category)
+							  .Include(p => p.Specifications)
+							  .ToListAsync();
+		}
+
+		public override async Task<Product> GetByIdAsync(long id)
+		{
+			try
+			{
+				return await this.dbSet.Include(p => p.Category)
+									   .Include(p => p.Specifications)
+									   .SingleAsync(e => e.Id == id);
+			}
+			catch (InvalidOperationException ex)
+			{
+				throw new ArgumentException("Provided id does not exist", ex);
+			}
+		}
+
+		public override async Task<IEnumerable<Product>> GetAllAsync()
+		{
+			return await dbSet.Include(p => p.Category)
+							  .Include(p => p.Specifications)
+							  .ToListAsync();
+		}
+
+		public override async Task<IEnumerable<Product>> GetAllAsync(int pageNumber, int rowCount)
+		{
+			if (pageNumber < 1)
+				throw new ArgumentException("Page number should be greater than or equal to 1.", nameof(pageNumber));
+
+			if (rowCount < 1)
+				throw new ArgumentException("Row count should be greater than or equal to 1.", nameof(rowCount));
+
+
+			int pagesLimit = (int)Math.Ceiling((await dbSet.CountAsync()) / (double)rowCount);
+
+			if (pageNumber > pagesLimit)
+			{
+				return Enumerable.Empty<Product>();
+			}
+
+			int entitiesToSkip = (pageNumber - 1) * rowCount;
+
+			return await dbSet.Skip(entitiesToSkip)
+							  .Take(rowCount)
+							  .Include(p => p.Category)
+							  .Include(p => p.Specifications)
+							  .ToListAsync();
 		}
 	}
 }

@@ -5,12 +5,15 @@ namespace StoreBLL.Models
 {
 	public class OrderDetailModel
 	{
-		public int Id { get; set; }
-
 		public decimal UnitPrice { get; set; }
 		public int Quantity { get; set; }
 
-		public ProductModel Product { get; set; } = null!;
-		public OrderModel Order { get; set; } = null!;
+		public long OrderId { get; set; }
+		public long ProductId { get; set; }
+
+		public string ProductName { get; set; } = string.Empty;
+		public string ProductDescription { get; set; } = string.Empty;
+		public long ProductCategoryId { get; set; }
+		public string ProductCategoryName { get; set; } = string.Empty;
 	}
 }

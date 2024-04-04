@@ -36,7 +36,7 @@ namespace StoreBLL.Services
 			try
 			{
 				// Throw if item not found
-				CartItem entity = await _unitOfWork.CartItemRepository.GetByIdAsync(item.Cart.Id, item.Product.Id);
+				CartItem entity = await _unitOfWork.CartItemRepository.GetByIdAsync(item.CartId, item.ProductId);
 
 				entity.Quantity = item.Quantity;
 				await _unitOfWork.CartItemRepository.Update(entity);

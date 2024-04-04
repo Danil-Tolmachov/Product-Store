@@ -12,7 +12,6 @@ namespace StoreBLL.Models
 		public decimal Discount { get; set; }
 		public string Address { get; set; } = string.Empty;
 
-		public UserModel User { get; set; } = null!;
 		public IEnumerable<ContactModel> Contacts { get; set; } = new List<ContactModel>();
 	}
 }

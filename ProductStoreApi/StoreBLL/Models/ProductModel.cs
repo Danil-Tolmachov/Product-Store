@@ -12,8 +12,10 @@ namespace StoreBLL.Models
 		public decimal Discount { get; set; }
 		public string UnitMeasure { get; set; } = string.Empty;
 
-		public CategoryModel Category { get; set; } = null!;
-		public IEnumerable<SpecificationModel> Specifications { get; set; } = new List<SpecificationModel>();
+		public string CategoryId { get; set; } = null!;
+		public string CategoryName { get; set; } = string.Empty;
+
+		public Dictionary<string, string> Specifications { get; set; } = new Dictionary<string, string>();
 		public IEnumerable<byte[]> Images { get; set; } = new List<byte[]>();
 	}
 }

@@ -21,12 +21,18 @@ namespace StoreDAL.Repositories.Repositories
 
 		public async Task<Cart> GetCartByUserId(long userId)
 		{
-			return await dbSet.SingleAsync(c => c.UserId == userId);
+			return await dbSet.Include(c => c.CartItems)
+							  .ThenInclude(ci => ci.Product)
+							  .ThenInclude(p => p.Category)
+							  .SingleAsync(c => c.UserId == userId);
 		}
 
 		public async Task<IEnumerable<CartItem>> GetUserProducts(long userId)
 		{
-			var cart = await dbSet.SingleAsync(c => c.UserId == userId);
+			var cart = await dbSet.Include(c => c.CartItems)
+								  .ThenInclude(ci => ci.Product)
+								  .ThenInclude(p => p.Category)
+								  .SingleAsync(c => c.UserId == userId);
 
 			return cart.CartItems.ToList();
 		}

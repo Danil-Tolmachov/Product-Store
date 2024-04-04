@@ -7,7 +7,15 @@ namespace StoreBLL.Models
 	{
 		public int Quantity { get; set; }
 
-		public CartModel Cart { get; set; } = null!;
-		public ProductModel Product { get; set; } = null!;
+		public long CartId { get; set; }
+		public long CartUserId { get; set; }
+		public long ProductId { get; set; }
+
+		public string ProductName { get; set; } = string.Empty;
+		public string ProductDescription { get; set; } = string.Empty;
+		public long ProductCategoryId { get; set; }
+		public string ProductCategoryName { get; set; } = string.Empty;
+		public decimal ProductPrice { get; set;}
+		public decimal ProductDiscount { get; set; }
 	}
 }

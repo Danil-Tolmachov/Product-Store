@@ -51,8 +51,8 @@ namespace StoreDAL.Repositories
 
             if (pageNumber > pagesLimit)
             {
-                return Enumerable.Empty<TEntity>();
-            }
+                return new List<TEntity>();
+			}
 
             int entitiesToSkip = (pageNumber - 1) * rowCount;
 
