@@ -12,9 +12,9 @@ namespace StoreBLL.Services.Abstractions
     public abstract class AbstractCrudService<TEntity, TModel> : ICrud<TModel> where TEntity : class, IBaseEntity
     {
         private readonly IMapper _mapper;
-        private readonly IRepository<TEntity> _repository;
+        private readonly ISingleKeyRepository<TEntity> _repository;
 
-        protected AbstractCrudService(IMapper mapper, IRepository<TEntity> repository)
+        protected AbstractCrudService(IMapper mapper, ISingleKeyRepository<TEntity> repository)
         {
             _mapper = mapper;
             _repository = repository;

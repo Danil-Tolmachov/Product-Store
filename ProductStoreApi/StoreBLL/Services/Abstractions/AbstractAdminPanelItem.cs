@@ -16,7 +16,7 @@ namespace StoreBLL.Services.Abstractions
 	{
 		private readonly IRepository<TEntity> _repository;
 
-		public AbstractAdminPanelItem(IMapper mapper, IRepository<TEntity> repository) : base(mapper, repository)
+		public AbstractAdminPanelItem(IMapper mapper, ISingleKeyRepository<TEntity> repository) : base(mapper, repository)
 		{
 			_repository = repository;
 		}
