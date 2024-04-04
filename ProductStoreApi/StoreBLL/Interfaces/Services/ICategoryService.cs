@@ -4,6 +4,6 @@ namespace StoreBLL.Interfaces.Services
 {
     public interface ICategoryService : IAdminPanelItem<CategoryModel>
     {
-        IEnumerable<ProductModel> GetProducts(long id);
+        Task<IEnumerable<ProductModel>> GetProducts(long id);
     }
 }
