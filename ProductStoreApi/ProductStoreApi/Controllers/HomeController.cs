@@ -1,14 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
+using StoreBLL.Interfaces.Services;
+using StoreBLL.Models;
 
 namespace ProductStoreApi.Controllers
 {
 	[ApiController]
-	[Route("[controller]")]
-	public class WeatherForecastController : ControllerBase
+	[Route("api/")]
+	public class HomeController : ControllerBase
 	{
-		private readonly ILogger<WeatherForecastController> _logger;
+		private readonly ILogger<HomeController> _logger;
 
-		public WeatherForecastController(ILogger<WeatherForecastController> logger)
+		public HomeController(ILogger<HomeController> logger)
 		{
 			_logger = logger;
 		}

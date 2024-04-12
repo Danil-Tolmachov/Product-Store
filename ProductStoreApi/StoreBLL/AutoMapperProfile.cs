@@ -18,7 +18,7 @@ namespace StoreBLL
 				.ConvertUsing(list => SpecsToDictionary()(list));
 
 			CreateMap<Product, ProductModel>()
-				.ForMember(pm => pm.Images, p => p.MapFrom(x => x.Images.Select(i => i.Id)))
+				.ForMember(pm => pm.Images, p => p.Ignore())
 				.PreserveReferences();
 
 			CreateMap<Cart, CartModel>()
