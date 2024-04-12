@@ -22,6 +22,7 @@ namespace ProductStoreApi
 			services.AddEndpointsApiExplorer();
 			services.AddSwaggerGen();
 			services.AddControllers();
+			services.AddCors();
 
 			// Database seed data services
 			services.AddSingleton<IDataFactory, TestDataFactory>();
@@ -30,11 +31,10 @@ namespace ProductStoreApi
 			services.AddAutoMapper();
 
 			// Add StoreDbContext
-			services.AddSingleton<StoreDbContext>(sp =>
+			services.AddDbContext<StoreDbContext>(options =>
 			{
-				var cf = new StoreDbFactory(new TestDataFactory());
-				return cf.CreateDbContext();
-			});
+				options.UseInMemoryDatabase(Guid.NewGuid().ToString());
+			}, ServiceLifetime.Scoped);
 
 			// Add PasswordHasher for UserService
 			services.AddSingleton<IPasswordHasher, PasswordHasher>();
@@ -59,6 +59,9 @@ namespace ProductStoreApi
 
 			app.UseRouting();
 			app.UseAuthorization();
+			app.UseCors(
+				options => options.WithOrigins("http://localhost:4200").AllowAnyMethod()
+			);
 
 			app.UseEndpoints(e =>
 				e.MapControllerRoute(

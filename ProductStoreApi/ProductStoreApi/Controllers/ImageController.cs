@@ -34,7 +34,7 @@ namespace ProductStoreApi.Controllers
                 {
 					throw new ArgumentException("image");
                 }
-				Console.WriteLine(image.Length);
+
 				return File(image, "image/webp");
 			}
 			catch (ArgumentException ex)
