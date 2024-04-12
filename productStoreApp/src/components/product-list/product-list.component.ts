@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ProductItemBriefComponent } from './product-item-brief/product-item-brief.component';
-import { Product } from '../../interfaces/Product';
+import { IProduct } from '../../interfaces/IProduct';
 
 @Component({
     selector: 'app-product-list',
@@ -10,5 +10,5 @@ import { Product } from '../../interfaces/Product';
     styleUrl: './product-list.component.scss'
 })
 export class ProductListComponent {
-    @Input() productsList: Product[] = [];
+    @Input() productsList: IProduct[] = [];
 }

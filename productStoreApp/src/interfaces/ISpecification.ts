@@ -1,4 +1,4 @@
-export interface Specification {
+export interface ISpecification {
     name: string;
     value: string;
 }

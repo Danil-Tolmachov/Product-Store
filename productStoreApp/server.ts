@@ -4,6 +4,7 @@ import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
+import cors from 'cors';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -16,6 +17,10 @@ export function app(): express.Express {
 
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
+  server.use(cors({
+    origin: 'http://localhost:7048',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }));
 
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });

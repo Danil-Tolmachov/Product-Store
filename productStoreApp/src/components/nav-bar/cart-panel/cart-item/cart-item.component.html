@@ -1,5 +1,5 @@
 <div class="container">
-    <app-image-container [imageUrl]="item.product.imageUrl?.toString() ?? ''" />
+    <app-image-container [imageUrl]="item.product.imagePathes[0]" />
     <div class="right">
         <p>{{ item.product.name }}</p>
         <div class="controls">
