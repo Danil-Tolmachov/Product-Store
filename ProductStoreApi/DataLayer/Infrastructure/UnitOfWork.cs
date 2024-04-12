@@ -22,6 +22,7 @@ namespace StoreDAL.Infrastructure
 		private ISpecificationRepository specificationRepository = null!;
 		private IStatusRepository statusRepository = null!;
 		private IUserRepository userRepository = null!;
+		private IProductImageRepository productImageRepository = null!;
 
 
 		public ICartItemRepository CartItemRepository
@@ -151,6 +152,16 @@ namespace StoreDAL.Infrastructure
 				userRepository ??= new UserRepository(_context, _hasher);
 
 				return userRepository;
+			}
+		}
+
+		public IProductImageRepository ProductImageRepository
+		{
+			get
+			{
+				productImageRepository ??= new ProductImageRepository(_context);
+
+				return productImageRepository;
 			}
 		}
 

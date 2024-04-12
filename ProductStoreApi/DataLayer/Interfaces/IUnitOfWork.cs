@@ -22,7 +22,8 @@ namespace StoreDAL.Interfaces
 		ISpecificationRepository SpecificationRepository { get; }
 		IStatusRepository StatusRepository { get; }
 		IUserRepository UserRepository { get; }
+		IProductImageRepository ProductImageRepository { get; }
 
-        Task SaveAsync();
+		Task SaveAsync();
     }
 }

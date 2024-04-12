@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using StoreBLL.Models;
 using StoreDAL.Entities;
+using System.Text;
 
 namespace StoreBLL
 {
@@ -80,6 +81,11 @@ namespace StoreBLL
 				.ForMember(em => em.LastName, e => e.MapFrom(x => x.User.Person.LastName))
 				.ForMember(em => em.Position, e => e.MapFrom(x => x.Position.Name))
 				.ReverseMap();
+
+			CreateMap<ProductImage, ProductImageModel>()
+				.ForMember(em => em.ImagePath, e => e.MapFrom(x => ConvertImageIdToPath(x.Id)))
+				.ForMember(em => em.ProductName, e => e.MapFrom(x => x.Product.Name))
+				.ReverseMap();
 		}
 
 		public static IMapper CreateMapper()
@@ -110,6 +116,13 @@ namespace StoreBLL
 			};
 
 			return func;
+		}
+
+		private string ConvertImageIdToPath(long imageId)
+		{
+			byte[] idBytes = Encoding.UTF8.GetBytes(imageId.ToString());
+			string path = Convert.ToBase64String(idBytes);
+			return path;
 		}
 	}
 }
