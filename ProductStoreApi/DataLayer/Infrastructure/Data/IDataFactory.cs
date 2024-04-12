@@ -17,6 +17,7 @@ namespace StoreDAL.Infrastructure.Data
 		Status[] GetStatusData();
 		Cart[] GetCartData();
 		CartItem[] GetCartItemData();
+		ProductImage[] GetProductImageData();
 
 		object[] GetProductSpecificationData();
 	}

@@ -21,13 +21,13 @@ namespace StoreBLL.Services
 		}
 
 
-		public async Task<ProductImageModel?> GetImageById(long id)
+		public async Task<byte[]?> GetImageById(long id)
 		{
 			ProductImage image = await _unitOfWork.ProductImageRepository.GetByIdAsync(id);
-			return _mapper.Map<ProductImageModel>(image);
+			return image.Image;
 		}
 
-		public async Task<ProductImageModel?> GetImageByPath(string path)
+		public async Task<byte[]?> GetImageByPath(string path)
 		{
 			long? id = GetImageId(path);
 
@@ -37,10 +37,16 @@ namespace StoreBLL.Services
 			}
 
 			ProductImage image = await _unitOfWork.ProductImageRepository.GetByIdAsync((long)id);
-			return _mapper.Map<ProductImageModel>(image);
+			return image.Image;
 		}
 
-		public async Task<IEnumerable<ProductImageModel>> GetImagesByProductId(long productId)
+		public async Task<IEnumerable<byte[]>> GetImagesByProductId(long productId)
+		{
+			var images = await _unitOfWork.ProductImageRepository.GetAllByProductIdAsync(productId);
+			return images.Select(i => i.Image);
+		}
+
+		public async Task<IEnumerable<ProductImageModel>> GetModelsByProductId(long productId)
 		{
 			var images = await _unitOfWork.ProductImageRepository.GetAllByProductIdAsync(productId);
 			return _mapper.Map<IList<ProductImageModel>>(images);

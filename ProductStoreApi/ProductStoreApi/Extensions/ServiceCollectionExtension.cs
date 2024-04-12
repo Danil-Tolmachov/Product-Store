@@ -23,8 +23,9 @@ namespace sports_store_application.Extensions
 				    .AddTransient<IEmployeeService, EmployeeService>()
 					.AddTransient<IProductService, ProductService>()
                     .AddTransient<IUserService, UserService>()
-                    .AddTransient<IOrderService, OrderService>();
-            return services;
+                    .AddTransient<IOrderService, OrderService>()
+					.AddTransient<IProductImageService, ProductImageService>();
+			return services;
         }
     }
 }

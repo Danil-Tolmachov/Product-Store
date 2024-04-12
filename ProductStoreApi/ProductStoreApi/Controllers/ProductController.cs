@@ -7,7 +7,7 @@ using StoreBLL.Services;
 namespace ProductStoreApi.Controllers
 {
 	[ApiController]
-	[Route("/product")]
+	[Route("/api/product")]
 	public class ProductController : ControllerBase
 	{
 		private readonly ILogger<ProductController> _logger;

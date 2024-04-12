@@ -173,6 +173,21 @@ namespace StoreDAL.Infrastructure.Data
 			return Array.Empty<CartItem>();
 		}
 
+		public override ProductImage[] GetProductImageData()
+		{
+			string seedDir = "..\\DataLayer\\Infrastructure\\Data\\SeedImages\\";
+
+			return new ProductImage[]
+			{
+				new ProductImage(1) { ProductId = 1, Image = File.ReadAllBytes($"{seedDir}\\{1}.webp") },
+				new ProductImage(2) { ProductId = 2, Image = File.ReadAllBytes($"{seedDir}\\{2}.webp") },
+				new ProductImage(3) { ProductId = 3, Image = File.ReadAllBytes($"{seedDir}\\{3}.webp") },
+				new ProductImage(4) { ProductId = 4, Image = File.ReadAllBytes($"{seedDir}\\{4}.webp") },
+				new ProductImage(5) { ProductId = 5, Image = File.ReadAllBytes($"{seedDir}\\{5}.webp") },
+				new ProductImage(6) { ProductId = 6, Image = File.ReadAllBytes($"{seedDir}\\{6}.webp") },
+			};
+		}
+
 		public override object[] GetProductSpecificationData()
 		{
 			return new[]

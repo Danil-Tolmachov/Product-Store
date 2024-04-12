@@ -1,12 +1,16 @@
 ﻿using StoreBLL.Models;
+using StoreDAL.Entities;
 
 namespace StoreBLL.Interfaces.Services
 {
 	public interface IProductImageService
 	{
-		Task<ProductImageModel?> GetImageById(long id);
-		Task<ProductImageModel?> GetImageByPath(string path);
-		Task<IEnumerable<ProductImageModel>> GetImagesByProductId(long productId);
+		Task<byte[]?> GetImageById(long id);
+
+		Task<byte[]?> GetImageByPath(string path);
+
+		Task<IEnumerable<byte[]>> GetImagesByProductId(long productId);
+		Task<IEnumerable<ProductImageModel>> GetModelsByProductId(long productId);
 
 		Task<IEnumerable<string>> GetPathesByProductId(long productId);
 	}
