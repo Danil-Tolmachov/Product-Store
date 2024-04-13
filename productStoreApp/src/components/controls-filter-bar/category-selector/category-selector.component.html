@@ -2,6 +2,5 @@
     <option value="0">No Category</option>
     @for (category of categories; track category.id) {
         <option [value]="category.id">{{ category.name }}</option>
-        {{ categories[0].name}}
     }
 </select>
