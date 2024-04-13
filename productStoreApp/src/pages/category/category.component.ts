@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { Category } from '../../interfaces/Category';
+import { ICategory } from '../../interfaces/ICategory';
 import { ProductListComponent } from '../../components/product-list/product-list.component';
 import { ControlsFilterBarComponent } from '../../components/controls-filter-bar/controls-filter-bar.component';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
     selector: 'app-category',
@@ -14,43 +15,37 @@ import { ControlsFilterBarComponent } from '../../components/controls-filter-bar
     styleUrl: './category.component.scss'
 })
 export class CategoryComponent {
-    categoryId: string = '0';
-    categoryObj: Category = {
-        id: 1,
-        name: 'Category1',
-        items: [
-            { 
-                id: 2, 
-                name: 'Soda Coca-Cola Cherry-Vanilia, 0.355', 
-                price: 0.7, 
-                discount: 0.1, 
-                imageUrl: new URL('https://images.silpo.ua/products/1600x1600/webp/20495df9-d0f7-406d-806f-3314f1243e73.png'),
-                category: { id: 1, name: 'Category1', items: []},
-                description: 'Description2',
-                specifications: [
-                    { name: 'Name2', value: 'Value2' }
-                ] 
-            },
-        ],
+    categoryId: number = 0;
+    category: ICategory = {
+        id: 0,
+        name: '',
+        items: [],
     };
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
-                private titleService: Title) {
+                private titleService: Title,
+                private categoryService: CategoryService) {
     }
 
     ngOnInit(): void {
         // Get categoryId
         this.route.paramMap.subscribe(params => {
-            this.categoryId = params.get('categoryId') ?? this.categoryId;
+            this.categoryId = parseInt(params.get('categoryId') ?? '0');
         });
 
         // Redirect '/home' if No Category
-        if (this.categoryId == '0') {
-            this.router.navigate(['/home'])
+        if (this.categoryId == 0) {
+            this.router.navigate(['/home']);
         }
 
+        // Get category
+        this.categoryService.getCategory(this.categoryId).subscribe(category => {
+            this.category = category;
+            console.log(category);
+        });
+
         // Set title
-        this.titleService.setTitle("Category - " + this.categoryObj.name);
+        this.titleService.setTitle("Category - " + this.category.name);
     }
 }

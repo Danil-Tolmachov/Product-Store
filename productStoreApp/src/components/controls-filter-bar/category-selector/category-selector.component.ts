@@ -1,16 +1,17 @@
 import { Component, Input } from '@angular/core';
-import { Category } from '../../../interfaces/Category';
+import { ICategory } from '../../../interfaces/ICategory';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-category-selector',
     standalone: true,
-    imports: [],
+    imports: [ CommonModule ],
     templateUrl: './category-selector.component.html',
     styleUrl: './category-selector.component.scss'
 })
 export class CategorySelectorComponent {
-    @Input() categories: Category[] = [];
+    @Input() categories: ICategory[] = [];
 
     constructor(private router: Router){
     }
