@@ -26,6 +26,8 @@ namespace StoreDAL.Infrastructure
 		public StoreDbContext(DbContextOptions options, IDataFactory factory) : base(options)
         {
             this.factory = factory;
+
+			Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -52,7 +52,7 @@ namespace StoreBLL.Services
 			return _mapper.Map<IList<ProductImageModel>>(images);
 		}
 
-		public async Task<IEnumerable<string>> GetPathesByProductId(long productId)
+		public async Task<IEnumerable<string>> GetPathsByProductId(long productId)
 		{
 			var images = await _unitOfWork.ProductImageRepository.GetAllByProductIdAsync(productId);
 			return images.Select(i => GetImagePath(i.Id));

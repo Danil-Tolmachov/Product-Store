@@ -16,6 +16,6 @@ namespace StoreBLL.Models
 		public string CategoryName { get; set; } = string.Empty;
 
 		public Dictionary<string, string> Specifications { get; set; } = new Dictionary<string, string>();
-		public IEnumerable<string> ImagePathes { get; set; } = new List<string>();
+		public IEnumerable<string> ImagePaths { get; set; } = new List<string>();
 	}
 }

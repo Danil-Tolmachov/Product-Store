@@ -12,6 +12,6 @@ namespace StoreBLL.Interfaces.Services
 		Task<IEnumerable<byte[]>> GetImagesByProductId(long productId);
 		Task<IEnumerable<ProductImageModel>> GetModelsByProductId(long productId);
 
-		Task<IEnumerable<string>> GetPathesByProductId(long productId);
+		Task<IEnumerable<string>> GetPathsByProductId(long productId);
 	}
 }
