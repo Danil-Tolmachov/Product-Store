@@ -1,6 +1,6 @@
-import { IProduct } from "./IProduct";
+import { type IProduct } from './IProduct';
 
 export interface ICartProduct {
-    product: IProduct,
-    quantity: number,
+  product: IProduct;
+  quantity: number;
 }

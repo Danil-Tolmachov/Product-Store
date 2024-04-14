@@ -1,51 +1,51 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { ICategory } from '../../interfaces/ICategory';
-import { ProductListComponent } from '../../components/product-list/product-list.component';
-import { ControlsFilterBarComponent } from '../../components/controls-filter-bar/controls-filter-bar.component';
-import { CategoryService } from '../../services/category.service';
+import { type ICategory } from '../../interfaces/ICategory';
+import ProductListComponent from '../../components/product-list/product-list.component';
+import ControlsFilterBarComponent from '../../components/controls-filter-bar/controls-filter-bar.component';
+import CategoryService from '../../services/category.service';
 
 @Component({
-    selector: 'app-category',
-    standalone: true,
-    imports: [ ProductListComponent,
-               ControlsFilterBarComponent ],
-    templateUrl: './category.component.html',
-    styleUrl: './category.component.scss'
+  selector: 'app-category',
+  standalone: true,
+  imports: [ProductListComponent, ControlsFilterBarComponent],
+  templateUrl: './category.component.html',
+  styleUrl: './category.component.scss',
 })
-export class CategoryComponent {
-    categoryId: number = 0;
-    category: ICategory = {
-        id: 0,
-        name: '',
-        items: [],
-    };
+export default class CategoryComponent implements OnInit {
+  categoryId: number = 0;
 
-    constructor(private route: ActivatedRoute,
-                private router: Router,
-                private titleService: Title,
-                private categoryService: CategoryService) {
+  category: ICategory = {
+    id: 0,
+    name: '',
+    items: [],
+  };
+
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly titleService: Title,
+    private readonly categoryService: CategoryService
+  ) {}
+
+  ngOnInit(): void {
+    // Get categoryId
+    this.route.paramMap.subscribe((params) => {
+      this.categoryId = parseInt(params.get('categoryId') ?? '0', 10);
+    });
+
+    // Redirect '/home' if No Category
+    if (this.categoryId === 0) {
+      this.router.navigate(['/home']);
     }
 
-    ngOnInit(): void {
-        // Get categoryId
-        this.route.paramMap.subscribe(params => {
-            this.categoryId = parseInt(params.get('categoryId') ?? '0');
-        });
+    // Get category
+    this.categoryService.getCategory(this.categoryId).subscribe((category) => {
+      this.category = category;
+    });
 
-        // Redirect '/home' if No Category
-        if (this.categoryId == 0) {
-            this.router.navigate(['/home']);
-        }
-
-        // Get category
-        this.categoryService.getCategory(this.categoryId).subscribe(category => {
-            this.category = category;
-            console.log(category);
-        });
-
-        // Set title
-        this.titleService.setTitle("Category - " + this.category.name);
-    }
+    // Set title
+    this.titleService.setTitle(`Category - ${this.category.name}`);
+  }
 }

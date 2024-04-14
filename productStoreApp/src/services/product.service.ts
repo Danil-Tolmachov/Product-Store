@@ -1,36 +1,58 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
-import { IProduct, adaptProduct } from "../interfaces/IProduct";
+import { type Observable, map } from 'rxjs';
+import { type IProduct, type IProductResponse } from '../interfaces/IProduct';
+import { type ICategory } from '../interfaces/ICategory';
+import environment from '../environments/environment.development';
+
+const url = environment.apiUrl;
+const urlImg = `${url}/image/product`;
 
 @Injectable({
-    providedIn: "root"
+  providedIn: 'root',
 })
-export class ProductService {
+export default class ProductService {
+  constructor(private readonly http: HttpClient) {}
 
-    constructor(private http: HttpClient) { }
+  getProducts(): Observable<IProduct[]> {
+    const link = `${url}/product`;
 
-    getProducts(): Observable<IProduct[]> {
-        let link = this.getApiUrl() + "/product";
+    return this.http
+      .get<IProductResponse[]>(link)
+      .pipe(
+        map((response) =>
+          response.map((product) => ProductService.adaptProduct(product))
+        )
+      );
+  }
 
-        return this.http.get<IProduct[]>(link).pipe(
-            map(response => response.map(product => adaptProduct(product, this.getProductImageApiUrl())))
-        );
-    }
+  getProduct(id: number): Observable<IProduct> {
+    const link = `${url}/product/${id}`;
 
-    getProduct(id: number): Observable<IProduct> {
-        let link = this.getApiUrl() + `/product/${id}`;
+    return this.http
+      .get<IProductResponse>(link)
+      .pipe(map((product) => ProductService.adaptProduct(product)));
+  }
 
-        return this.http.get<IProduct>(link).pipe(
-            map(product => adaptProduct(product, this.getProductImageApiUrl()))
-        );
-    }
+  private static adaptProduct(apiProduct: IProductResponse): IProduct {
+    const category: ICategory = {
+      id: apiProduct.categoryId,
+      name: apiProduct.categoryName,
+      items: [],
+    };
 
-    private getApiUrl(): string {
-        return "https://localhost:7048/api";
-    }
-
-    private getProductImageApiUrl(): string {
-        return "https://localhost:7048/api/image/product";
-    }
+    return {
+      id: apiProduct.id,
+      name: apiProduct.name,
+      price: apiProduct.price,
+      discount: apiProduct.discount,
+      unitMeasure: apiProduct.unitMeasure,
+      category,
+      description: apiProduct.description,
+      specifications: apiProduct.specifications,
+      imagePaths: (apiProduct.imagePaths ?? []).map(
+        (path) => `${urlImg}/${path}`
+      ),
+    };
+  }
 }

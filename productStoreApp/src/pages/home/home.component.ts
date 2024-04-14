@@ -1,40 +1,44 @@
-import { Component } from '@angular/core';
-import { ProductListComponent } from '../../components/product-list/product-list.component';
-import { IProduct } from '../../interfaces/IProduct';
+import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ControlsFilterBarComponent } from '../../components/controls-filter-bar/controls-filter-bar.component';
-import { ProductService } from '../../services/product.service';
-import { ICategory } from '../../interfaces/ICategory';
-import { CategoryService } from '../../services/category.service';
+import ProductListComponent from '../../components/product-list/product-list.component';
+import { type IProduct } from '../../interfaces/IProduct';
+import ControlsFilterBarComponent from '../../components/controls-filter-bar/controls-filter-bar.component';
+import ProductService from '../../services/product.service';
+import { type ICategory } from '../../interfaces/ICategory';
+import CategoryService from '../../services/category.service';
 
 @Component({
-    selector: 'app-home',
-    standalone: true,
-    imports: [ ProductListComponent,
-               ControlsFilterBarComponent ],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.scss'
+  selector: 'app-home',
+  standalone: true,
+  imports: [ProductListComponent, ControlsFilterBarComponent],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss',
 })
-export class HomeComponent {
-    title: string = 'Product Store';
-    productsList: IProduct[] = [];
-    categoriesList: ICategory[] = [];
+export default class HomeComponent implements OnInit {
+  title: string = 'Product Store';
 
-    constructor(private titleService: Title, private productService: ProductService, private categoryService: CategoryService) { 
-    }
+  productsList: IProduct[] = [];
 
-    ngOnInit(): void {
-        // Set Title
-        this.titleService.setTitle(this.title);
+  categoriesList: ICategory[] = [];
 
-        // Get products
-        this.productService.getProducts().subscribe(products => {
-            this.productsList = products;
-        });
+  constructor(
+    private readonly titleService: Title,
+    private readonly productService: ProductService,
+    private readonly categoryService: CategoryService
+  ) {}
 
-        // Get categories
-        this.categoryService.getCategories().subscribe(categories => {
-            this.categoriesList = categories;
-        });
-    }
+  ngOnInit(): void {
+    // Set Title
+    this.titleService.setTitle(this.title);
+
+    // Get products
+    this.productService.getProducts().subscribe((products) => {
+      this.productsList = products;
+    });
+
+    // Get categories
+    this.categoryService.getCategories().subscribe((categories) => {
+      this.categoriesList = categories;
+    });
+  }
 }

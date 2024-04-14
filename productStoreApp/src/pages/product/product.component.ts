@@ -1,45 +1,49 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { IProduct } from '../../interfaces/IProduct';
-import { ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
+import { type IProduct } from '../../interfaces/IProduct';
+import ProductService from '../../services/product.service';
 
 @Component({
-    selector: 'app-product',
-    standalone: true,
-    imports: [],
-    templateUrl: './product.component.html',
-    styleUrl: './product.component.scss'
+  selector: 'app-product',
+  standalone: true,
+  imports: [],
+  templateUrl: './product.component.html',
+  styleUrl: './product.component.scss',
 })
-export class ProductComponent {
-    productId: number = 0;
-    product: IProduct = { 
-        id: 0, 
-        name: '', 
-        price: 0, 
-        discount: 0,
-        unitMeasure: '',
-        imagePathes: [],
-        category: null,
-        description: '',
-        specifications: [] 
-    };
-    
-    constructor(private titleService: Title, private productService: ProductService, private route: ActivatedRoute) {
-    }
+export default class ProductComponent implements OnInit {
+  productId: number = 0;
 
-    ngOnInit(): void {
-        // Get productId
-        this.route.paramMap.subscribe(params => {
-            this.productId = parseInt(params.get('productId') ?? "0");
-        });
+  product: IProduct = {
+    id: 0,
+    name: '',
+    price: 0,
+    discount: 0,
+    unitMeasure: '',
+    imagePaths: [],
+    category: null,
+    description: '',
+    specifications: [],
+  };
 
-        // Get product
-        this.productService.getProduct(this.productId).subscribe(product => {
-            this.product = product;
+  constructor(
+    private readonly titleService: Title,
+    private readonly productService: ProductService,
+    private readonly route: ActivatedRoute
+  ) {}
 
-            // Set Title
-            this.titleService.setTitle(this.product.name);
-        });
-    }
+  ngOnInit(): void {
+    // Get productId
+    this.route.paramMap.subscribe((params) => {
+      this.productId = parseInt(params.get('productId') ?? '0', 10);
+    });
+
+    // Get product
+    this.productService.getProduct(this.productId).subscribe((product) => {
+      this.product = product;
+
+      // Set Title
+      this.titleService.setTitle(this.product.name);
+    });
+  }
 }

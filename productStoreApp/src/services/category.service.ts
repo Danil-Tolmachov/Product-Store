@@ -1,37 +1,71 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
-import { ICategory, adaptCategory } from "../interfaces/ICategory";
+import { type Observable, map } from 'rxjs';
+import {
+  type ICategory,
+  type ICategoryResponse,
+} from '../interfaces/ICategory';
+import { type IProduct, type IProductResponse } from '../interfaces/IProduct';
+import environment from '../environments/environment';
 
+const url = environment.apiUrl;
+const urlImg = `${url}/image/product`;
 
 @Injectable({
-    providedIn: "root"
+  providedIn: 'root',
 })
-export class CategoryService {
+export default class CategoryService {
+  constructor(private readonly http: HttpClient) {}
 
-    constructor(private http: HttpClient) { }
+  getCategories(): Observable<ICategory[]> {
+    const link = `${url}/category`;
 
-    getCategories(): Observable<ICategory[]> {
-        let link = this.getApiUrl() + "/category";
+    return this.http
+      .get<ICategoryResponse[]>(link)
+      .pipe(
+        map((response) =>
+          response.map((category) => CategoryService.adaptCategory(category))
+        )
+      );
+  }
 
-        return this.http.get<ICategory[]>(link).pipe(
-            map(response => response.map(category => adaptCategory(category, this.getProductImageApiUrl())))
-        );
-    }
+  getCategory(id: number): Observable<ICategory> {
+    const link = `${url}/category/${id}`;
 
-    getCategory(id: number): Observable<ICategory> {
-        let link = this.getApiUrl() + `/category/${id}`;
+    return this.http
+      .get<ICategoryResponse>(link)
+      .pipe(map((category) => CategoryService.adaptCategory(category)));
+  }
 
-        return this.http.get<ICategory>(link).pipe(
-            map(category => adaptCategory(category, this.getProductImageApiUrl()))
-        );
-    }
+  private static adaptCategory(apiCategory: ICategoryResponse): ICategory {
+    return {
+      id: apiCategory.id,
+      name: apiCategory.name,
+      items: (apiCategory.products ?? []).map((product) =>
+        CategoryService.adaptProduct(product)
+      ),
+    };
+  }
 
-    private getApiUrl(): string {
-        return "https://localhost:7048/api";
-    }
+  private static adaptProduct(apiProduct: IProductResponse): IProduct {
+    const category: ICategory = {
+      id: apiProduct.categoryId,
+      name: apiProduct.categoryName,
+      items: [],
+    };
 
-    private getProductImageApiUrl(): string {
-        return "https://localhost:7048/api/image/product";
-    }
+    return {
+      id: apiProduct.id,
+      name: apiProduct.name,
+      price: apiProduct.price,
+      discount: apiProduct.discount,
+      unitMeasure: apiProduct.unitMeasure,
+      category,
+      description: apiProduct.description,
+      specifications: apiProduct.specifications,
+      imagePaths: (apiProduct.imagePaths ?? []).map(
+        (path) => `${urlImg}/${path}`
+      ),
+    };
+  }
 }

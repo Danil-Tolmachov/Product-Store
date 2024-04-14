@@ -1,16 +1,13 @@
-import { IProduct, adaptProduct } from "./IProduct";
+import { type IProductResponse, type IProduct } from './IProduct';
 
 export interface ICategory {
-    id: number;
-    name: string;
-
-    items: IProduct[];
+  id: number;
+  name: string;
+  items: never[] | IProduct[];
 }
 
-export function adaptCategory(apiCategory: any, imageBasePath: string): ICategory {
-    return {
-        id: apiCategory.id,
-        name: apiCategory.name,
-        items: (apiCategory.products as object[] || []).map(product  => adaptProduct(product, imageBasePath)),
-    }
+export interface ICategoryResponse {
+  id: number;
+  name: string;
+  products: never[] | IProductResponse[];
 }

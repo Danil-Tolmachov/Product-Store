@@ -1,0 +1,44 @@
+{
+  "root": true,
+  "rules": {
+    // turn on errors for missing imports
+    "import/no-unresolved": "error"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parserOptions": {
+        "createDefaultProgram": true,
+        "project": ["tsconfig.*?.json"],
+        "sourceType": "module"
+      },
+      "extends": [
+        "plugin:@angular-eslint/recommended",
+        "airbnb-base",
+        "airbnb-typescript/base",
+        "plugin:prettier/recommended",
+        "plugin:import/typescript"
+      ],
+      "rules": {}
+    },
+    {
+      "files": ["*.component.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "rules": {
+        "max-len": ["error", { "code": 140 }]
+      }
+    },
+    {
+      "files": ["*.component.ts"],
+      "extends": ["plugin:@angular-eslint/template/process-inline-templates"]
+    }
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": ["tsconfig.*?.json"]
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { type ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TextPanelComponent } from './text-panel.component';
 
@@ -8,10 +8,9 @@ describe('TextPanelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TextPanelComponent]
-    })
-    .compileComponents();
-    
+      imports: [TextPanelComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(TextPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

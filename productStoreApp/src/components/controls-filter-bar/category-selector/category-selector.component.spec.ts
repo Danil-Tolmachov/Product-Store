@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { type ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CategorySelectorComponent } from './category-selector.component';
+import CategorySelectorComponent from './category-selector.component';
 
 describe('CategorySelectorComponent', () => {
   let component: CategorySelectorComponent;
@@ -8,10 +8,9 @@ describe('CategorySelectorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CategorySelectorComponent]
-    })
-    .compileComponents();
-    
+      imports: [CategorySelectorComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(CategorySelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
