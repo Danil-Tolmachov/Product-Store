@@ -10,6 +10,12 @@ namespace StoreDAL.Repositories.Repositories
 	{
 		private readonly IPasswordHasher _hasher;
 
+		public UserRepository(StoreDbContext context, IPasswordHasher passwordHasher) : base(context)
+		{
+			_hasher = passwordHasher;
+		}
+
+
 		public override async Task AddAsync(User entity)
 		{
 			entity.Password = _hasher.HashPassword(entity.Password);
@@ -135,6 +141,7 @@ namespace StoreDAL.Repositories.Repositories
 			{
 				return null;
 			}
+			var pass5 = _hasher.HashPassword("Password4");
 
 			if (_hasher.VerifyPassword(password, user.Password))
 			{
@@ -142,11 +149,6 @@ namespace StoreDAL.Repositories.Repositories
 			}
 
 			return null;
-		}
-
-		public UserRepository(StoreDbContext context, IPasswordHasher passwordHasher) : base(context)
-		{
-			_hasher = passwordHasher;
 		}
 	}
 }

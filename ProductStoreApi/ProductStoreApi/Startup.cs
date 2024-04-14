@@ -1,10 +1,15 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using StoreDAL.Infrastructure.Data;
-using StoreDAL.Infrastructure;
-using sports_store_application.Extensions;
-using StoreDAL.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using ProductStoreApi.Extensions;
 using StoreDAL;
+using StoreDAL.Infrastructure;
+using StoreDAL.Infrastructure.Data;
+using StoreDAL.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
+using ProductStoreApi.Authentication;
 
 namespace ProductStoreApi
 {
@@ -44,6 +49,22 @@ namespace ProductStoreApi
 
 			// Add data services
 			services.AddStoreServices();
+
+			// Add JWT
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+					.AddJwtBearer(options =>
+					{
+						options.TokenValidationParameters = new TokenValidationParameters
+						{
+							ValidateIssuer = true,
+							ValidIssuer = AuthOptions.ISSUER,
+							ValidateAudience = true,
+							ValidAudience = AuthOptions.AUDIENCE,
+							ValidateLifetime = true,
+							IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+							ValidateIssuerSigningKey = true,
+						};
+					});
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -58,6 +79,7 @@ namespace ProductStoreApi
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
+			app.UseAuthentication();
 			app.UseAuthorization();
 			app.UseCors(
 				options => options.WithOrigins("http://localhost:4200").AllowAnyMethod()

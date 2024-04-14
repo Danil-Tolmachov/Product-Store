@@ -73,7 +73,16 @@ namespace StoreBLL
 				.ForMember(um => um.CartId, u => u.MapFrom(x => x.Cart.Id))
 				.ForMember(um => um.CartItems, u => u.MapFrom(x => x.Cart.CartItems))
 				.ForMember(um => um.Contacts, u => u.MapFrom(x => x.Person.Contacts))
-				.ReverseMap();
+				.ForMember(um => um.Password, u => u.Ignore());
+
+			CreateMap<UserModel, User>()
+				.ForMember(u => u.Person, um => um.Ignore())
+				.ForMember(u => u.Password, um => um.Ignore())
+				.ForMember(u => u.IsActive, um => um.MapFrom(x => x.IsActive))
+				.ForMember(u => u.Username, um => um.MapFrom(x => x.Username))
+				.ForMember(u => u.PersonId, um => um.Ignore())
+				.ForMember(u => u.Cart, um => um.Ignore())
+				.ForMember(u => u.Id, um => um.MapFrom(x => x.Id));
 
 			CreateMap<Employee, EmployeeModel>()
 				.ForMember(em => em.Username, e => e.MapFrom(x => x.User.Username))

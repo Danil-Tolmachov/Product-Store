@@ -9,6 +9,5 @@ namespace StoreBLL.Interfaces.Services
 
 		Task<UserModel?> Login(string username, string password);
 		Task<UserModel?> GetByUsername(string username);
-		Task ChangePassword(long userId, string oldPassword, string newPassword);
 	}
 }

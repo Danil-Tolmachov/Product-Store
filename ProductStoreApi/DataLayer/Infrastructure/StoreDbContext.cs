@@ -67,6 +67,9 @@ namespace StoreDAL.Infrastructure
 
 			modelBuilder.Entity<User>(entity =>
 			{
+				entity.HasIndex(p => p.Username)
+				      .IsUnique();
+
 				entity.HasOne(u => u.Person)
 					  .WithOne(p => p.User)
 					  .HasForeignKey<User>(p => p.PersonId);

@@ -33,11 +33,11 @@ namespace StoreDAL.Infrastructure.Data
 		{
 			return new User[]
 			{
-				new User(1) { PersonId = 1, Username = "Username1", Password = "Password1", IsActive = true },
-				new User(2) { PersonId = 2, Username = "Username2", Password = "Password2", IsActive = true },
-				new User(3) { PersonId = 3, Username = "Username3", Password = "Password3", IsActive = true },
-				new User(4) { PersonId = 4, Username = "Username4", Password = "Password4", IsActive = true },
-				new User(5) { PersonId = 5, Username = "Username5", Password = "Password5", IsActive = false },
+				new User(1) { PersonId = 1, Username = "Username1", Password = "$2a$11$QxP6GG54zUOzEhLs2CORNuNOfokAkM09Op5MFN0oLkTeX3rS/vjsO", IsActive = true },
+				new User(2) { PersonId = 2, Username = "Username2", Password = "$2a$11$nVp1qAK9YwOi5LNpFAXfR.SK07.DRBt4KnvIfdpOnahEQO6wJouOy", IsActive = true },
+				new User(3) { PersonId = 3, Username = "Username3", Password = "$2a$11$yD69ysc/wPKgIWpLJq2HjOLfDRPymOhlz8jRVoj4sv57L9G.jjSsq", IsActive = true },
+				new User(4) { PersonId = 4, Username = "Username4", Password = "$2a$11$sj9d8CY2L0ozSoQfdvce5.TpCiI.dr6iejTOmWBAE1xqJ9rj/wRw6", IsActive = true },
+				new User(5) { PersonId = 5, Username = "Username5", Password = "$2a$11$n/bFeF3Xh.QHYwQ1RL6GyuvNe.tytw2NnWlQA0RSEVe6cMFbXRQeu", IsActive = false },
 			};
 		}
 

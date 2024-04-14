@@ -4,7 +4,7 @@ using StoreBLL;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Services;
 
-namespace sports_store_application.Extensions
+namespace ProductStoreApi.Extensions
 {
     public static class ServiceCollectionExtension
     {
