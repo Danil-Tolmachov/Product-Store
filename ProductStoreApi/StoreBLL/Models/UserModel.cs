@@ -1,6 +1,4 @@
 ﻿
-using StoreDAL.Entities;
-
 namespace StoreBLL.Models
 {
 	public class UserModel
@@ -14,7 +12,7 @@ namespace StoreBLL.Models
 		public string LastName { get; set; } = string.Empty;
 
 		public decimal Discount { get; set; }
-		public string Address { get; set; } = string.Empty;
+		public string? Address { get; set; }
 
 		public long CartId { get; set; }
 		public IEnumerable<CartItemModel> CartItems { get; set; } = new List<CartItemModel>();

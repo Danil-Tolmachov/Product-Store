@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using StoreBLL.Models.Extra;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
 using StoreBLL.Services.Abstractions;
@@ -62,6 +63,58 @@ namespace StoreBLL.Services
 				return null;
 			}
 			
+		}
+
+		public async Task<bool> Register(RegisterModel model)
+		{
+			try
+			{
+				// Person 
+				Person person = new(0)
+				{
+					FirstName = model.FirstName,
+					LastName = model.LastName,
+				};
+
+				// User
+				User entity = new(0)
+				{
+					Username = model.Username,
+					Password = model.Password,
+					Cart = new Cart(0),
+					Person = person,
+				};
+
+				// Add address
+				if (model.Address is not null)
+				{
+					entity.Person.Address = model.Address;
+				}
+
+				// Add phone number
+				if (model.Phone is not null)
+				{
+					var newList = entity.Person.Contacts.ToList();
+					newList.Add(new Contact(0)
+					{
+						Name = "Phone",
+						Value = model.Phone,
+						Person = entity.Person,
+					});
+
+					entity.Person.Contacts = newList;
+				}
+
+				await _unitOfWork.UserRepository.AddAsync(entity);
+				await _unitOfWork.SaveAsync();
+
+				return true;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+
 		}
 	}
 }

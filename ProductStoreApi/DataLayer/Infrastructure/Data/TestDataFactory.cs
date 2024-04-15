@@ -165,7 +165,14 @@ namespace StoreDAL.Infrastructure.Data
 
 		public override Cart[] GetCartData()
 		{
-			return Array.Empty<Cart>();
+			return new Cart[]
+			{
+				new Cart(1) { UserId = 1 },
+				new Cart(2) { UserId = 2 },
+				new Cart(3) { UserId = 3 },
+				new Cart(4) { UserId = 4 },
+				new Cart(5) { UserId = 5 },
+			};
 		}
 
 		public override CartItem[] GetCartItemData()

@@ -44,7 +44,9 @@ namespace StoreDAL.Repositories.Repositories
 
 		public override async Task<IEnumerable<User>> GetAllAsync()
 		{
-			return await dbSet.Include(u => u.Person)
+			return await dbSet.Include(u => u.Cart)
+							  .Include(u => u.Person)
+							  .ThenInclude(p => p.Contacts)
 							  .ToListAsync();
 		}
 
@@ -141,7 +143,6 @@ namespace StoreDAL.Repositories.Repositories
 			{
 				return null;
 			}
-			var pass5 = _hasher.HashPassword("Password4");
 
 			if (_hasher.VerifyPassword(password, user.Password))
 			{

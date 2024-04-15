@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ProductStoreApi.Authentication;
 using ProductStoreApi.Extensions;
-using ProductStoreApi.Models;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
+using StoreBLL.Models.Extra;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -58,9 +58,8 @@ namespace ProductStoreApi.Controllers
 			}
 		}
 
-		[HttpGet]
+		[HttpGet("user")]
 		[Authorize]
-		[Route("user")]
 		[ProducesResponseType(typeof(UserModel), 200)]
 		[ProducesResponseType(typeof(string), 401)]
 		public async Task<ActionResult<UserModel>> GetUser()
@@ -91,9 +90,11 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(typeof(string), 401)]
 		public async Task<IActionResult> Login([FromBody] LoginModel model)
 		{
+			_logger.LogRequest(nameof(Login), HttpContext.Request.Method.ToString());
+
 			try
 			{
-				var user = await _userService.Login(model.username, model.password);
+				var user = await _userService.Login(model.Username, model.Password);
 
 				if (user is null)
 				{
@@ -115,6 +116,31 @@ namespace ProductStoreApi.Controllers
 			catch (Exception ex)
 			{
 				_logger.LogException(ex, nameof(GetUser), HttpContext.Request.Method.ToString());
+				throw;
+			}
+		}
+
+		[HttpPost("register")]
+		[ProducesResponseType(typeof(string), 200)]
+		[ProducesResponseType(400)]
+		public async Task<IActionResult> Register([FromBody] RegisterModel model)
+		{
+			_logger.LogRequest(nameof(Register), HttpContext.Request.Method.ToString());
+
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					return BadRequest(ModelState);
+				}
+
+				await _userService.Register(model);
+
+				return Ok(new { message = "Registration successful" });
+			}
+			catch (Exception ex)
+			{
+				_logger.LogException(ex, nameof(Register), HttpContext.Request.Method.ToString());
 				throw;
 			}
 		}

@@ -39,7 +39,7 @@ namespace ProductStoreApi
 			services.AddDbContext<StoreDbContext>(options =>
 			{
 				options.UseInMemoryDatabase(Guid.NewGuid().ToString());
-			});
+			}, ServiceLifetime.Singleton);
 
 			// Add PasswordHasher for UserService
 			services.AddSingleton<IPasswordHasher, PasswordHasher>();

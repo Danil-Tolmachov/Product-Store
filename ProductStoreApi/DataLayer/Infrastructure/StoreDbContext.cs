@@ -45,10 +45,15 @@ namespace StoreDAL.Infrastructure
 			modelBuilder.Entity<OrderDetail>().HasData(factory.GetOrderDetailData());
 			modelBuilder.Entity<Status>().HasData(factory.GetStatusData());
 			modelBuilder.Entity<ProductImage>().HasData(factory.GetProductImageData());
+			modelBuilder.Entity<Cart>().HasData(factory.GetCartData());
 
 			// Configure entities
 			modelBuilder.Entity<Contact>(entity =>
 			{
+				entity.HasKey(c => c.Id);
+				entity.Property(c => c.Id)
+				      .ValueGeneratedOnAdd();
+
 				entity.HasOne(c => c.Person)
 					  .WithMany(p => p.Contacts)
 					  .HasForeignKey(c => c.PersonId);
@@ -56,6 +61,10 @@ namespace StoreDAL.Infrastructure
 
 			modelBuilder.Entity<Person>(entity =>
 			{
+				entity.HasKey(c => c.Id);
+				entity.Property(c => c.Id)
+					  .ValueGeneratedOnAdd();
+
 				entity.HasMany(p => p.Contacts)
 					  .WithOne(c => c.Person)
 					  .HasForeignKey(p => p.PersonId);
@@ -67,6 +76,10 @@ namespace StoreDAL.Infrastructure
 
 			modelBuilder.Entity<User>(entity =>
 			{
+				entity.HasKey(c => c.Id);
+				entity.Property(c => c.Id)
+					  .ValueGeneratedOnAdd();
+
 				entity.HasIndex(p => p.Username)
 				      .IsUnique();
 
@@ -85,6 +98,10 @@ namespace StoreDAL.Infrastructure
 
 			modelBuilder.Entity<Position>(entity =>
 			{
+				entity.HasKey(c => c.Id);
+				entity.Property(c => c.Id)
+					  .ValueGeneratedOnAdd();
+
 				entity.HasMany(p => p.Employees)
 					  .WithOne(e => e.Position)
 					  .HasForeignKey(p => p.PositionId);
@@ -92,6 +109,10 @@ namespace StoreDAL.Infrastructure
 
 			modelBuilder.Entity<Employee>(entity =>
 			{
+				entity.HasKey(c => c.Id);
+				entity.Property(c => c.Id)
+					  .ValueGeneratedOnAdd();
+
 				entity.HasOne(e => e.User)
 					  .WithOne()
 					  .HasForeignKey<Employee>(e => e.UserId);
@@ -103,6 +124,10 @@ namespace StoreDAL.Infrastructure
 
 			modelBuilder.Entity<Category>(entity =>
 			{
+				entity.HasKey(c => c.Id);
+				entity.Property(c => c.Id)
+
+					  .ValueGeneratedOnAdd();
 				entity.HasMany(c => c.Products)
 					  .WithOne(p => p.Category)
 					  .HasForeignKey(p => p.CategoryId);
@@ -110,6 +135,10 @@ namespace StoreDAL.Infrastructure
 
 			modelBuilder.Entity<Specification>(entity =>
 			{
+				entity.HasKey(c => c.Id);
+				entity.Property(c => c.Id)
+
+					  .ValueGeneratedOnAdd();
 				entity.HasMany(s => s.Products)
 					  .WithMany(p => p.Specifications)
 					  .UsingEntity(e =>
@@ -119,6 +148,10 @@ namespace StoreDAL.Infrastructure
 
 			modelBuilder.Entity<Product>(entity =>
 			{
+				entity.HasKey(c => c.Id);
+				entity.Property(c => c.Id)
+					  .ValueGeneratedOnAdd();
+
 				entity.HasOne(p => p.Category)
 					  .WithMany(c => c.Products)
 					  .HasForeignKey(p => p.CategoryId);
@@ -133,6 +166,10 @@ namespace StoreDAL.Infrastructure
 
 			modelBuilder.Entity<ProductImage>(entity =>
 			{
+				entity.HasKey(c => c.Id);
+				entity.Property(c => c.Id)
+					  .ValueGeneratedOnAdd();
+
 				entity.HasOne(i => i.Product)
 					  .WithMany(p => p.Images)
 					  .HasForeignKey(i => i.ProductId);
@@ -140,6 +177,10 @@ namespace StoreDAL.Infrastructure
 
 			modelBuilder.Entity<Order>(entity =>
 			{
+				entity.HasKey(c => c.Id);
+				entity.Property(c => c.Id)
+					  .ValueGeneratedOnAdd();
+
 				entity.HasOne(o => o.User)
 					  .WithMany(u => u.Orders)
 					  .HasForeignKey(o => o.UserId);
@@ -159,6 +200,10 @@ namespace StoreDAL.Infrastructure
 
 			modelBuilder.Entity<OrderDetail>(entity =>
 			{
+				entity.HasKey(c => c.Id);
+				entity.Property(c => c.Id)
+					  .ValueGeneratedOnAdd();
+
 				entity.HasKey(d => new { d.ProductId, d.OrderId });
 
 				entity.HasOne(d => d.Order)
@@ -172,6 +217,10 @@ namespace StoreDAL.Infrastructure
 
 			modelBuilder.Entity<Cart>(entity =>
 			{
+				entity.HasKey(c => c.Id);
+				entity.Property(c => c.Id)
+					  .ValueGeneratedOnAdd();
+
 				entity.HasOne(c => c.User)
 					  .WithOne(p => p.Cart)
 					  .HasForeignKey<Cart>(c => c.UserId);
@@ -179,6 +228,10 @@ namespace StoreDAL.Infrastructure
 
 			modelBuilder.Entity<CartItem>(entity =>
 			{
+				entity.HasKey(c => c.Id);
+				entity.Property(c => c.Id)
+					  .ValueGeneratedOnAdd();
+
 				entity.HasKey(i => new { i.ProductId, i.CartId });
 
 				entity.HasOne(i => i.Cart)
