@@ -51,6 +51,26 @@ namespace StoreBLL.Services
 			}
 		}
 
+		public async Task<string?> GetRefreshToken(string username)
+		{
+			var entity = await _unitOfWork.UserRepository.GetByUsername(username);
+			return entity?.RefreshToken;
+		}
+
+		public async Task UpdateRefreshToken(string username, string token)
+		{
+			var entity = await _unitOfWork.UserRepository.GetByUsername(username);
+
+			if (entity is null)
+			{
+				return;
+			}
+
+			entity.RefreshToken = token;
+			await _unitOfWork.UserRepository.Update(entity);
+			await _unitOfWork.SaveAsync();
+		}
+
 		public async Task<UserModel?> Login(string username, string password)
 		{
 			try

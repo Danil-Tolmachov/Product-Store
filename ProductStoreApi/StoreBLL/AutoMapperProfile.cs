@@ -82,6 +82,7 @@ namespace StoreBLL
 				.ForMember(u => u.Username, um => um.MapFrom(x => x.Username))
 				.ForMember(u => u.PersonId, um => um.Ignore())
 				.ForMember(u => u.Cart, um => um.Ignore())
+				.ForMember(u => u.RefreshToken, um => um.Ignore())
 				.ForMember(u => u.Id, um => um.MapFrom(x => x.Id));
 
 			CreateMap<Employee, EmployeeModel>()

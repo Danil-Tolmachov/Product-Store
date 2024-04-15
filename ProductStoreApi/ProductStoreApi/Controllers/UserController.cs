@@ -6,6 +6,7 @@ using ProductStoreApi.Extensions;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
 using StoreBLL.Models.Extra;
+using StoreDAL.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -86,7 +87,7 @@ namespace ProductStoreApi.Controllers
 		}
 
 		[HttpPost("login")]
-		[ProducesResponseType(typeof(object), 200)] // return: JWT Token
+		[ProducesResponseType(typeof(object), 200)] // return: JWT Tokens
 		[ProducesResponseType(typeof(string), 401)]
 		public async Task<IActionResult> Login([FromBody] LoginModel model)
 		{
@@ -101,21 +102,64 @@ namespace ProductStoreApi.Controllers
 					return Unauthorized("Invalid credentals.");
 				}
 
-				var claims = new List<Claim> { new Claim("username", user.Username) };
-				var jwt = new JwtSecurityToken(
-						issuer: AuthOptions.ISSUER,
-						audience: AuthOptions.AUDIENCE,
-						claims: claims,
-						expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
-						signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+				string token = JwtHelper.GetAccessToken(user.Username);
+				string refreshToken = JwtHelper.GetRefreshToken(user.Username);
 
-				string token = new JwtSecurityTokenHandler().WriteToken(jwt);
+				// Attach refresh token to user
+				await _userService.UpdateRefreshToken(user.Username, refreshToken);
 
-				return Ok(new { token });
+				return Ok(new { token, refreshToken });
 			}
 			catch (Exception ex)
 			{
-				_logger.LogException(ex, nameof(GetUser), HttpContext.Request.Method.ToString());
+				_logger.LogException(ex, nameof(Login), HttpContext.Request.Method.ToString());
+				throw;
+			}
+		}
+
+		[HttpPost("refresh")]
+		[ProducesResponseType(typeof(object), 200)] // return: JWT Tokens
+		[ProducesResponseType(typeof(string), 400)]
+		[ProducesResponseType(typeof(string), 401)]
+		public async Task<IActionResult> Refresh([FromBody] RefreshModel model)
+		{
+			_logger.LogRequest(nameof(Refresh), HttpContext.Request.Method.ToString());
+
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					return BadRequest("Token is required.");
+				}
+
+				if (await JwtHelper.VerifyRefreshToken(model.Token, _userService))
+				{
+					return Unauthorized("Invalid refresh token.");
+				}
+
+				UserModel user = await JwtHelper.GetUserFromRefresh(model.Token, _userService);
+
+				string token = JwtHelper.GetAccessToken(user.Username);
+				string refreshToken = JwtHelper.GetRefreshToken(user.Username);
+
+				// Attach refresh token to user
+				await _userService.UpdateRefreshToken(user.Username, refreshToken);
+
+				return Ok(new { token, refreshToken });
+			}
+			catch (InvalidOperationException ex)
+			{
+				_logger.LogException(ex, nameof(Refresh), HttpContext.Request.Method.ToString());
+				return BadRequest("Invalid token.");
+			}
+			catch (ArgumentException ex)
+			{
+				_logger.LogException(ex, nameof(Refresh), HttpContext.Request.Method.ToString());
+				return BadRequest("Invalid token.");
+			}
+			catch (Exception ex)
+			{
+				_logger.LogException(ex, nameof(Refresh), HttpContext.Request.Method.ToString());
 				throw;
 			}
 		}

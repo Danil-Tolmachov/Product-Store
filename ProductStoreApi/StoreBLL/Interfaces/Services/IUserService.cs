@@ -11,6 +11,9 @@ namespace StoreBLL.Interfaces.Services
 		Task<UserModel?> Login(string username, string password);
 		Task<UserModel?> GetByUsername(string username);
 
+		Task<string?> GetRefreshToken(string username);
+		Task UpdateRefreshToken(string username, string token);
+
 		Task<bool> Register(RegisterModel model);
 	}
 }
