@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Product } from '../../../interfaces/Product';
+import { IProduct } from '../../../interfaces/IProduct';
 import { ImageContainerComponent } from '../../image-container/image-container.component';
 
 @Component({
@@ -12,12 +12,13 @@ import { ImageContainerComponent } from '../../image-container/image-container.c
     styleUrl: './product-item-brief.component.scss'
 })
 export class ProductItemBriefComponent {
-    @Input() product: Product = {
+    @Input() product: IProduct = {
         id: 0,
         name: 'null',
         price: 0,
         discount: 0,
-        imageUrl: null,
+        unitMeasure: '',
+        imagePathes: [],
         category: null,
         description: 'Description1',
         specifications: [

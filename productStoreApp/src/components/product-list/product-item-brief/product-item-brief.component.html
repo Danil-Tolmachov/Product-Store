@@ -1,7 +1,7 @@
 <a>
     <div class="product-item-brief">
         <p class="product-brief-id">{{ product.id }}</p>
-        <app-image-container [imageUrl]="product.imageUrl?.toString() ?? ''" />
+        <app-image-container [imageUrl]="product.imagePathes[0]" />
         <p class="product-brief-name" [title]="product.name">{{ product.name }}</p>
         <div class="bottom">
             <p class="product-brief-price" title="{{ '$' + product.price }}">{{ '$' + product.price }}</p>
