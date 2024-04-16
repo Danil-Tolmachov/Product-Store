@@ -28,7 +28,11 @@
     ) {
       <li class="nav-link-button">
         <a [routerLink]="item.link">
-          <div routerLinkActive="pill-active" class="pill" [ngStyle]="item.styles">
+          <div
+            routerLinkActive="pill-active"
+            class="pill"
+            [ngStyle]="item.styles"
+          >
             {{ item.title }}
           </div>
         </a>
@@ -40,7 +44,11 @@
     </li>
   </ul>
   <button class="cart-button" (click)="cartButtonClick()">
-    <div [ngClass]="cartButtonClasses" style="--pill-accent: var(--french-violet)">Cart</div>
+    <div
+      [ngClass]="cartButtonClasses"
+      style="--pill-accent: var(--french-violet)"
+      >Cart</div
+    >
   </button>
 </nav>
 <app-cart-panel class="cart-panel"> </app-cart-panel>

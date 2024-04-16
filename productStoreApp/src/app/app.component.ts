@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Title } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import NavBarComponent from '../components/nav-bar/nav-bar.component';
 import ProductItemBriefComponent from '../components/product-list/product-item-brief/product-item-brief.component';
 import FooterComponent from '../components/footer/footer.component';
+import UserService from '../services/user.service';
+import ProductService from '../services/product.service';
+import CategoryService from '../services/category.service';
+import { IUser } from '../interfaces/IUser';
 
 @Component({
   selector: 'app-root',
@@ -16,15 +19,22 @@ import FooterComponent from '../components/footer/footer.component';
     FooterComponent,
     HttpClientModule,
   ],
-  providers: [HttpClientModule],
+  providers: [HttpClientModule, UserService, ProductService, CategoryService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export default class AppComponent {
-  title = 'Products Store';
+export default class AppComponent implements OnInit {
+  currentUser: IUser | null = null;
 
-  constructor(private readonly titleService: Title) {
-    // Set Title
-    titleService.setTitle(this.title);
+  constructor(private readonly userService: UserService) {}
+
+  ngOnInit(): void {
+    // Refresh session
+    const expiration = this.userService.getExpiration();
+    if (expiration !== null) {
+      if (expiration <= new Date()) {
+        this.userService.refreshSession().subscribe();
+      }
+    }
   }
 }

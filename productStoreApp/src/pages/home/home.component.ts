@@ -6,6 +6,7 @@ import ControlsFilterBarComponent from '../../components/controls-filter-bar/con
 import ProductService from '../../services/product.service';
 import { type ICategory } from '../../interfaces/ICategory';
 import CategoryService from '../../services/category.service';
+import UserService from '../../services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,8 @@ export default class HomeComponent implements OnInit {
   constructor(
     private readonly titleService: Title,
     private readonly productService: ProductService,
-    private readonly categoryService: CategoryService
+    private readonly categoryService: CategoryService,
+    private readonly userService: UserService
   ) {}
 
   ngOnInit(): void {
