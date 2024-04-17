@@ -1,15 +1,13 @@
 ﻿
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Tokens;
+using ProductStoreApi.Authentication;
 using ProductStoreApi.Extensions;
 using StoreDAL;
 using StoreDAL.Infrastructure;
 using StoreDAL.Infrastructure.Data;
 using StoreDAL.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
-using ProductStoreApi.Authentication;
 
 namespace ProductStoreApi
 {
@@ -38,8 +36,8 @@ namespace ProductStoreApi
 			// Add StoreDbContext
 			services.AddDbContext<StoreDbContext>(options =>
 			{
-				options.UseInMemoryDatabase(Guid.NewGuid().ToString());
-			}, ServiceLifetime.Singleton);
+				options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
+			});
 
 			// Add PasswordHasher for UserService
 			services.AddSingleton<IPasswordHasher, PasswordHasher>();
@@ -79,11 +77,16 @@ namespace ProductStoreApi
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
+
+			app.UseCors(
+				options => options.WithOrigins("http://localhost:4200")
+								  .AllowAnyMethod()
+								  .AllowAnyHeader()
+								  .AllowCredentials()
+			);
+
 			app.UseAuthentication();
 			app.UseAuthorization();
-			app.UseCors(
-				options => options.WithOrigins("http://localhost:4200").AllowAnyMethod()
-			);
 
 			app.UseEndpoints(e =>
 				e.MapControllerRoute(

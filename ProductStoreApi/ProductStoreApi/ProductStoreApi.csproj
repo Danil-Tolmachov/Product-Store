@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataLayer\StoreDAL.csproj" />
     <ProjectReference Include="..\StoreBLL\StoreBLL.csproj" />
+    <ProjectReference Include="..\StoreDAL\StoreDAL.csproj" />
   </ItemGroup>
 
 </Project>

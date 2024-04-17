@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql-data:/var/opt/mssql
+
+  webapi:
+    build:
+      context: /ProductStoreApi/
+      dockerfile: /Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - sql-server
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      
+volumes:
+  sql-data:

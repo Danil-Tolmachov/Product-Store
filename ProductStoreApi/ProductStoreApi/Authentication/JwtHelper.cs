@@ -1,7 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
-using StoreDAL.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -85,7 +84,7 @@ namespace ProductStoreApi.Authentication
 					return false;
 				}
 
-				string? username = token.Claims.FirstOrDefault(c => c.Type == "username")?.Value;
+				string? username = token.Claims.FirstOrDefault(c => c.Type == "refresh")?.Value;
 
 				if (string.IsNullOrEmpty(username))
 				{
@@ -100,6 +99,12 @@ namespace ProductStoreApi.Authentication
 				}
 
 				string? userRefreshToken = await userService.GetRefreshToken(username);
+
+				if (string.IsNullOrEmpty(userRefreshToken))
+				{
+					return true;
+				}
+
 				if (userRefreshToken != jwt)
 				{
 					return false;

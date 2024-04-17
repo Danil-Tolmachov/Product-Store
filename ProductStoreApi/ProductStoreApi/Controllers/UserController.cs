@@ -1,19 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using ProductStoreApi.Authentication;
 using ProductStoreApi.Extensions;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
 using StoreBLL.Models.Extra;
-using StoreDAL.Entities;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace ProductStoreApi.Controllers
 {
 	[ApiController]
-	[Route("auth")]
+	[Route("/api/auth")]
 	public class UserController : ControllerBase
 	{
 		private readonly ILogger<UserController> _logger;
@@ -132,7 +129,7 @@ namespace ProductStoreApi.Controllers
 					return BadRequest("Token is required.");
 				}
 
-				if (await JwtHelper.VerifyRefreshToken(model.Token, _userService))
+				if (!(await JwtHelper.VerifyRefreshToken(model.Token, _userService)))
 				{
 					return Unauthorized("Invalid refresh token.");
 				}
