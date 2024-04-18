@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { type Observable, map } from 'rxjs';
+import { type Observable, map, tap, BehaviorSubject } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { jwtDecode } from 'jwt-decode';
 import { IUser, IUserResponse } from '../interfaces/IUser';
@@ -9,19 +9,31 @@ import environment from '../environments/environment';
 
 const url = `${environment.apiUrl}/auth`;
 
+interface ITokenResponse {
+  token: string;
+  refreshToken: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export default class UserService {
+  private currentUserSubject: BehaviorSubject<IUser | null>;
+  public currentUser: Observable<IUser | null>;
+
   constructor(
     private readonly http: HttpClient,
     private readonly cookieService: CookieService
-  ) {}
+  ) {
+    this.currentUserSubject = new BehaviorSubject<IUser | null>(null);
+    this.currentUser = this.currentUserSubject.asObservable();
 
-  /**
-   * Checks if the token is alright by making a request to the server.
-   */
-  isAuthenticated(): boolean {
+    if (this.checkAuthenticated()) {
+      this.getUser().subscribe();
+    }
+  }
+
+  checkAuthenticated(): boolean {
     const expiration = this.getExpiration();
 
     if (expiration === null) {
@@ -68,28 +80,39 @@ export default class UserService {
 
   getUser(): Observable<IUser> {
     const link = `${url}/user`;
-    return this.http
-      .get<IUserResponse>(link)
-      .pipe(map((userResponse) => UserService.adaptUser(userResponse)));
+    return this.http.get<IUserResponse>(link).pipe(
+      map((userResponse) => UserService.adaptUser(userResponse)),
+      tap((user) => this.currentUserSubject.next(user))
+    );
   }
 
-  loginSession(username: string, password: string): void {
-    this.getTokens(username, password).subscribe((response) => {
-      this.setTokens(response.token, response.refreshToken);
-    });
+  loginSession(username: string, password: string): Observable<ITokenResponse> {
+    return this.getTokens(username, password).pipe(
+      tap((response) => {
+        this.setTokens(response.token, response.refreshToken);
+
+        this.getUser().subscribe((user) => {
+          this.currentUserSubject.next(user);
+        });
+      })
+    );
   }
 
   logoutSession(): void {
     this.cookieService.delete('token');
     this.cookieService.delete('refresh_token');
     this.cookieService.delete('expires_at');
+    this.currentUserSubject.next(null);
   }
 
   refreshSession(): Observable<void> {
     return this.getRefreshedTokens().pipe(
       map((response) => {
         this.setTokens(response.token, response.refreshToken);
-      })
+      }),
+      tap(() =>
+        this.getUser().subscribe((user) => this.currentUserSubject.next(user))
+      )
     );
   }
 
@@ -144,9 +167,4 @@ export default class UserService {
       details: apiOrder.details,
     };
   }
-}
-
-interface ITokenResponse {
-  token: string;
-  refreshToken: string;
 }

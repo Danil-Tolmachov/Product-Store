@@ -1,31 +1,14 @@
 <nav>
+  <button class="nav-button" (click)="loginButtonClick()">
+    <p>
+      {{ this.user?.firstName ?? 'Login' }}
+    </p>
+    
+    <app-auth-dropdown />
+  </button>
+
   <ul>
-    @for (
-      item of [
-        {
-          title: 'About Us',
-          link: '/about-us',
-          styles: {
-            '--pill-accent': 'var(--french-violet)'
-          }
-        },
-        {
-          title: 'Delivery',
-          link: '/delivery',
-          styles: {
-            '--pill-accent': 'var(--french-violet)'
-          }
-        },
-        {
-          title: 'Home',
-          link: '/home',
-          styles: {
-            '--pill-accent': 'var(--french-violet)'
-          }
-        }
-      ];
-      track item.title
-    ) {
+    @for (item of navButtons; track item.title) {
       <li class="nav-link-button">
         <a [routerLink]="item.link">
           <div
@@ -40,15 +23,13 @@
     }
 
     <li class="nav-logo">
-      <a href="">Product Store</a>
+      <a routerLink="home">Product Store</a>
     </li>
   </ul>
-  <button class="cart-button" (click)="cartButtonClick()">
-    <div
-      [ngClass]="cartButtonClasses"
-      style="--pill-accent: var(--french-violet)"
-      >Cart</div
-    >
+  <button class="nav-button" (click)="cartButtonClick()">
+    <p>
+      Cart
+    </p>
   </button>
 </nav>
 <app-cart-panel class="cart-panel"> </app-cart-panel>

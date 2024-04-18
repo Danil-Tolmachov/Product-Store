@@ -1,0 +1,11 @@
+<ul *ngIf="isActive" [@fadeInOutAnimation]>
+  @for (link of dropdownLinks; track link.link){
+    <li>
+      <a [routerLink]="link.link" class="dropdown-button">{{ link.text }}</a>
+    </li>
+  }
+  
+  <li>
+    <button class="dropdown-button">Logout</button>
+  </li>
+</ul>
