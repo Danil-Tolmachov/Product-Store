@@ -7,6 +7,7 @@ import ProductService from '../../services/product.service';
 import { type ICategory } from '../../interfaces/ICategory';
 import CategoryService from '../../services/category.service';
 import UserService from '../../services/user.service';
+import MessageService from '../../services/message.service';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +27,8 @@ export default class HomeComponent implements OnInit {
     private readonly titleService: Title,
     private readonly productService: ProductService,
     private readonly categoryService: CategoryService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly messageService: MessageService
   ) {}
 
   ngOnInit(): void {

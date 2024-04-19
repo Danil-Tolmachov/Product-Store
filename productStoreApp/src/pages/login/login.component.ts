@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import UserService from '../../services/user.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import MessageService from '../../services/message.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -19,12 +21,17 @@ export default class LoginComponent {
   constructor(
     private readonly router: Router,
     private readonly userService: UserService,
+    private readonly messageService: MessageService,
     private formBuilder: FormBuilder
   ) {}
 
   onSubmit(): void {
     if (!this.validateInputValues()) {
-      throw new Error('Invalid input');
+      this.messageService.showMessage({
+        header: 'Invalid input',
+        message: ['Required fields should not be empty'],
+      });
+      return;
     }
 
     this.userService
@@ -37,7 +44,7 @@ export default class LoginComponent {
           this.router.navigate(['home']);
         },
         error: (error) => {
-          console.log('Error: ' + error);
+          this.processRequestError(error);
         },
       });
   }
@@ -58,5 +65,31 @@ export default class LoginComponent {
     }
 
     return true;
+  }
+
+  private processRequestError(error: HttpErrorResponse) {
+    if (error.status === 400 || error.status === 415) {
+      this.messageService.showMessage({
+        header: 'Authorization failed',
+        message: ['Invalid input.'],
+      });
+    }
+
+    if (error.status === 401) {
+      this.messageService.showMessage({
+        header: 'Authorization failed',
+        message: ['Invalid credentials.'],
+      });
+    }
+
+    if (error.status === 0) {
+      this.messageService.showMessage({
+        header: 'Authorization failed',
+        message: [
+          'Failed request to server.',
+          'Rectify internet connection or try again later.',
+        ],
+      });
+    }
   }
 }

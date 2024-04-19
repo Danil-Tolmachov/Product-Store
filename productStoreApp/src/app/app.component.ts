@@ -8,6 +8,7 @@ import UserService from '../services/user.service';
 import ProductService from '../services/product.service';
 import CategoryService from '../services/category.service';
 import { IUser } from '../interfaces/IUser';
+import MessageScreenComponent from '../components/message-screen/message-screen.component';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { IUser } from '../interfaces/IUser';
     ProductItemBriefComponent,
     FooterComponent,
     HttpClientModule,
+    MessageScreenComponent,
   ],
   providers: [HttpClientModule, UserService, ProductService, CategoryService],
   templateUrl: './app.component.html',
