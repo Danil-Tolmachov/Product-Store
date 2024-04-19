@@ -6,6 +6,7 @@ import ProductComponent from '../pages/product/product.component';
 import CategoryComponent from '../pages/category/category.component';
 import LoginComponent from '../pages/login/login.component';
 import AuthGuard from '../guards/auth.guard';
+import { RegistrationComponent } from '../pages/registration/registration.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect from root to '/home'
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'delivery', component: DeliveryComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
+  { path: 'registration', component: RegistrationComponent, canActivate: [AuthGuard] },
 ];
 
 export default routes;

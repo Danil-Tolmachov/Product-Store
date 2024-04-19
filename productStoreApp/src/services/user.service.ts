@@ -6,6 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 import { IUser, IUserResponse } from '../interfaces/IUser';
 import { IOrder, IOrderResponse } from '../interfaces/IOrder';
 import environment from '../environments/environment';
+import IRegistrationModel from '../interfaces/models/IRegistrationModel';
 
 const url = `${environment.apiUrl}/auth`;
 
@@ -116,7 +117,13 @@ export default class UserService {
     );
   }
 
-  setTokens(token: string, refreshToken: string): void {
+  registration(model: IRegistrationModel) {
+    const link = `${url}/register`;
+
+    return this.http.post<null>(link, model);
+  }
+
+  private setTokens(token: string, refreshToken: string): void {
     this.cookieService.set('token', token);
     this.cookieService.set('refresh_token', refreshToken);
 
@@ -127,13 +134,13 @@ export default class UserService {
     this.cookieService.set('expires_at', expirationDate);
   }
 
-  getTokens(username: string, password: string): Observable<ITokenResponse> {
+  private getTokens(username: string, password: string): Observable<ITokenResponse> {
     const link = `${url}/login`;
 
     return this.http.post<ITokenResponse>(link, { username, password });
   }
 
-  getRefreshedTokens(): Observable<ITokenResponse> {
+  private getRefreshedTokens(): Observable<ITokenResponse> {
     const link = `${url}/refresh`;
     const token = this.cookieService.get('refresh_token');
 
