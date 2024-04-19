@@ -34,6 +34,7 @@ namespace StoreDAL.Repositories.Repositories
 									   .ThenInclude(o => o.Status)
 									   .Include(u => u.Person)
 									   .ThenInclude(p => p.Contacts)
+									   .AsSplitQuery()
 									   .SingleAsync(e => e.Id == id);
 			}
 			catch (InvalidOperationException ex)
@@ -47,6 +48,7 @@ namespace StoreDAL.Repositories.Repositories
 			return await dbSet.Include(u => u.Cart)
 							  .Include(u => u.Person)
 							  .ThenInclude(p => p.Contacts)
+							  .AsSplitQuery()
 							  .ToListAsync();
 		}
 
@@ -84,6 +86,7 @@ namespace StoreDAL.Repositories.Repositories
 							  .ThenInclude(o => o.Status)
 							  .Include(u => u.Person)
 							  .ThenInclude(p => p.Contacts)
+							  .AsSplitQuery()
 							  .ToListAsync();
 		}
 
@@ -115,6 +118,7 @@ namespace StoreDAL.Repositories.Repositories
 							  .ThenInclude(o => o.Status)
 							  .Include(u => u.Person)
 							  .ThenInclude(p => p.Contacts)
+							  .AsSplitQuery()
 							  .ToListAsync();
 		}
 
@@ -129,6 +133,7 @@ namespace StoreDAL.Repositories.Repositories
 							  .ThenInclude(o => o.Status)
 							  .Include(u => u.Person)
 							  .ThenInclude(p => p.Contacts)
+							  .AsSplitQuery()
 							  .SingleAsync(u => u.Username == username);
 		}
 
@@ -137,7 +142,8 @@ namespace StoreDAL.Repositories.Repositories
 			User? user = await dbSet.Include(u => u.Cart)
 								    .Include(u => u.Person)
 								    .ThenInclude(p => p.Contacts)
-								    .SingleAsync(u => u.Username == username);
+									.AsSplitQuery()
+									.SingleAsync(u => u.Username == username);
 
 			if (user is null)
 			{

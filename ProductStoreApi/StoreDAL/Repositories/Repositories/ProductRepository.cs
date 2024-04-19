@@ -15,6 +15,7 @@ namespace StoreDAL.Repositories.Repositories
 							  .Include(p => p.Category)
 							  .Include(p => p.Specifications)
 							  .Include(p => p.Images)
+							  .AsSplitQuery()
 							  .ToListAsync();
 		}
 
@@ -25,6 +26,7 @@ namespace StoreDAL.Repositories.Repositories
 				return await this.dbSet.Include(p => p.Category)
 									   .Include(p => p.Specifications)
 									   .Include(p => p.Images)
+									   .AsSplitQuery()
 									   .SingleAsync(e => e.Id == id);
 			}
 			catch (InvalidOperationException ex)
@@ -38,6 +40,7 @@ namespace StoreDAL.Repositories.Repositories
 			return await dbSet.Include(p => p.Category)
 							  .Include(p => p.Specifications)
 							  .Include(p => p.Images)
+							  .AsSplitQuery()
 							  .ToListAsync();
 		}
 
@@ -64,6 +67,7 @@ namespace StoreDAL.Repositories.Repositories
 							  .Include(p => p.Category)
 							  .Include(p => p.Specifications)
 							  .Include(p => p.Images)
+							  .AsSplitQuery()
 							  .ToListAsync();
 		}
 	}

@@ -24,6 +24,7 @@ namespace StoreDAL.Repositories.Repositories
 			return await dbSet.Include(c => c.CartItems)
 							  .ThenInclude(ci => ci.Product)
 							  .ThenInclude(p => p.Category)
+							  .AsSplitQuery()
 							  .SingleAsync(c => c.UserId == userId);
 		}
 
@@ -32,6 +33,7 @@ namespace StoreDAL.Repositories.Repositories
 			var cart = await dbSet.Include(c => c.CartItems)
 								  .ThenInclude(ci => ci.Product)
 								  .ThenInclude(p => p.Category)
+								  .AsSplitQuery()
 								  .SingleAsync(c => c.UserId == userId);
 
 			return cart.CartItems.ToList();

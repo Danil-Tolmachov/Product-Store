@@ -28,6 +28,7 @@ namespace StoreDAL.Repositories.Repositories
 									   .ThenInclude(o => o.Details)
 									   .ThenInclude(d => d.Product)
 									   .ThenInclude(p => p.Category)
+									   .AsSplitQuery()
 									   .SingleAsync(e => e.Id == id);
 			}
 			catch (InvalidOperationException ex)
@@ -42,6 +43,7 @@ namespace StoreDAL.Repositories.Repositories
 							  .Include(e => e.User)
 							  .ThenInclude(u => u.Person)
 							  .Include(e => e.Position)
+							  .AsSplitQuery()
 							  .ToListAsync();
 		}
 
@@ -57,6 +59,7 @@ namespace StoreDAL.Repositories.Repositories
 							  .ThenInclude(o => o.Details)
 							  .ThenInclude(d => d.Product)
 							  .ThenInclude(p => p.Category)
+							  .AsSplitQuery()
 							  .ToListAsync();
 		}
 
@@ -117,6 +120,7 @@ namespace StoreDAL.Repositories.Repositories
 							  .ThenInclude(o => o.Details)
 							  .ThenInclude(d => d.Product)
 							  .ThenInclude(p => p.Category)
+							  .AsSplitQuery()
 							  .ToListAsync();
 		}
 	}

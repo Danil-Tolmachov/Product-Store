@@ -19,6 +19,7 @@ namespace StoreDAL.Repositories.Repositories
 				return await dbSet.Include(o => o.Product)
 								  .ThenInclude(p => p.Category)
 								  .Include(o => o.Order)
+								  .AsSplitQuery()
 								  .SingleAsync(e => e.ProductId == productId && e.OrderId == orderId);
 			}
 			catch (InvalidOperationException ex)
@@ -45,6 +46,7 @@ namespace StoreDAL.Repositories.Repositories
 			return await dbSet.Include(o => o.Product)
 							  .ThenInclude(p => p.Category)
 							  .Include(o => o.Order)
+							  .AsSplitQuery()
 							  .ToListAsync();
 		}
 
@@ -71,6 +73,7 @@ namespace StoreDAL.Repositories.Repositories
 							  .Include(o => o.Product)
 							  .ThenInclude(p => p.Category)
 							  .Include(o => o.Order)
+							  .AsSplitQuery()
 							  .ToListAsync();
 		}
 	}

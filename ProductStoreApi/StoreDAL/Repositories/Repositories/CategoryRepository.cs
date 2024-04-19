@@ -16,6 +16,7 @@ namespace StoreDAL.Repositories.Repositories
 			{
 				return await this.dbSet.Include(c => c.Products)
 								       .ThenInclude(p => p.Images)
+									   .AsSplitQuery()
 									   .SingleAsync(e => e.Id == id);
 			}
 			catch (InvalidOperationException ex)
@@ -28,6 +29,7 @@ namespace StoreDAL.Repositories.Repositories
 		{
 			return await this.dbSet.Include(c => c.Products)
 								   .ThenInclude(p => p.Images)
+								   .AsSplitQuery()
 								   .ToListAsync();
 		}
 
@@ -53,6 +55,7 @@ namespace StoreDAL.Repositories.Repositories
 						      .Take(rowCount)
 						      .Include(c => c.Products)
 							  .ThenInclude(p => p.Images)
+							  .AsSplitQuery()
 							  .ToListAsync();
 		}
 	}
