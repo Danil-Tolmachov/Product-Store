@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import UserService from '../../services/user.service';
 import MessageService from '../../services/message.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import LinkButtonComponent from '../../components/link-button/link-button.component';
+import { ButtonComponent } from '../../components/button/button.component';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, LinkButtonComponent, ButtonComponent],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss',
 })

@@ -4,11 +4,18 @@ import UserService from '../../services/user.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import MessageService from '../../services/message.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import LinkButtonComponent from '../../components/link-button/link-button.component';
+import { ButtonComponent } from '../../components/button/button.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    LinkButtonComponent,
+    ButtonComponent,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
