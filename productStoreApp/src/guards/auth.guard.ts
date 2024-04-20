@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import UserService from '../services/user.service';
 import { Router } from '@angular/router';
+import UserService from '../services/user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +13,9 @@ export default class AuthGuard {
 
   canActivate(): boolean {
     if (this.userService.checkAuthenticated()) {
-      this.router.navigate(['home'])
+      this.router.navigate(['home']);
       return false;
-    } else {
-      return true;
     }
+    return true;
   }
 }

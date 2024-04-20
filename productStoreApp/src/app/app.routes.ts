@@ -17,7 +17,11 @@ const routes: Routes = [
   { path: 'delivery', component: DeliveryComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
-  { path: 'registration', component: RegistrationComponent, canActivate: [AuthGuard] },
+  {
+    path: 'registration',
+    component: RegistrationComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 export default routes;
