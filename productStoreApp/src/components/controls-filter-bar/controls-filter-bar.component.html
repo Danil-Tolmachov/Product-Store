@@ -1,3 +1,5 @@
 <div class="container">
-  <app-category-selector [categories]="categories" />
+  <ng-container *ngIf="categories !== null">
+    <app-category-selector [categories]="categories" />
+  </ng-container>
 </div>

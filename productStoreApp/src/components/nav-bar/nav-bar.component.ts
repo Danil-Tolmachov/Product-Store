@@ -69,7 +69,11 @@ export default class NavBarComponent implements OnInit {
 
   ngOnInit(): void {
     // Get user
-    this.user$ = this.userService.getUser().pipe(take(1), untilDestroyed(this));
+    if (this.userService.checkAuthenticated()) {
+      this.user$ = this.userService
+        .getUser()
+        .pipe(take(1), untilDestroyed(this));
+    }
   }
 
   loginButtonClick(): void {
