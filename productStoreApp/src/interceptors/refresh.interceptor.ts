@@ -6,10 +6,19 @@ import {
   HttpErrorResponse,
   HttpInterceptor,
 } from '@angular/common/http';
-import { Observable, Subject, catchError, switchMap, throwError } from 'rxjs';
+import {
+  Observable,
+  Subject,
+  catchError,
+  switchMap,
+  take,
+  throwError,
+} from 'rxjs';
 import UserService from '../services/user.service';
 import TokenService from '../services/token.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Injectable()
 export default class RefreshInterceptor implements HttpInterceptor {
   private refreshSubject: Subject<any> = new Subject<any>();
@@ -41,13 +50,17 @@ export default class RefreshInterceptor implements HttpInterceptor {
     }
 
     // Refresh if token is expired
-    const expiration = this.tokenService.getExpiration();
-    if (expiration === null || expiration <= new Date()) {
-      this.ifTokenExpired().pipe(
-        switchMap(() => {
-          return next.handle(req);
-        })
-      );
+    if (this.tokenService.hasTokens()) {
+      const expiration = this.tokenService.getExpiration();
+
+      if (expiration === null || expiration <= new Date()) {
+        return this.ifTokenExpired().pipe(
+          untilDestroyed(this),
+          switchMap(() => {
+            return next.handle(req);
+          })
+        );
+      }
     }
 
     // Intercept the request and handle errors
@@ -58,6 +71,7 @@ export default class RefreshInterceptor implements HttpInterceptor {
           if (RefreshInterceptor.checkTokenExpiryErr(error)) {
             // If token expired, attempt to refresh the tokens and retry the original request
             return this.ifTokenExpired().pipe(
+              untilDestroyed(this),
               switchMap(() => {
                 return next.handle(req);
               })
@@ -78,35 +92,17 @@ export default class RefreshInterceptor implements HttpInterceptor {
    * If the refresh token is also expired, it logs out the user.
    * @returns An observable that emits the refreshed tokens.
    */
-  private ifTokenExpired() {
-    // Create a new subject to handle token refresh
-    this.refreshSubject.subscribe({
-      complete: () => {
-        this.refreshSubject = new Subject<any>();
-      },
-    });
+  private ifTokenExpired(): Observable<void> {
+    return this.userService.refreshSession().pipe(
+      untilDestroyed(this),
+      catchError((error, caught) => {
+        // If the refresh token is also expired, log out the user
+        this.ifRefreshTokenExpired();
 
-    // Check if there are observers for the refresh subject
-    if (this.refreshSubject.observed) {
-      // Attempt to refresh the tokens
-      this.userService
-        .refreshSession()
-        .pipe(
-          catchError((error, caught) => {
-            // If the refresh token is also expired, log out the user
-            if (RefreshInterceptor.checkRefreshTokenExpiryErr(error)) {
-              this.ifRefreshTokenExpired();
-            }
-
-            // Return the caught observable
-            return caught;
-          })
-        )
-        .subscribe(this.refreshSubject);
-    }
-
-    // Return the refresh subject
-    return this.refreshSubject;
+        // Return the caught observable
+        return caught;
+      })
+    );
   }
 
   /**
