@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { type IProduct } from '../../interfaces/IProduct';
@@ -10,6 +10,7 @@ import ProductService from '../../services/product.service';
   imports: [],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ProductComponent implements OnInit {
   productId: number = 0;
@@ -36,7 +37,7 @@ export default class ProductComponent implements OnInit {
     // Get productId
     this.route.paramMap.subscribe((params) => {
       this.productId = parseInt(params.get('productId') ?? '0', 10);
-    });
+    }).unsubscribe();
 
     // Get product
     this.productService.getProduct(this.productId).subscribe((product) => {
@@ -44,6 +45,6 @@ export default class ProductComponent implements OnInit {
 
       // Set Title
       this.titleService.setTitle(this.product.name);
-    });
+    }).unsubscribe();
   }
 }

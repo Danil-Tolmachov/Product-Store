@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { type ICategory } from '../../../interfaces/ICategory';
@@ -9,6 +9,7 @@ import { type ICategory } from '../../../interfaces/ICategory';
   imports: [CommonModule],
   templateUrl: './category-selector.component.html',
   styleUrl: './category-selector.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class CategorySelectorComponent {
   @Input() categories: ICategory[] = [];

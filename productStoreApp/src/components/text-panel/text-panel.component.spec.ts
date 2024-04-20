@@ -1,6 +1,6 @@
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TextPanelComponent } from './text-panel.component';
+import TextPanelComponent from './text-panel.component';
 
 describe('TextPanelComponent', () => {
   let component: TextPanelComponent;

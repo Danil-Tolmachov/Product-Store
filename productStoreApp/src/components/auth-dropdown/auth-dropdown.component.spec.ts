@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthDropdownComponent } from './auth-dropdown.component';
+import AuthDropdownComponent from './auth-dropdown.component';
 
 describe('AuthDropdownComponent', () => {
   let component: AuthDropdownComponent;

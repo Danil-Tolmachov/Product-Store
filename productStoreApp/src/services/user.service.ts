@@ -9,31 +9,27 @@ import TokenService from './token.service';
 
 const url = `${environment.apiUrl}/auth`;
 
-interface ITokenResponse {
-  token: string;
-  refreshToken: string;
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export default class UserService {
-  private currentUserSubject: BehaviorSubject<IUser | null>;
-
-  public currentUser: Observable<IUser | null>;
+  private currentUserSubject = new BehaviorSubject<IUser | null>(null);
+  public currentUser: Observable<IUser | null> =
+    this.currentUserSubject.asObservable();
 
   constructor(
     private readonly http: HttpClient,
     private readonly tokenService: TokenService
   ) {
-    this.currentUserSubject = new BehaviorSubject<IUser | null>(null);
-    this.currentUser = this.currentUserSubject.asObservable();
-
     if (this.checkAuthenticated()) {
       this.getUser().subscribe();
     }
   }
 
+  /**
+   * Checks if the user is authenticated based on the presence of tokens and their expiration.
+   * @returns True if the user is authenticated, false otherwise.
+   */
   checkAuthenticated(): boolean {
     const expiration = this.tokenService.getExpiration();
 
@@ -52,6 +48,10 @@ export default class UserService {
     return true;
   }
 
+  /**
+   * Retrieves the current user from the server.
+   * @returns An observable emitting the current user.
+   */
   getUser(): Observable<IUser> {
     const link = `${url}/user`;
     return this.http.get<IUserResponse>(link).pipe(
@@ -60,6 +60,12 @@ export default class UserService {
     );
   }
 
+  /**
+   * Logs in the user session and updates tokens and current user.
+   * @param username The username of the user.
+   * @param password The password of the user.
+   * @returns An observable emitting the token response.
+   */
   loginSession(username: string, password: string): Observable<ITokenResponse> {
     return this.getTokens(username, password).pipe(
       tap((response) => {
@@ -72,11 +78,18 @@ export default class UserService {
     );
   }
 
+  /**
+   * Logs out the user session by deleting tokens and current user.
+   */
   logoutSession(): void {
     this.tokenService.deleteSessionCookies();
     this.currentUserSubject.next(null);
   }
 
+  /**
+   * Refreshes the user session tokens and updates the current user from the server.
+   * @returns An observable emitting void.
+   */
   refreshSession(): Observable<void> {
     return this.getRefreshedTokens().pipe(
       map((response) => {
@@ -88,12 +101,23 @@ export default class UserService {
     );
   }
 
+  /**
+   * Registers a new user.
+   * @param model The registration model containing user details.
+   * @returns An observable emitting null.
+   */
   registration(model: IRegistrationModel) {
     const link = `${url}/register`;
 
     return this.http.post<null>(link, model);
   }
 
+  /**
+   * Retrieves tokens from server for a given username and password.
+   * @param username The username of the user.
+   * @param password The password of the user.
+   * @returns An observable emitting the token response.
+   */
   private getTokens(
     username: string,
     password: string
@@ -103,6 +127,10 @@ export default class UserService {
     return this.http.post<ITokenResponse>(link, { username, password });
   }
 
+  /**
+   * Retrieves refreshed tokens from server using the current refresh token.
+   * @returns An observable emitting the token response.
+   */
   private getRefreshedTokens(): Observable<ITokenResponse> {
     const link = `${url}/refresh`;
     const token = this.tokenService.getCurrentTokens().refreshToken;
@@ -110,6 +138,11 @@ export default class UserService {
     return this.http.post<ITokenResponse>(link, { token });
   }
 
+  /**
+   * Adapts a user response from the server to the client-side model.
+   * @param apiUser The user response received from the server.
+   * @returns The adapted client-side user model.
+   */
   private static adaptUser(apiUser: IUserResponse): IUser {
     return {
       id: apiUser.id,
@@ -127,6 +160,11 @@ export default class UserService {
     };
   }
 
+  /**
+   * Adapts an order response from the server to the client-side model.
+   * @param apiOrder The order response received from the server.
+   * @returns The adapted client-side order model.
+   */
   private static adaptOrder(apiOrder: IOrderResponse): IOrder {
     return {
       id: apiOrder.id,
@@ -137,4 +175,12 @@ export default class UserService {
       details: apiOrder.details,
     };
   }
+}
+
+/**
+ * Interface representing a token response from the server.
+ */
+interface ITokenResponse {
+  token: string;
+  refreshToken: string;
 }

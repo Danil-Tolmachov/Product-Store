@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { type IProduct } from '../../../interfaces/IProduct';
 import ImageContainerComponent from '../../image-container/image-container.component';
@@ -10,6 +10,7 @@ import ImageContainerComponent from '../../image-container/image-container.compo
   imports: [CommonModule, RouterLink, ImageContainerComponent],
   templateUrl: './product-item-brief.component.html',
   styleUrl: './product-item-brief.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ProductItemBriefComponent {
   @Input() product: IProduct = {

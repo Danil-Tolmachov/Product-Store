@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LinkButtonComponent } from './link-button.component';
+import LinkButtonComponent from './link-button.component';
 
 describe('LinkButtonComponent', () => {
   let component: LinkButtonComponent;

@@ -1,5 +1,4 @@
 import { type ISpecification } from './ISpecification';
-import { type ICategory } from './ICategory';
 
 export interface IProduct {
   id: number;
@@ -26,4 +25,16 @@ export interface IProductResponse {
   description: string;
   specifications: ISpecification[];
   imagePaths: string[];
+}
+
+export interface ICategory {
+  id: number;
+  name: string;
+  items: never[] | IProduct[];
+}
+
+export interface ICategoryResponse {
+  id: number;
+  name: string;
+  products: never[] | IProductResponse[];
 }

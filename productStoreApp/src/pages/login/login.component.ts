@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -6,7 +6,10 @@ import UserService from '../../services/user.service';
 import MessageService from '../../services/message.service';
 import LinkButtonComponent from '../../components/link-button/link-button.component';
 import ButtonComponent from '../../components/button/button.component';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { take } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -18,6 +21,7 @@ import ButtonComponent from '../../components/button/button.component';
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class LoginComponent {
   loginForm = this.formBuilder.group({
@@ -46,6 +50,7 @@ export default class LoginComponent {
         this.loginForm.value.username!,
         this.loginForm.value.password!
       )
+      .pipe(untilDestroyed(this), take(1))
       .subscribe({
         complete: () => {
           this.router.navigate(['home']);

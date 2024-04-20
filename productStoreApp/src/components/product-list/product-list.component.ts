@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import ProductItemBriefComponent from './product-item-brief/product-item-brief.component';
 import { type IProduct } from '../../interfaces/IProduct';
 
@@ -8,7 +8,8 @@ import { type IProduct } from '../../interfaces/IProduct';
   imports: [ProductItemBriefComponent],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ProductListComponent {
-  @Input() productsList: IProduct[] = [];
+  @Input() productsList: IProduct[] | null = [];
 }

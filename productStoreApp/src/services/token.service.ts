@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { jwtDecode } from 'jwt-decode';
+import { ITokens } from './token.models';
 
 @Injectable({
   providedIn: 'root',
@@ -8,6 +9,10 @@ import { jwtDecode } from 'jwt-decode';
 export default class TokenService {
   constructor(private readonly cookieService: CookieService) {}
 
+  /**
+   * Checks if both token and refresh token are present in cookies.
+   * @returns True if both tokens are present, false otherwise.
+   */
   hasTokens(): boolean {
     if (!this.cookieService.get('token')) {
       return false;
@@ -20,6 +25,10 @@ export default class TokenService {
     return true;
   }
 
+  /**
+   * Retrieves the expiration date of the token from cookies.
+   * @returns The expiration date of the token, or null if not available or invalid.
+   */
   getExpiration(): Date | null {
     const expiration = this.cookieService.get('expires_at');
 
@@ -31,12 +40,20 @@ export default class TokenService {
     return expiresAt;
   }
 
+  /**
+   * Deletes session-related cookies.
+   */
   deleteSessionCookies(): void {
     this.cookieService.delete('token');
     this.cookieService.delete('refresh_token');
     this.cookieService.delete('expires_at');
   }
 
+  /**
+   * Sets the token and refresh token in cookies.
+   * @param token The JWT token to set.
+   * @param refreshToken The refresh token to set.
+   */
   setTokens(token: string, refreshToken: string): void {
     this.cookieService.set('token', token);
     this.cookieService.set('refresh_token', refreshToken);
@@ -48,15 +65,14 @@ export default class TokenService {
     this.cookieService.set('expires_at', expirationDate);
   }
 
+  /**
+   * Retrieves the current tokens from cookies.
+   * @returns An object containing the token and refresh token.
+   */
   getCurrentTokens(): ITokens {
     return {
       token: this.cookieService.get('token'),
       refreshToken: this.cookieService.get('refresh_token'),
     };
   }
-}
-
-interface ITokens {
-  token: string;
-  refreshToken: string;
 }

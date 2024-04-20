@@ -1,2 +1,2 @@
-<app-controls-filter-bar [categories]="categoriesList" />
-<app-product-list [productsList]="productsList" />
+<app-controls-filter-bar [categories]="categoriesList$ | async" />
+<app-product-list [productsList]="productsList$ | async" />

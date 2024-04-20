@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import CategorySelectorComponent from './category-selector/category-selector.component';
 import { type ICategory } from '../../interfaces/ICategory';
 
@@ -8,7 +8,8 @@ import { type ICategory } from '../../interfaces/ICategory';
   imports: [CategorySelectorComponent],
   templateUrl: './controls-filter-bar.component.html',
   styleUrl: './controls-filter-bar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ControlsFilterBarComponent {
-  @Input() categories: ICategory[] = [];
+  @Input() categories: ICategory[] | null = [];
 }

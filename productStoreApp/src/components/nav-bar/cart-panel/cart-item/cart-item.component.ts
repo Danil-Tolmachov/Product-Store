@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import ImageContainerComponent from '../../../image-container/image-container.component';
 import { type ICartItem } from '../../../../interfaces/ICartItem';
 
@@ -8,6 +8,7 @@ import { type ICartItem } from '../../../../interfaces/ICartItem';
   imports: [ImageContainerComponent],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class CartItemComponent {
   @Input() item: ICartItem = {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -13,6 +13,7 @@ import ButtonComponent from '../../components/button/button.component';
   imports: [ReactiveFormsModule, LinkButtonComponent, ButtonComponent],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class RegistrationComponent {
   registrationForm = this.formBuilder.group({
@@ -56,7 +57,7 @@ export default class RegistrationComponent {
         error: (error) => {
           this.processRequestError(error);
         },
-      });
+      }).unsubscribe();
   }
 
   private validateInputValues(): boolean {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { type Observable, map } from 'rxjs';
+import { type Observable, map, BehaviorSubject } from 'rxjs';
 import {
   type ICategory,
   type ICategoryResponse,
@@ -15,8 +15,16 @@ const urlImg = `${url}/image/product`;
   providedIn: 'root',
 })
 export default class CategoryService {
+  private categoriesSubject = new BehaviorSubject<ICategory[]>([]);
+  public categories: Observable<ICategory[]> =
+    this.categoriesSubject.asObservable();
+
   constructor(private readonly http: HttpClient) {}
 
+  /**
+   * Retrieves all categories from the server.
+   * @returns An observable emitting an array of categories.
+   */
   getCategories(): Observable<ICategory[]> {
     const link = `${url}/category`;
 
@@ -29,6 +37,11 @@ export default class CategoryService {
       );
   }
 
+  /**
+   * Retrieves a category by its ID from the server.
+   * @param id The ID of the category to retrieve.
+   * @returns An observable emitting the category with the specified ID.
+   */
   getCategory(id: number): Observable<ICategory> {
     const link = `${url}/category/${id}`;
 
@@ -37,6 +50,11 @@ export default class CategoryService {
       .pipe(map((category) => CategoryService.adaptCategory(category)));
   }
 
+  /**
+   * Adapts a category received from the server to the client-side model.
+   * @param apiCategory The category received from the server.
+   * @returns The adapted client-side category.
+   */
   static adaptCategory(apiCategory: ICategoryResponse): ICategory {
     return {
       id: apiCategory.id,
@@ -47,6 +65,11 @@ export default class CategoryService {
     };
   }
 
+  /**
+   * Adapts a product received from the server to the client-side model.
+   * @param apiProduct The product received from the server.
+   * @returns The adapted client-side product.
+   */
   static adaptProduct(apiProduct: IProductResponse): IProduct {
     const category: ICategory = {
       id: apiProduct.categoryId,

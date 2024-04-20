@@ -1,5 +1,5 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-image-container',
@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
   imports: [CommonModule, NgOptimizedImage],
   templateUrl: './image-container.component.html',
   styleUrl: './image-container.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ImageContainerComponent {
   @Input() imageUrl: string = '';

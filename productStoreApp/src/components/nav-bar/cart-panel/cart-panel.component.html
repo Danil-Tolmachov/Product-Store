@@ -1,6 +1,6 @@
 <div *ngIf="isActive" [@fadeInOutAnimation] class="container">
   <div class="cart-item-list">
-    @for (item of cartProducts; track item.product) {
+    @for (item of cartProducts$ | async; track item.product) {
       <app-cart-item [item]="item"></app-cart-item>
     }
   </div>

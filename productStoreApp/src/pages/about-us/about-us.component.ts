@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import TextPanelComponent from '../../components/text-panel/text-panel.component';
 
@@ -8,6 +8,7 @@ import TextPanelComponent from '../../components/text-panel/text-panel.component
   imports: [TextPanelComponent],
   templateUrl: './about-us.component.html',
   styleUrl: './about-us.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class AboutUsComponent {
   title = 'About Us';

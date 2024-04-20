@@ -12,15 +12,16 @@ const url = environment.apiUrl;
   providedIn: 'root',
 })
 export default class CartService {
-  private cartItemsSubject: BehaviorSubject<ICartItem[]>;
+  private cartItemsSubject = new BehaviorSubject<ICartItem[]>([]);
+  public carItems: Observable<ICartItem[]> =
+    this.cartItemsSubject.asObservable();
 
-  carItems: Observable<ICartItem[]>;
+  constructor(private readonly http: HttpClient) {}
 
-  constructor(private readonly http: HttpClient) {
-    this.cartItemsSubject = new BehaviorSubject<ICartItem[]>([]);
-    this.carItems = this.cartItemsSubject.asObservable();
-  }
-
+  /**
+   * Retrieves the cart items from the server.
+   * @returns An observable emitting an array of cart items.
+   */
   getCartItems(): Observable<ICartItem[]> {
     const link = `${url}/cart`;
 
@@ -32,6 +33,11 @@ export default class CartService {
     );
   }
 
+  /**
+   * Adapts a cart item received from the server to the client-side model.
+   * @param apiCartItem The cart item received from the server.
+   * @returns The adapted client-side cart item.
+   */
   static adaptCartItem(apiCartItem: ICartItemResponse): ICartItem {
     const productResponse: IProductResponse = {
       id: apiCartItem.productId,
