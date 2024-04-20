@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { type Observable, map, tap, BehaviorSubject } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
-import { jwtDecode } from 'jwt-decode';
 import { IUser, IUserResponse } from '../interfaces/IUser';
 import { IOrder, IOrderResponse } from '../interfaces/IOrder';
 import environment from '../environments/environment';
 import IRegistrationModel from '../interfaces/models/IRegistrationModel';
+import TokenService from './token.service';
 
 const url = `${environment.apiUrl}/auth`;
 
@@ -20,11 +19,12 @@ interface ITokenResponse {
 })
 export default class UserService {
   private currentUserSubject: BehaviorSubject<IUser | null>;
+
   public currentUser: Observable<IUser | null>;
 
   constructor(
     private readonly http: HttpClient,
-    private readonly cookieService: CookieService
+    private readonly tokenService: TokenService
   ) {
     this.currentUserSubject = new BehaviorSubject<IUser | null>(null);
     this.currentUser = this.currentUserSubject.asObservable();
@@ -35,7 +35,7 @@ export default class UserService {
   }
 
   checkAuthenticated(): boolean {
-    const expiration = this.getExpiration();
+    const expiration = this.tokenService.getExpiration();
 
     if (expiration === null) {
       return false;
@@ -45,38 +45,11 @@ export default class UserService {
       return false;
     }
 
-    if (!this.cookieService.get('token')) {
-      return false;
-    }
-
-    if (!this.cookieService.get('refresh_token')) {
+    if (!this.tokenService.hasTokens()) {
       return false;
     }
 
     return true;
-  }
-
-  hasTokens(): boolean {
-    if (!this.cookieService.get('token')) {
-      return false;
-    }
-
-    if (!this.cookieService.get('refresh_token')) {
-      return false;
-    }
-
-    return true;
-  }
-
-  getExpiration(): Date | null {
-    const expiration = this.cookieService.get('expires_at');
-
-    if (expiration === null) {
-      return null;
-    }
-
-    const expiresAt = new Date(Date.parse(expiration));
-    return expiresAt;
   }
 
   getUser(): Observable<IUser> {
@@ -90,7 +63,7 @@ export default class UserService {
   loginSession(username: string, password: string): Observable<ITokenResponse> {
     return this.getTokens(username, password).pipe(
       tap((response) => {
-        this.setTokens(response.token, response.refreshToken);
+        this.tokenService.setTokens(response.token, response.refreshToken);
 
         this.getUser().subscribe((user) => {
           this.currentUserSubject.next(user);
@@ -100,16 +73,14 @@ export default class UserService {
   }
 
   logoutSession(): void {
-    this.cookieService.delete('token');
-    this.cookieService.delete('refresh_token');
-    this.cookieService.delete('expires_at');
+    this.tokenService.deleteSessionCookies();
     this.currentUserSubject.next(null);
   }
 
   refreshSession(): Observable<void> {
     return this.getRefreshedTokens().pipe(
       map((response) => {
-        this.setTokens(response.token, response.refreshToken);
+        this.tokenService.setTokens(response.token, response.refreshToken);
       }),
       tap(() =>
         this.getUser().subscribe((user) => this.currentUserSubject.next(user))
@@ -123,18 +94,10 @@ export default class UserService {
     return this.http.post<null>(link, model);
   }
 
-  private setTokens(token: string, refreshToken: string): void {
-    this.cookieService.set('token', token);
-    this.cookieService.set('refresh_token', refreshToken);
-
-    const decoded = jwtDecode(token);
-    const expiration: number = decoded.exp!;
-    const expirationDate: string = new Date(expiration * 1000).toISOString();
-
-    this.cookieService.set('expires_at', expirationDate);
-  }
-
-  private getTokens(username: string, password: string): Observable<ITokenResponse> {
+  private getTokens(
+    username: string,
+    password: string
+  ): Observable<ITokenResponse> {
     const link = `${url}/login`;
 
     return this.http.post<ITokenResponse>(link, { username, password });
@@ -142,7 +105,7 @@ export default class UserService {
 
   private getRefreshedTokens(): Observable<ITokenResponse> {
     const link = `${url}/refresh`;
-    const token = this.cookieService.get('refresh_token');
+    const token = this.tokenService.getCurrentTokens().refreshToken;
 
     return this.http.post<ITokenResponse>(link, { token });
   }

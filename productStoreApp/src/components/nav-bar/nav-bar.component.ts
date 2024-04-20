@@ -3,8 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import CartPanelComponent from './cart-panel/cart-panel.component';
 import UserService from '../../services/user.service';
-import { AuthDropdownComponent } from '../auth-dropdown/auth-dropdown.component';
-import { Observable } from 'rxjs';
+import AuthDropdownComponent from '../auth-dropdown/auth-dropdown.component';
 import { IUser } from '../../interfaces/IUser';
 
 interface INavButton {

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import IMessageModel from '../../interfaces/models/IMessageModel';
-import MessageService from '../../services/message.service';
 import { CommonModule } from '@angular/common';
 import { animate, style, transition, trigger } from '@angular/animations';
+import IMessageModel from '../../interfaces/models/IMessageModel';
+import MessageService from '../../services/message.service';
 
 @Component({
   selector: 'app-message-screen',
@@ -22,13 +22,14 @@ import { animate, style, transition, trigger } from '@angular/animations';
 })
 export default class MessageScreenComponent implements OnInit {
   isActivated: boolean = false;
+
   message: IMessageModel | null = null;
 
   constructor(private readonly messageService: MessageService) {}
 
   ngOnInit(): void {
     this.messageService.message.subscribe((message) => {
-      if (this.validateMessage(message)) {
+      if (MessageScreenComponent.validateMessage(message)) {
         this.message = message;
         this.isActivated = true;
       }
@@ -39,7 +40,7 @@ export default class MessageScreenComponent implements OnInit {
     this.isActivated = false;
   }
 
-  private validateMessage(message: IMessageModel): boolean {
+  private static validateMessage(message: IMessageModel): boolean {
     if (
       typeof message.header !== 'string' ||
       message.header.trim().length === 0

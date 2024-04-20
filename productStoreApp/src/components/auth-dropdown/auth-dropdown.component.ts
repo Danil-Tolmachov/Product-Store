@@ -25,18 +25,18 @@ interface IDropdownLink {
     ]),
   ],
 })
-export class AuthDropdownComponent {
+export default class AuthDropdownComponent {
   isActive: boolean = false;
 
   dropdownLinks: IDropdownLink[] = [
     {
-      text: "My Profile",
-      link: "#"
+      text: 'My Profile',
+      link: '#',
     },
     {
-      text: "My Orders",
-      link: "#"
-    }
+      text: 'My Orders',
+      link: '#',
+    },
   ];
 
   constructor(private readonly userService: UserService) {}
@@ -44,7 +44,7 @@ export class AuthDropdownComponent {
   switchDropdown(): void {
     this.isActive = !this.isActive;
   }
-  
+
   logoutButtonClick(): void {
     this.userService.logoutSession();
   }

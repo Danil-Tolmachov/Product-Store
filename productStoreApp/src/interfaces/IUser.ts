@@ -1,4 +1,4 @@
-import { ICartProduct } from './ICartProduct';
+import { ICartItem } from './ICartItem';
 import { IContact } from './IContact';
 import { IOrder, IOrderResponse } from './IOrder';
 
@@ -10,7 +10,7 @@ export interface IUser {
   lastName: string;
   discount: number;
   address: string | null;
-  cartItems: ICartProduct[];
+  cartItems: ICartItem[];
   contacts: IContact[];
   orders: IOrder[];
 }
@@ -24,7 +24,7 @@ export interface IUserResponse {
   lastName: string;
   discount: number;
   address: string | null;
-  cartItems: ICartProduct[];
+  cartItems: ICartItem[];
   contacts: IContact[];
   orders: IOrderResponse[];
 }

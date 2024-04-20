@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import CartItemComponent from './cart-item/cart-item.component';
-import { type ICartProduct } from '../../../interfaces/ICartProduct';
+import { ICartItem } from '../../../interfaces/ICartItem';
+import CartService from '../../../services/cart.service';
 
 @Component({
   selector: 'app-cart-panel',
@@ -20,39 +21,18 @@ import { type ICartProduct } from '../../../interfaces/ICartProduct';
     ]),
   ],
 })
-export default class CartPanelComponent {
+export default class CartPanelComponent implements OnInit {
   isActive: boolean = false;
 
-  @Input() cartProducts: ICartProduct[] = [
-    {
-      product: {
-        id: 1,
-        name: 'Soda Coca-Cola Zero, 1.25',
-        price: 1.5,
-        discount: 0.5,
-        unitMeasure: '',
-        imagePaths: [],
-        category: { id: 1, name: 'Drinks', items: [] },
-        description: 'Description1',
-        specifications: [{ name: 'Name1', value: 'Value1' }],
-      },
-      quantity: 2,
-    },
-    {
-      product: {
-        id: 2,
-        name: 'Soda Coca-Cola Cherry-Vanilia, 0.355',
-        price: 0.7,
-        discount: 0.1,
-        unitMeasure: '',
-        imagePaths: [],
-        category: { id: 1, name: 'Drinks', items: [] },
-        description: 'Description2',
-        specifications: [{ name: 'Name2', value: 'Value2' }],
-      },
-      quantity: 5,
-    },
-  ];
+  cartProducts: ICartItem[] = [];
+
+  constructor(private readonly cartService: CartService) {}
+
+  ngOnInit(): void {
+    this.cartService.getCartItems().subscribe((cartItems) => {
+      this.cartProducts = cartItems;
+    });
+  }
 
   switchCartPanel(): void {
     this.isActive = !this.isActive;

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import ImageContainerComponent from '../../../image-container/image-container.component';
-import { type ICartProduct } from '../../../../interfaces/ICartProduct';
+import { type ICartItem } from '../../../../interfaces/ICartItem';
 
 @Component({
   selector: 'app-cart-item',
@@ -10,7 +10,7 @@ import { type ICartProduct } from '../../../../interfaces/ICartProduct';
   styleUrl: './cart-item.component.scss',
 })
 export default class CartItemComponent {
-  @Input() item: ICartProduct = {
+  @Input() item: ICartItem = {
     product: {
       id: 0,
       name: '',

@@ -4,14 +4,13 @@ import {
   HttpInterceptor,
   HttpHandler,
   HttpRequest,
-  HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
-export class AuthInterceptor implements HttpInterceptor {
+export default class AuthInterceptor implements HttpInterceptor {
   constructor(private readonly cookieService: CookieService) {}
 
   intercept(
@@ -33,9 +32,3 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(req);
   }
 }
-
-export const authInterceptorProvider = {
-  provide: HTTP_INTERCEPTORS,
-  useClass: AuthInterceptor,
-  multi: true,
-};

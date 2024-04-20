@@ -37,7 +37,7 @@ export default class CategoryService {
       .pipe(map((category) => CategoryService.adaptCategory(category)));
   }
 
-  private static adaptCategory(apiCategory: ICategoryResponse): ICategory {
+  static adaptCategory(apiCategory: ICategoryResponse): ICategory {
     return {
       id: apiCategory.id,
       name: apiCategory.name,
@@ -47,7 +47,7 @@ export default class CategoryService {
     };
   }
 
-  private static adaptProduct(apiProduct: IProductResponse): IProduct {
+  static adaptProduct(apiProduct: IProductResponse): IProduct {
     const category: ICategory = {
       id: apiProduct.categoryId,
       name: apiProduct.categoryName,

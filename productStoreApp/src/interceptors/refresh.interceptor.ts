@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import {
   HttpEvent,
-  HttpInterceptor,
   HttpHandler,
   HttpRequest,
-  HTTP_INTERCEPTORS,
   HttpErrorResponse,
+  HttpInterceptor,
 } from '@angular/common/http';
 import { Observable, Subject, catchError, switchMap, throwError } from 'rxjs';
 import UserService from '../services/user.service';
+import TokenService from '../services/token.service';
 
 @Injectable()
-export class RefreshInterceptor implements HttpInterceptor {
+export default class RefreshInterceptor implements HttpInterceptor {
   private refreshSubject: Subject<any> = new Subject<any>();
 
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly tokenService: TokenService
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -24,7 +27,7 @@ export class RefreshInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    if (!this.userService.hasTokens()) {
+    if (!this.tokenService.hasTokens()) {
       return next.handle(req);
     }
 
@@ -83,9 +86,3 @@ export class RefreshInterceptor implements HttpInterceptor {
     return error.status !== null && error.status === 400;
   }
 }
-
-export const refreshInterceptorProvider = {
-  provide: HTTP_INTERCEPTORS,
-  useClass: RefreshInterceptor,
-  multi: true,
-};

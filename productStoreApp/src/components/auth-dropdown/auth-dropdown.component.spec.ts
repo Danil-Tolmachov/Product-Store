@@ -8,10 +8,9 @@ describe('AuthDropdownComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AuthDropdownComponent]
-    })
-    .compileComponents();
-    
+      imports: [AuthDropdownComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(AuthDropdownComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

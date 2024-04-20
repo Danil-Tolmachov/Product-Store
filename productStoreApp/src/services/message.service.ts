@@ -7,6 +7,7 @@ import IMessageModel from '../interfaces/models/IMessageModel';
 })
 export default class MessageService {
   private messageSubject: BehaviorSubject<IMessageModel>;
+
   message: Observable<IMessageModel>;
 
   constructor() {

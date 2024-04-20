@@ -34,7 +34,7 @@ export default class ProductService {
       .pipe(map((product) => ProductService.adaptProduct(product)));
   }
 
-  private static adaptProduct(apiProduct: IProductResponse): IProduct {
+  static adaptProduct(apiProduct: IProductResponse): IProduct {
     const category: ICategory = {
       id: apiProduct.categoryId,
       name: apiProduct.categoryName,

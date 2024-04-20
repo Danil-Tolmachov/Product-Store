@@ -8,10 +8,9 @@ describe('MessageScreenComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MessageScreenComponent]
-    })
-    .compileComponents();
-    
+      imports: [MessageScreenComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(MessageScreenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
