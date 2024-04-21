@@ -3,11 +3,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
 } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable, switchMap, take, tap } from 'rxjs';
+import { Observable, take, } from 'rxjs';
 import CartItemComponent from './cart-item/cart-item.component';
 import { ICartItem } from '../../../interfaces/ICartItem';
 import CartService from '../../../services/cart.service';
