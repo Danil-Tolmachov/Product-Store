@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { type Observable, map, BehaviorSubject, tap } from 'rxjs';
+import { type Observable, map, BehaviorSubject, tap, take } from 'rxjs';
 import environment from '../environments/environment.development';
 import { ICartItem, ICartItemResponse } from '../interfaces/ICartItem';
 import ProductService from './product.service';
 import { IProductResponse } from '../interfaces/IProduct';
+import type IAddCartItemModel from '../interfaces/models/IAddCartItemModel';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 const url = environment.apiUrl;
 
+@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
@@ -31,6 +34,20 @@ export default class CartService {
         response.map((cartItem) => CartService.adaptCartItem(cartItem))
       ),
       tap((cartItems) => this.cartItemsSubject.next(cartItems))
+    );
+  }
+
+  addCartItem(productId: number, quantity: number = 1): Observable<void> {
+    const link = `${url}/cart`;
+    const data: IAddCartItemModel = {
+      productId,
+      quantity,
+    };
+
+    return this.http.post<void>(link, data).pipe(
+      tap(() => {
+        this.getCartItems().pipe(untilDestroyed(this), take(1)).subscribe();
+      })
     );
   }
 

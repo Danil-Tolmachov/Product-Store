@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Host, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { type IProduct } from '../../../interfaces/IProduct';
 import ImageContainerComponent from '../../image-container/image-container.component';
+import ProductListComponent from '../product-list.component';
 
 @Component({
   selector: 'app-product-item-brief',
@@ -24,4 +25,10 @@ export default class ProductItemBriefComponent {
     description: 'Description1',
     specifications: [{ name: 'Name1', value: 'Value1' }],
   };
+
+  constructor(@Host() private readonly parent: ProductListComponent) {}
+
+  addButtonClick(id: number): void {
+    this.parent.addToCart(id);
+  }
 }
