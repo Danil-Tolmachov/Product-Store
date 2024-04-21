@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable, take } from 'rxjs';
+import { Observable, switchMap, take, tap } from 'rxjs';
 import CartItemComponent from './cart-item/cart-item.component';
 import { ICartItem } from '../../../interfaces/ICartItem';
 import CartService from '../../../services/cart.service';
@@ -30,25 +30,29 @@ import CartService from '../../../services/cart.service';
     ]),
   ],
 })
-export default class CartPanelComponent implements OnInit {
+export default class CartPanelComponent {
   isActive: boolean = false;
 
-  cartProducts$: Observable<ICartItem[]> | null = null;
+  cartProducts$: Observable<ICartItem[]> = this.cartService.carItems;
 
   constructor(
     private readonly cartService: CartService,
     private readonly cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit(): void {
-    this.cartProducts$ = this.cartService
-      .getCartItems()
-      .pipe(untilDestroyed(this), take(1));
-    this.cdr.markForCheck();
-  }
-
   switchCartPanel(): void {
     this.isActive = !this.isActive;
     this.cdr.markForCheck();
+  }
+
+  deleteCartItem(id: number): void {
+    this.cartService
+      .deleteCartItem(id)
+      .pipe(untilDestroyed(this), take(1))
+      .subscribe({
+        complete: () => {
+          this.cdr.markForCheck();
+        },
+      });
   }
 }

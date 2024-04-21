@@ -1,7 +1,17 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Host,
+  Input,
+} from '@angular/core';
 import ImageContainerComponent from '../../../image-container/image-container.component';
 import { type ICartItem } from '../../../../interfaces/ICartItem';
+import CartPanelComponent from '../cart-panel.component';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { take } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-cart-item',
   standalone: true,
@@ -25,4 +35,12 @@ export default class CartItemComponent {
     },
     quantity: 0,
   };
+
+  constructor(@Host() private readonly cartPanel: CartPanelComponent) {
+  }
+
+  deleteButtonClick(id: number): void {
+    console.log(this.item);
+    this.cartPanel.deleteCartItem(id);
+  }
 }

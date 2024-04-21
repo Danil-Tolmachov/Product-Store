@@ -7,6 +7,7 @@ import ProductService from './product.service';
 import { IProductResponse } from '../interfaces/IProduct';
 import type IAddCartItemModel from '../interfaces/models/IAddCartItemModel';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import UserService from './user.service';
 
 const url = environment.apiUrl;
 
@@ -20,7 +21,14 @@ export default class CartService {
   public carItems: Observable<ICartItem[]> =
     this.cartItemsSubject.asObservable();
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly userService: UserService
+  ) {
+    if (this.userService.checkAuthenticated()) {
+      this.getCartItems().pipe(untilDestroyed(this), take(1)).subscribe();
+    }
+  }
 
   /**
    * Retrieves the cart items from the server.
@@ -51,6 +59,16 @@ export default class CartService {
     );
   }
 
+  deleteCartItem(productId: number): Observable<void> {
+    const link = `${url}/cart/${productId}`;
+
+    return this.http.delete<void>(link).pipe(
+      tap(() => {
+        this.getCartItems().pipe(untilDestroyed(this), take(1)).subscribe();
+      })
+    );
+  }
+
   /**
    * Adapts a cart item received from the server to the client-side model.
    * @param apiCartItem The cart item received from the server.
@@ -68,7 +86,7 @@ export default class CartService {
       categoryId: apiCartItem.productCategoryId,
       description: apiCartItem.productDescription,
       specifications: [],
-      imagePaths: [],
+      imagePaths: [apiCartItem?.imagePath],
     };
 
     return {

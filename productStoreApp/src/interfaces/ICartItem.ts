@@ -13,9 +13,10 @@ export interface ICartItemResponse {
   productCategoryName: string;
   productPrice: number;
   productDiscount: number;
+  imagePath: string;
 
   quantity: number;
-
+  
   cartId: number;
   cartUserId: number;
 }
