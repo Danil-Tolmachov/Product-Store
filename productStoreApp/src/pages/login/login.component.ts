@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { take } from 'rxjs';
 import UserService from '../../services/user.service';
 import MessageService from '../../services/message.service';
 import LinkButtonComponent from '../../components/link-button/link-button.component';
 import ButtonComponent from '../../components/button/button.component';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { take } from 'rxjs';
 
 @UntilDestroy()
 @Component({

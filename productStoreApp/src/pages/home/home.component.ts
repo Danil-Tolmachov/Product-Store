@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Observable, take } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AsyncPipe } from '@angular/common';
 import ProductListComponent from '../../components/product-list/product-list.component';
 import { type IProduct } from '../../interfaces/IProduct';
 import ControlsFilterBarComponent from '../../components/controls-filter-bar/controls-filter-bar.component';
 import ProductService from '../../services/product.service';
 import { type ICategory } from '../../interfaces/ICategory';
 import CategoryService from '../../services/category.service';
-import { BehaviorSubject, Observable, take, tap } from 'rxjs';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { AsyncPipe } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -23,6 +23,7 @@ export default class HomeComponent implements OnInit {
   title: string = 'Product Store';
 
   categoriesList$: Observable<ICategory[]> | null = null;
+
   productsList$: Observable<IProduct[]> | null = null;
 
   constructor(

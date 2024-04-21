@@ -16,6 +16,7 @@ const urlImg = `${url}/image/product`;
 })
 export default class CategoryService {
   private categoriesSubject = new BehaviorSubject<ICategory[]>([]);
+
   public categories: Observable<ICategory[]> =
     this.categoriesSubject.asObservable();
 

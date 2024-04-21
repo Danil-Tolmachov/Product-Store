@@ -10,7 +10,7 @@ import ProductService from '../../services/product.service';
   imports: [],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ProductComponent implements OnInit {
   productId: number = 0;
@@ -35,16 +35,21 @@ export default class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     // Get productId
-    this.route.paramMap.subscribe((params) => {
-      this.productId = parseInt(params.get('productId') ?? '0', 10);
-    }).unsubscribe();
+    this.route.paramMap
+      .subscribe((params) => {
+        this.productId = parseInt(params.get('productId') ?? '0', 10);
+      })
+      .unsubscribe();
 
     // Get product
-    this.productService.getProduct(this.productId).subscribe((product) => {
-      this.product = product;
+    this.productService
+      .getProduct(this.productId)
+      .subscribe((product) => {
+        this.product = product;
 
-      // Set Title
-      this.titleService.setTitle(this.product.name);
-    }).unsubscribe();
+        // Set Title
+        this.titleService.setTitle(this.product.name);
+      })
+      .unsubscribe();
   }
 }

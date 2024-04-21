@@ -9,7 +9,7 @@ import { type ICategory } from '../../../interfaces/ICategory';
   imports: [CommonModule],
   templateUrl: './category-selector.component.html',
   styleUrl: './category-selector.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class CategorySelectorComponent {
   @Input() categories: ICategory[] = [];

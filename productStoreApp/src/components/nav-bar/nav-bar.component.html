@@ -1,13 +1,7 @@
 <nav>
   <button class="nav-button" (click)="loginButtonClick()">
     <p>
-      <ng-container *ngIf="this.user$ | async as user">
-        @if (user !== null) {
-          {{ user.username }}
-        } @else {
-          {{ 'Login' }}
-        }
-      </ng-container>
+      {{ (this.user$ | async)?.username ?? 'Login' }}
     </p>
 
     <app-auth-dropdown />

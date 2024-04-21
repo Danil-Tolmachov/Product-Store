@@ -1,18 +1,18 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
-  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Observable, take, tap } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import CartPanelComponent from './cart-panel/cart-panel.component';
 import UserService from '../../services/user.service';
 import AuthDropdownComponent from '../auth-dropdown/auth-dropdown.component';
 import { IUser } from '../../interfaces/IUser';
-import { Observable, Subscription, take, tap } from 'rxjs';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
 @Component({
@@ -24,6 +24,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
     CommonModule,
     CartPanelComponent,
     AuthDropdownComponent,
+    AsyncPipe,
   ],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.scss',
@@ -36,7 +37,7 @@ export default class NavBarComponent implements OnInit {
   @ViewChild(CartPanelComponent)
   cartPanelInstance: CartPanelComponent | null = null;
 
-  user$: Observable<IUser | null> | null = null;
+  user$: Observable<IUser | null> = this.userService.currentUser;
 
   navButtons: INavButton[] = [
     {
@@ -64,15 +65,18 @@ export default class NavBarComponent implements OnInit {
 
   constructor(
     private readonly userService: UserService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     // Get user
     if (this.userService.checkAuthenticated()) {
-      this.user$ = this.userService
-        .getUser()
-        .pipe(take(1), untilDestroyed(this));
+      this.userService.getUser().pipe(
+        take(1),
+        untilDestroyed(this),
+        tap(() => this.cdr.markForCheck())
+      );
     }
   }
 

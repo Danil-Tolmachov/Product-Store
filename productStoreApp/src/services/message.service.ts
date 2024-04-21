@@ -10,10 +10,9 @@ export default class MessageService {
     header: '',
     message: [],
   });
+
   public message: Observable<IMessageModel> =
     this.messageSubject.asObservable();
-
-  constructor() {}
 
   /**
    * Shows a message by updating the message subject.

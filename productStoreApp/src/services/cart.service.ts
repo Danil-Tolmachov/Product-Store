@@ -13,6 +13,7 @@ const url = environment.apiUrl;
 })
 export default class CartService {
   private cartItemsSubject = new BehaviorSubject<ICartItem[]>([]);
+
   public carItems: Observable<ICartItem[]> =
     this.cartItemsSubject.asObservable();
 

@@ -14,6 +14,7 @@ const url = `${environment.apiUrl}/auth`;
 })
 export default class UserService {
   private currentUserSubject = new BehaviorSubject<IUser | null>(null);
+
   public currentUser: Observable<IUser | null> =
     this.currentUserSubject.asObservable();
 

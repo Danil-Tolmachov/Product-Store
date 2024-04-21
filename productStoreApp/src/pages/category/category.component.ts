@@ -12,7 +12,7 @@ import CategoryService from '../../services/category.service';
   imports: [ProductListComponent, ControlsFilterBarComponent],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class CategoryComponent implements OnInit {
   categoryId: number = 0;
@@ -32,9 +32,11 @@ export default class CategoryComponent implements OnInit {
 
   ngOnInit(): void {
     // Get categoryId
-    this.route.paramMap.subscribe((params) => {
-      this.categoryId = parseInt(params.get('categoryId') ?? '0', 10);
-    }).unsubscribe();
+    this.route.paramMap
+      .subscribe((params) => {
+        this.categoryId = parseInt(params.get('categoryId') ?? '0', 10);
+      })
+      .unsubscribe();
 
     // Redirect '/home' if No Category
     if (this.categoryId === 0) {
@@ -42,9 +44,12 @@ export default class CategoryComponent implements OnInit {
     }
 
     // Get category
-    this.categoryService.getCategory(this.categoryId).subscribe((category) => {
-      this.category = category;
-    }).unsubscribe();
+    this.categoryService
+      .getCategory(this.categoryId)
+      .subscribe((category) => {
+        this.category = category;
+      })
+      .unsubscribe();
 
     // Set title
     this.titleService.setTitle(`Category - ${this.category.name}`);

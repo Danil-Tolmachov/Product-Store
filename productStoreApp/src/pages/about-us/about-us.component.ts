@@ -8,7 +8,7 @@ import TextPanelComponent from '../../components/text-panel/text-panel.component
   imports: [TextPanelComponent],
   templateUrl: './about-us.component.html',
   styleUrl: './about-us.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class AboutUsComponent {
   title = 'About Us';

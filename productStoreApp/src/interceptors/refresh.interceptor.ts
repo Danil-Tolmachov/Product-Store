@@ -6,22 +6,14 @@ import {
   HttpErrorResponse,
   HttpInterceptor,
 } from '@angular/common/http';
-import {
-  Observable,
-  Subject,
-  catchError,
-  switchMap,
-  take,
-  throwError,
-} from 'rxjs';
+import { Observable, catchError, switchMap, throwError } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import UserService from '../services/user.service';
 import TokenService from '../services/token.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
 @Injectable()
 export default class RefreshInterceptor implements HttpInterceptor {
-  private refreshSubject: Subject<any> = new Subject<any>();
 
   constructor(
     private readonly userService: UserService,

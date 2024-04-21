@@ -8,7 +8,7 @@ import TextPanelComponent from '../../components/text-panel/text-panel.component
   imports: [TextPanelComponent],
   templateUrl: './delivery.component.html',
   styleUrl: './delivery.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class DeliveryComponent {
   title = 'Delivery Info';

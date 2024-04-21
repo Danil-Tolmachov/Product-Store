@@ -1,6 +1,10 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import UserService from '../../services/user.service';
 
@@ -40,7 +44,10 @@ export default class AuthDropdownComponent {
     },
   ];
 
-  constructor(private readonly userService: UserService, private readonly cdr: ChangeDetectorRef) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly cdr: ChangeDetectorRef
+  ) {}
 
   switchDropdown(): void {
     this.isActive = !this.isActive;

@@ -6,9 +6,9 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { Subscription } from 'rxjs';
 import IMessageModel from '../../interfaces/models/IMessageModel';
 import MessageService from '../../services/message.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-message-screen',
@@ -29,6 +29,7 @@ import { Subscription } from 'rxjs';
 })
 export default class MessageScreenComponent implements OnInit, OnDestroy {
   private messageSubscription: Subscription | null = null;
+
   message: IMessageModel | null = null;
 
   isActivated: boolean = false;
