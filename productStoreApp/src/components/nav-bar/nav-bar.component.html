@@ -1,11 +1,12 @@
 <nav>
-  <button class="nav-button" (click)="loginButtonClick()">
-    <p>
-      {{ (this.user$ | async)?.username ?? 'Login' }}
-    </p>
-
+  <div class="auth-controls-container">
+    <button class="nav-button" (click)="loginButtonClick()">
+      <p>
+        {{ (this.user$ | async)?.username ?? 'Login' }}
+      </p>
+    </button>
     <app-auth-dropdown />
-  </button>
+  </div>
 
   <ul>
     @for (item of navButtons; track item.title) {

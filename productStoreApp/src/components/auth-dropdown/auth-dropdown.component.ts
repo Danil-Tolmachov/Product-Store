@@ -55,6 +55,7 @@ export default class AuthDropdownComponent {
   }
 
   logoutButtonClick(): void {
+    console.log('s0')
     this.userService.logoutSession();
     this.cdr.markForCheck();
   }
