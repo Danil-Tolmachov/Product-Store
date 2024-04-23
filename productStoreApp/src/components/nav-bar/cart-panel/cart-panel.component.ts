@@ -8,8 +8,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, take, } from 'rxjs';
 import CartItemComponent from './cart-item/cart-item.component';
-import { ICartItem } from '../../../interfaces/ICartItem';
 import CartService from '../../../services/cart.service';
+import { ICart } from '../../../interfaces/ICart';
 
 @UntilDestroy()
 @Component({
@@ -32,7 +32,7 @@ import CartService from '../../../services/cart.service';
 export default class CartPanelComponent {
   isActive: boolean = false;
 
-  cartProducts$: Observable<ICartItem[]> = this.cartService.carItems;
+  cart$: Observable<ICart | null> = this.cartService.cart;
 
   constructor(
     private readonly cartService: CartService,

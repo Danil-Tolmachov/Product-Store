@@ -4,6 +4,8 @@ import { type Observable, map, BehaviorSubject, tap } from 'rxjs';
 import { type IProduct, type IProductResponse } from '../interfaces/IProduct';
 import { type ICategory } from '../interfaces/ICategory';
 import environment from '../environments/environment.development';
+import { IImageResponse } from '../interfaces/IImage';
+import path from 'path';
 
 const url = environment.apiUrl;
 const urlImg = `${url}/image/product`;
@@ -55,8 +57,8 @@ export default class ProductService {
    */
   static adaptProduct(apiProduct: IProductResponse): IProduct {
     const category: ICategory = {
-      id: apiProduct.categoryId,
-      name: apiProduct.categoryName,
+      id: apiProduct.category.id,
+      name: apiProduct.category.name,
       items: [],
     };
 
@@ -69,9 +71,18 @@ export default class ProductService {
       category,
       description: apiProduct.description,
       specifications: apiProduct.specifications,
-      imagePaths: (apiProduct.imagePaths ?? []).map(
-        (path) => `${urlImg}/${path}`
+      imagePaths: (apiProduct.images ?? []).map((image) =>
+        this.adaptImageResponse(image)
       ),
+    };
+  }
+
+  static adaptImageResponse(apiImage: IImageResponse) {
+    const convertedPath = `${urlImg}/${apiImage.path}`;
+
+    return {
+      path: convertedPath,
+      alt: apiImage.alt,
     };
   }
 }

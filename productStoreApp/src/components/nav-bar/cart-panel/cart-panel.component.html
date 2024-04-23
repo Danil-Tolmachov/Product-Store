@@ -1,8 +1,6 @@
 <div *ngIf="isActive" [@fadeInOutAnimation] class="container">
   <div class="cart-item-list">
-    @for (item of cartProducts$ | async; track item.product.id) {
-      <app-cart-item [item]="item"></app-cart-item>
-    }
+    <app-cart-item *ngFor="let item of (cart$ | async)?.items" [item]="item" />
   </div>
   <div class="bottom">
     <p>Summary:</p>
@@ -10,4 +8,5 @@
   </div>
 </div>
 
-<button *ngIf="isActive" (click)="switchCartPanel()" class="close-trigger"></button>
+<button *ngIf="isActive" (click)="switchCartPanel()" class="close-trigger">
+</button>

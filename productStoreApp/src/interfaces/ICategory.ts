@@ -3,11 +3,11 @@ import { type IProductResponse, type IProduct } from './IProduct';
 export interface ICategory {
   id: number;
   name: string;
-  items: never[] | IProduct[];
+  items: IProduct[] | null;
 }
 
 export interface ICategoryResponse {
   id: number;
   name: string;
-  products: never[] | IProductResponse[];
+  products: IProductResponse[] | null;
 }

@@ -1,4 +1,4 @@
-import { type IProduct } from './IProduct';
+import { IProductResponse, type IProduct } from './IProduct';
 
 export interface ICartItem {
   product: IProduct;
@@ -6,17 +6,6 @@ export interface ICartItem {
 }
 
 export interface ICartItemResponse {
-  productId: number;
-  productName: string;
-  productDescription: string;
-  productCategoryId: number;
-  productCategoryName: string;
-  productPrice: number;
-  productDiscount: number;
-  imagePath: string;
-
+  product: IProductResponse;
   quantity: number;
-  
-  cartId: number;
-  cartUserId: number;
 }

@@ -29,6 +29,7 @@ export default class ProductItemBriefComponent {
   constructor(@Host() private readonly parent: ProductListComponent) {}
 
   addButtonClick(id: number): void {
+    console.log(this.product);
     this.parent.addToCart(id);
   }
 }

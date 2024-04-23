@@ -7,6 +7,7 @@ import {
 } from '../interfaces/ICategory';
 import { type IProduct, type IProductResponse } from '../interfaces/IProduct';
 import environment from '../environments/environment';
+import { IImageResponse } from '../interfaces/IImage';
 
 const url = environment.apiUrl;
 const urlImg = `${url}/image/product`;
@@ -73,8 +74,8 @@ export default class CategoryService {
    */
   static adaptProduct(apiProduct: IProductResponse): IProduct {
     const category: ICategory = {
-      id: apiProduct.categoryId,
-      name: apiProduct.categoryName,
+      id: apiProduct.category.id,
+      name: apiProduct.category.name,
       items: [],
     };
 
@@ -87,9 +88,18 @@ export default class CategoryService {
       category,
       description: apiProduct.description,
       specifications: apiProduct.specifications,
-      imagePaths: (apiProduct.imagePaths ?? []).map(
-        (path) => `${urlImg}/${path}`
+      imagePaths: (apiProduct.images ?? []).map((image) =>
+        this.adaptImageResponse(image)
       ),
+    };
+  }
+
+  static adaptImageResponse(apiImage: IImageResponse) {
+    const convertedPath = `${urlImg}/${apiImage.path}`;
+
+    return {
+      path: convertedPath,
+      alt: apiImage.alt,
     };
   }
 }

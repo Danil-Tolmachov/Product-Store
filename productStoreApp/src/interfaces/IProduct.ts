@@ -1,4 +1,6 @@
-import { type ISpecification } from './ISpecification';
+import { ICategory, ICategoryResponse } from './ICategory';
+import { IImage, IImageResponse } from './IImage';
+import { ISpecification } from './ISpecification';
 
 export interface IProduct {
   id: number;
@@ -10,7 +12,7 @@ export interface IProduct {
   category: ICategory | null;
   description: string;
   specifications: ISpecification[];
-  imagePaths: string[];
+  imagePaths: IImage[];
 }
 
 export interface IProductResponse {
@@ -18,23 +20,10 @@ export interface IProductResponse {
   name: string;
   price: number;
   discount: number;
+  description: string;
   unitMeasure: string;
 
-  categoryName: string;
-  categoryId: number;
-  description: string;
+  category: ICategoryResponse;
   specifications: ISpecification[];
-  imagePaths: string[];
-}
-
-export interface ICategory {
-  id: number;
-  name: string;
-  items: never[] | IProduct[];
-}
-
-export interface ICategoryResponse {
-  id: number;
-  name: string;
-  products: never[] | IProductResponse[];
+  images: IImageResponse[];
 }

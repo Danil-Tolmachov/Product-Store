@@ -8,40 +8,40 @@ import { IProductResponse } from '../interfaces/IProduct';
 import type IAddCartItemModel from '../interfaces/models/IAddCartItemModel';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import UserService from './user.service';
+import { IImageResponse } from '../interfaces/IImage';
+import { ICart, ICartResponse } from '../interfaces/ICart';
 
 const url = environment.apiUrl;
+const urlImg = `${url}/image/product`;
 
 @UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
 export default class CartService {
-  private cartItemsSubject = new BehaviorSubject<ICartItem[]>([]);
+  private cartSubject = new BehaviorSubject<ICart | null>(null);
 
-  public carItems: Observable<ICartItem[]> =
-    this.cartItemsSubject.asObservable();
+  public cart: Observable<ICart | null> = this.cartSubject.asObservable();
 
   constructor(
     private readonly http: HttpClient,
     private readonly userService: UserService
   ) {
     if (this.userService.checkAuthenticated()) {
-      this.getCartItems().pipe(untilDestroyed(this), take(1)).subscribe();
+      this.getCart().pipe(untilDestroyed(this), take(1)).subscribe();
     }
   }
 
   /**
-   * Retrieves the cart items from the server.
-   * @returns An observable emitting an array of cart items.
+   * Retrieves user's cart from the server.
+   * @returns An observable emitting an cart object.
    */
-  getCartItems(): Observable<ICartItem[]> {
+  getCart(): Observable<ICart> {
     const link = `${url}/cart`;
 
-    return this.http.get<ICartItemResponse[]>(link).pipe(
-      map((response) =>
-        response.map((cartItem) => CartService.adaptCartItem(cartItem))
-      ),
-      tap((cartItems) => this.cartItemsSubject.next(cartItems))
+    return this.http.get<ICartResponse>(link).pipe(
+      map((cart) => CartService.adaptCart(cart)),
+      tap((cart) => this.cartSubject.next(cart))
     );
   }
 
@@ -54,7 +54,7 @@ export default class CartService {
 
     return this.http.post<void>(link, data).pipe(
       tap(() => {
-        this.getCartItems().pipe(untilDestroyed(this), take(1)).subscribe();
+        this.getCart().pipe(untilDestroyed(this), take(1)).subscribe();
       })
     );
   }
@@ -64,9 +64,15 @@ export default class CartService {
 
     return this.http.delete<void>(link).pipe(
       tap(() => {
-        this.getCartItems().pipe(untilDestroyed(this), take(1)).subscribe();
+        this.getCart().pipe(untilDestroyed(this), take(1)).subscribe();
       })
     );
+  }
+
+  static adaptCart(apiCartItem: ICartResponse): ICart {
+    return {
+      items: (apiCartItem.items ?? []).map((item) => this.adaptCartItem(item)),
+    };
   }
 
   /**
@@ -75,23 +81,18 @@ export default class CartService {
    * @returns The adapted client-side cart item.
    */
   static adaptCartItem(apiCartItem: ICartItemResponse): ICartItem {
-    const productResponse: IProductResponse = {
-      id: apiCartItem.productId,
-      name: apiCartItem.productName,
-      price: apiCartItem.productPrice,
-      discount: apiCartItem.productDiscount,
-      unitMeasure: '',
-
-      categoryName: apiCartItem.productCategoryName,
-      categoryId: apiCartItem.productCategoryId,
-      description: apiCartItem.productDescription,
-      specifications: [],
-      imagePaths: [apiCartItem?.imagePath],
+    return {
+      product: ProductService.adaptProduct(apiCartItem.product),
+      quantity: apiCartItem.quantity,
     };
+  }
+
+  static adaptImageResponse(apiImage: IImageResponse) {
+    const convertedPath = `${urlImg}/${apiImage.path}`;
 
     return {
-      product: ProductService.adaptProduct(productResponse),
-      quantity: apiCartItem.quantity,
+      path: apiImage.path,
+      alt: convertedPath,
     };
   }
 }
