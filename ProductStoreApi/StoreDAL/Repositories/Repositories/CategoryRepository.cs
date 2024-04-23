@@ -15,7 +15,9 @@ namespace StoreDAL.Repositories.Repositories
 			try
 			{
 				return await this.dbSet.Include(c => c.Products)
-								       .ThenInclude(p => p.Images)
+								           .ThenInclude(p => p.Images)
+									   .Include(c => c.Products)
+									       .ThenInclude(p => p.Specifications)
 									   .AsSplitQuery()
 									   .SingleAsync(e => e.Id == id);
 			}
@@ -28,7 +30,9 @@ namespace StoreDAL.Repositories.Repositories
 		public async Task<IEnumerable<Category>> GetAllWithProductsAsync()
 		{
 			return await this.dbSet.Include(c => c.Products)
-								   .ThenInclude(p => p.Images)
+									   .ThenInclude(p => p.Images)
+								   .Include(c => c.Products)
+									   .ThenInclude(p => p.Specifications)
 								   .AsSplitQuery()
 								   .ToListAsync();
 		}
@@ -54,7 +58,9 @@ namespace StoreDAL.Repositories.Repositories
 			return await dbSet.Skip(entitiesToSkip)
 						      .Take(rowCount)
 						      .Include(c => c.Products)
-							  .ThenInclude(p => p.Images)
+							      .ThenInclude(p => p.Images)
+							  .Include(c => c.Products)
+							      .ThenInclude(p => p.Specifications)
 							  .AsSplitQuery()
 							  .ToListAsync();
 		}

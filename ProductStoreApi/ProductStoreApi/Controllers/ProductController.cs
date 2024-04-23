@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using ProductStoreApi.Extensions;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
+using StoreBLL.Models.Dto;
 using StoreBLL.Services;
 
 namespace ProductStoreApi.Controllers
@@ -12,42 +14,44 @@ namespace ProductStoreApi.Controllers
 	{
 		private readonly ILogger<ProductController> _logger;
 		private readonly IProductService _productService;
+		private readonly IMapper _mapper;
 
-		public ProductController(IProductService productService, ILogger<ProductController> logger)
+		public ProductController(IProductService productService, ILogger<ProductController> logger, IMapper mapper)
 		{
 			_productService = productService;
 			_logger = logger;
+			_mapper = mapper;
 		}
 
 		[HttpGet]
-		[ProducesResponseType(typeof(IEnumerable<ProductModel>), 200)]
-		public async Task<ActionResult<IEnumerable<ProductModel>>> GetProducts()
+		[ProducesResponseType(typeof(IEnumerable<ProductDto>), 200)]
+		public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
 		{
 			_logger.LogRequest(nameof(GetProducts), HttpContext.Request.Method.ToString());
 
 			try
 			{
-				var models = await _productService.GetAll();
+				var models = _mapper.Map<IList<ProductDto>>(await _productService.GetAll());
 				return Ok(models);
 			}
 			catch (Exception ex)
 			{
 				_logger.LogException(ex, nameof(GetProducts), HttpContext.Request.Method.ToString());
-				return new List<ProductModel>();
+				return new List<ProductDto>();
 			}
 		}
 
 		[HttpGet("{id}")]
-		[ProducesResponseType(typeof(ProductModel), 200)]
+		[ProducesResponseType(typeof(ProductDto), 200)]
 		[ProducesResponseType(typeof(string), 404)]
-		public async Task<ActionResult<ProductModel>> GetProduct(long id)
+		public async Task<ActionResult<ProductDto>> GetProduct(long id)
 		{
 			_logger.LogRequest(nameof(GetProduct), HttpContext.Request.Method.ToString());
 
 			try
 			{
-				var model = await _productService.GetById(id);
-				return model;
+				var model = _mapper.Map<ProductDto>(await _productService.GetById(id));
+				return Ok(model);
 			}
 			catch (ArgumentException ex)
 			{

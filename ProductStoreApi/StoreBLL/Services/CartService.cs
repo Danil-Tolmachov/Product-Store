@@ -3,7 +3,6 @@ using AutoMapper;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
 using StoreDAL.Entities;
-using StoreDAL.Infrastructure;
 using StoreDAL.Interfaces;
 
 namespace StoreBLL.Services
@@ -31,23 +30,33 @@ namespace StoreBLL.Services
 			return _mapper.Map<IList<CartItemModel>>(entities);
 		}
 
-		public async Task AddProduct(CartItemModel item, long userId)
+		public async Task<CartModel> GetUserCart(long userId)
+		{
+			var entity = await _unitOfWork.CartRepository.GetCartByUserId(userId);
+			return _mapper.Map<CartModel>(entity);
+		}
+
+		public async Task AddProduct(CartItemModel model, long userId)
 		{
 			try
 			{
 				// Throw if item not found
-				CartItem entity = await _unitOfWork.CartItemRepository.GetByIdAsync(item.CartId, item.ProductId);
+				CartItem entity = await _unitOfWork.CartItemRepository.GetByIdAsync(model.CartId, model.ProductId);
 
-				entity.Quantity = item.Quantity;
+				entity.Quantity = model.Quantity;
 				await _unitOfWork.CartItemRepository.Update(entity);
 			}
 			catch
 			{
 				// If item does not exists
 				var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
-				CartItem entity = _mapper.Map<CartItem>(item);
 
-				entity.Cart = user.Cart;
+				CartItem entity = new (0)
+				{
+					CartId = user.Cart.Id,
+					ProductId = model.ProductId,
+					Quantity = model.Quantity,
+				};
 
 				await _unitOfWork.CartItemRepository.AddAsync(entity);
 			}
@@ -90,7 +99,7 @@ namespace StoreBLL.Services
 				var entity = _mapper.Map<OrderDetail>(item);
 				await _unitOfWork.OrderDetailRepository.AddAsync(entity);
 			}
-			
+
 			await _unitOfWork.SaveAsync();
 		}
 	}

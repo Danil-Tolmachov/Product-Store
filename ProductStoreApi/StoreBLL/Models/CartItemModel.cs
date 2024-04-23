@@ -11,11 +11,8 @@ namespace StoreBLL.Models
 		public long CartUserId { get; set; }
 		public long ProductId { get; set; }
 
-		public string ProductName { get; set; } = string.Empty;
-		public string ProductDescription { get; set; } = string.Empty;
-		public long ProductCategoryId { get; set; }
-		public string ProductCategoryName { get; set; } = string.Empty;
-		public decimal ProductPrice { get; set;}
-		public decimal ProductDiscount { get; set; }
+		public ProductModel Product { get; set; } = null!;
+
+		public string ImagePath { get; set; } = string.Empty;
 	}
 }

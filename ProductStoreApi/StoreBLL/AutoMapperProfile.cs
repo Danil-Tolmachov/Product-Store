@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using StoreBLL.Models;
+using StoreBLL.Models.Dto;
 using StoreDAL.Entities;
 using System.Text;
 
@@ -15,12 +16,10 @@ namespace StoreBLL
 			CreateMap<Category, CategoryModel>()
 				.ReverseMap();
 
-			CreateMap<IEnumerable<Specification>, Dictionary<string, string>>()
-				.ConvertUsing(list => SpecsToDictionary()(list));
+			CreateMap<Specification, SpecificationModel>();
 
 			CreateMap<Product, ProductModel>()
-				.ForMember(pm => pm.ImagePaths, p => p.MapFrom(x => x.Images.Select(i => ConvertImageIdToPath(i.Id))))
-				.PreserveReferences();
+				.ForMember(pm => pm.Images, p => p.MapFrom(x => x.Images));
 
 			CreateMap<Cart, CartModel>()
 				.ForMember(pm => pm.UserId, p => p.MapFrom(x => x.UserId))
@@ -31,22 +30,16 @@ namespace StoreBLL
 				.ForMember(im => im.CartId, i => i.MapFrom(x => x.CartId))
 				.ForMember(im => im.ProductId, i => i.MapFrom(x => x.ProductId))
 				.ForMember(im => im.CartUserId, i => i.MapFrom(x => x.Cart.UserId))
-				.ForMember(im => im.ProductName, i => i.MapFrom(x => x.Product.Name))
-				.ForMember(im => im.ProductDescription, i => i.MapFrom(x => x.Product.Description))
-				.ForMember(im => im.ProductCategoryId, i => i.MapFrom(x => x.Product.CategoryId))
-				.ForMember(im => im.ProductCategoryName, i => i.MapFrom(x => x.Product.Category.Name))
-				.ForMember(im => im.ProductDiscount, i => i.MapFrom(x => x.Product.Discount))
-				.ForMember(im => im.ProductPrice, i => i.MapFrom(x => x.Product.Price))
+				.ForMember(im => im.Product, i => i.MapFrom(x => x.Product))
+				.ForMember(im => im.ImagePath, i => i.MapFrom(x => ConvertImageIdToPath(x.Product.Images.Select(y => y.Id).FirstOrDefault())))
 				.ReverseMap();
 
 			CreateMap<CartItemModel, OrderDetailModel>()
 				.ForMember(od => od.OrderId, o => o.Ignore())
-				.ForMember(od => od.ProductName, c => c.MapFrom(x => x.ProductName))
-				.ForMember(od => od.ProductDescription, c => c.MapFrom(x => x.ProductDescription))
-				.ForMember(od => od.ProductCategoryId, c => c.MapFrom(x => x.ProductCategoryId))
-				.ForMember(od => od.ProductCategoryName, c => c.MapFrom(x => x.ProductCategoryName))
+				.ForMember(od => od.Order, o => o.Ignore())
+				.ForMember(od => od.Product, c => c.MapFrom(x => x.Product))
 				.ForMember(od => od.Quantity, o => o.MapFrom(x => x.Quantity))
-				.ForMember(od => od.UnitPrice, o => o.MapFrom(x => x.ProductPrice - (x.ProductPrice * x.ProductDiscount)));
+				.ForMember(od => od.UnitPrice, o => o.MapFrom(x => x.Product.Price - (x.Product.Price * x.Product.Discount)));
 
 			CreateMap<Order, OrderModel>()
 				.ForMember(om => om.Status, o => o.MapFrom(x => x.Status.Name))
@@ -55,11 +48,8 @@ namespace StoreBLL
 			CreateMap<OrderDetail, OrderDetailModel>()
 				.ForMember(dm => dm.OrderId, d => d.MapFrom(x => x.Order.Id))
 				.ForMember(dm => dm.ProductId, d => d.MapFrom(x => x.Product.Id))
-				.ForMember(dm => dm.ProductName, d => d.MapFrom(x => x.Product.Name))
-				.ForMember(dm => dm.ProductDescription, d => d.MapFrom(x => x.Product.Description))
-				.ForMember(dm => dm.ProductCategoryId, d => d.MapFrom(x => x.Product.Category.Id))
-				.ForMember(dm => dm.ProductCategoryName, d => d.MapFrom(x => x.Product.Category.Name))
-				.ForMember(dm => dm.ProductName, d => d.MapFrom(x => x.Product.Name))
+				.ForMember(dm => dm.Product, d => d.MapFrom(x => x.Product))
+				.ForMember(dm => dm.Order, d => d.MapFrom(x => x.Order))
 				.ReverseMap();
 
 			CreateMap<Person, PersonModel>()
@@ -71,7 +61,7 @@ namespace StoreBLL
 				.ForMember(um => um.Discount, u => u.MapFrom(x => x.Person.Discount))
 				.ForMember(um => um.Address, u => u.MapFrom(x => x.Person.Address))
 				.ForMember(um => um.CartId, u => u.MapFrom(x => x.Cart.Id))
-				.ForMember(um => um.CartItems, u => u.MapFrom(x => x.Cart.CartItems))
+				.ForMember(um => um.Cart, u => u.MapFrom(x => x.Cart))
 				.ForMember(um => um.Contacts, u => u.MapFrom(x => x.Person.Contacts))
 				.ForMember(um => um.Password, u => u.Ignore());
 
@@ -94,8 +84,10 @@ namespace StoreBLL
 
 			CreateMap<ProductImage, ProductImageModel>()
 				.ForMember(em => em.ImagePath, e => e.MapFrom(x => ConvertImageIdToPath(x.Id)))
-				.ForMember(em => em.ProductName, e => e.MapFrom(x => x.Product.Name))
+				.ForMember(em => em.Product, e => e.MapFrom(x => x.Product))
 				.ReverseMap();
+
+			MapDtos();
 		}
 
 		public static IMapper CreateMapper()
@@ -111,21 +103,43 @@ namespace StoreBLL
 			return mapper;
 		}
 
-		private static Func<IEnumerable<Specification>, Dictionary<string, string>> SpecsToDictionary()
+		private void MapDtos()
 		{
-			Func<IEnumerable<Specification>, Dictionary<string, string>> func = list =>
-			{
-                var dict = new Dictionary<string, string>();
+			CreateMap<SpecificationModel, SpecificationDto>();
 
-				foreach (var item in list)
-				{
-					dict.Add(item.Name, item.Value);
-				}
+			CreateMap<CategoryModel, CategoryDto>();
 
-				return dict;
-			};
+			CreateMap<CategoryModel, CategoryBriefDto>();
 
-			return func;
+			CreateMap<ProductImageModel, ImageDto>()
+				.ForMember(id => id.Path, pm => pm.MapFrom(x => x.ImagePath))
+				.ForMember(id => id.Alt, pm => pm.Ignore());
+
+			CreateMap<ProductModel, ProductDto>()
+				.ForPath(pd => pd.Category!.Id, p => p.MapFrom(x => x.CategoryId))
+				.ForPath(pd => pd.Category!.Name, p => p.MapFrom(x => x.CategoryName))
+				.ForMember(pd => pd.Specifications, p => p.MapFrom(x => x.Specifications))
+				.ForMember(pd => pd.Images, p => p.MapFrom(x => x.Images));
+
+			CreateMap<ContactModel, ContactDto>()
+				.ForMember(cd => cd.Type, cm => cm.MapFrom(x => x.Name));
+
+			CreateMap<OrderDetailModel, OrderDetailDto>()
+				.ForMember(od => od.Product, om => om.Ignore());
+
+			CreateMap<OrderModel, OrderBriefDto>();
+
+			CreateMap<OrderModel, OrderDto>()
+				.ForMember(od => od.Details, om => om.MapFrom(x => x.Details));
+
+			CreateMap<CartItemModel, CartItemDto>()
+				.ForMember(cd => cd.Product, ci => ci.MapFrom(x => x.Product));
+
+			CreateMap<CartModel, CartDto>()
+				.ForMember(cd => cd.Items, cm => cm.MapFrom(x => x.CartItems));
+
+			CreateMap<UserModel, UserDto>()
+				.ForMember(ud => ud.Cart, um => um.MapFrom(x => x.Cart));
 		}
 
 		private string ConvertImageIdToPath(long imageId)

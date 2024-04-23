@@ -1,7 +1,4 @@
-﻿
-using StoreDAL.Entities;
-
-namespace StoreBLL.Models
+﻿namespace StoreBLL.Models
 {
 	public class ProductModel
 	{
@@ -12,10 +9,10 @@ namespace StoreBLL.Models
 		public decimal Discount { get; set; }
 		public string UnitMeasure { get; set; } = string.Empty;
 
-		public string CategoryId { get; set; } = null!;
-		public string CategoryName { get; set; } = string.Empty;
+		public string? CategoryId { get; set; }
+		public string? CategoryName { get; set; }
 
-		public Dictionary<string, string> Specifications { get; set; } = new Dictionary<string, string>();
-		public IEnumerable<string> ImagePaths { get; set; } = new List<string>();
+		public IEnumerable<SpecificationModel> Specifications { get; set; } = new List<SpecificationModel>();
+		public IEnumerable<ProductImageModel> Images { get; set; } = new List<ProductImageModel>();
 	}
 }

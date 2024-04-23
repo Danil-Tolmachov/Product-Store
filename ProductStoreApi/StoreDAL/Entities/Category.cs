@@ -9,6 +9,7 @@ namespace StoreDAL.Entities
 
 		public virtual IEnumerable<Product> Products { get; set; } = new List<Product>();
 
+		public Category() : base(0) { }
 		public Category(long id) : base(id) { }
 	}
 }

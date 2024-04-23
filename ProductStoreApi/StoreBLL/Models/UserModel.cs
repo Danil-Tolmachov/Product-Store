@@ -15,7 +15,7 @@ namespace StoreBLL.Models
 		public string? Address { get; set; }
 
 		public long CartId { get; set; }
-		public IEnumerable<CartItemModel> CartItems { get; set; } = new List<CartItemModel>();
+		public required CartModel Cart { get; set; }
 
 		public IEnumerable<OrderModel> Orders { get; set; } = new List<OrderModel>();
 		public IEnumerable<ContactModel> Contacts { get; set; } = new List<ContactModel>();

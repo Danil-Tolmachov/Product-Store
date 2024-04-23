@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductStoreApi.Extensions;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
+using StoreBLL.Models.Dto;
 using StoreBLL.Models.Extra;
 using System.Security.Claims;
 
@@ -15,19 +17,21 @@ namespace ProductStoreApi.Controllers
 		private readonly ILogger<CartController> _logger;
 		private readonly ICartService _cartService;
 		private readonly IUserService _userService;
+		private readonly IMapper _mapper;
 
-		public CartController(ILogger<CartController> logger, ICartService cartService, IUserService userService)
+		public CartController(ILogger<CartController> logger, ICartService cartService, IUserService userService, IMapper mapper)
 		{
 			_logger = logger;
 			_cartService = cartService;
 			_userService = userService;
+			_mapper = mapper;
 		}
 
 		[HttpGet]
 		[Authorize]
-		[ProducesResponseType(typeof(IEnumerable<CartItemModel>), 200)]
+		[ProducesResponseType(typeof(CartDto), 200)]
 		[ProducesResponseType(401)]
-		public async Task<ActionResult<IEnumerable<CartItemModel>>> GetCart()
+		public async Task<ActionResult<CartDto>> GetCart()
 		{
 			_logger.LogRequest(nameof(GetCart), HttpContext.Request.Method.ToString());
 
@@ -47,7 +51,7 @@ namespace ProductStoreApi.Controllers
 					return Unauthorized();
 				}
 
-				var models = await _cartService.GetUserProducts(user.Id);
+				var models = _mapper.Map<CartDto>(await _cartService.GetUserCart(user.Id));
 				return Ok(models);
 			}
 			catch (Exception ex)

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductStoreApi.Authentication;
 using ProductStoreApi.Extensions;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
+using StoreBLL.Models.Dto;
 using StoreBLL.Models.Extra;
 using System.Security.Claims;
 
@@ -14,11 +16,13 @@ namespace ProductStoreApi.Controllers
 	public class UserController : ControllerBase
 	{
 		private readonly ILogger<UserController> _logger;
+		private readonly IMapper _mapper;
 		private readonly IUserService _userService;
 
-		public UserController(ILogger<UserController> logger, IUserService userService)
+		public UserController(ILogger<UserController> logger, IUserService userService, IMapper mapper)
 		{
 			_logger = logger;
+			_mapper = mapper;
 			_userService = userService;
 		}
 
@@ -58,9 +62,9 @@ namespace ProductStoreApi.Controllers
 
 		[HttpGet("user")]
 		[Authorize]
-		[ProducesResponseType(typeof(UserModel), 200)]
+		[ProducesResponseType(typeof(UserDto), 200)]
 		[ProducesResponseType(typeof(string), 401)]
-		public async Task<ActionResult<UserModel>> GetUser()
+		public async Task<ActionResult<UserDto>> GetUser()
 		{
 			_logger.LogRequest(nameof(GetUser), HttpContext.Request.Method.ToString());
 
@@ -73,7 +77,7 @@ namespace ProductStoreApi.Controllers
 					return Unauthorized("Invalid token.");
 				}
 
-				var model = await _userService.GetByUsername(username);
+				var model = _mapper.Map<UserDto>(await _userService.GetByUsername(username));
 				return Ok(model);
 			}
 			catch (Exception ex)
@@ -86,7 +90,7 @@ namespace ProductStoreApi.Controllers
 		[HttpPost("login")]
 		[ProducesResponseType(typeof(object), 200)] // return: JWT Tokens
 		[ProducesResponseType(typeof(string), 401)]
-		public async Task<IActionResult> Login([FromBody] LoginModel model)
+		public async Task<ActionResult<TokensDto>> Login([FromBody] LoginModel model)
 		{
 			_logger.LogRequest(nameof(Login), HttpContext.Request.Method.ToString());
 
@@ -118,7 +122,7 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(typeof(object), 200)] // return: JWT Tokens
 		[ProducesResponseType(typeof(string), 400)]
 		[ProducesResponseType(typeof(string), 401)]
-		public async Task<IActionResult> Refresh([FromBody] RefreshModel model)
+		public async Task<ActionResult<TokensDto>> Refresh([FromBody] RefreshModel model)
 		{
 			_logger.LogRequest(nameof(Refresh), HttpContext.Request.Method.ToString());
 

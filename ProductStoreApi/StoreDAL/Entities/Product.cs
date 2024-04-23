@@ -19,6 +19,7 @@ namespace StoreDAL.Entities
 		public virtual IEnumerable<Specification> Specifications { get; set; } = new List<Specification>();
 		public virtual IEnumerable<ProductImage> Images { get; set; } = new List<ProductImage>();
 
+		public Product() : base(0) { }
 		public Product(long id) : base(id) { }
 	}
 }

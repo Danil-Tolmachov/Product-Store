@@ -11,9 +11,7 @@ namespace StoreBLL.Models
 		public long OrderId { get; set; }
 		public long ProductId { get; set; }
 
-		public string ProductName { get; set; } = string.Empty;
-		public string ProductDescription { get; set; } = string.Empty;
-		public long ProductCategoryId { get; set; }
-		public string ProductCategoryName { get; set; } = string.Empty;
+		public ProductModel? Product { get; set; }
+		public OrderModel? Order { get; set; }
 	}
 }

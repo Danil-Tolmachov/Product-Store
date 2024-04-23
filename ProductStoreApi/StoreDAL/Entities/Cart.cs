@@ -9,6 +9,7 @@ namespace StoreDAL.Entities
 
 		public virtual IEnumerable<CartItem> CartItems { get; set; } = new List<CartItem>();
 
+		public Cart() : base(0) { }
 		public Cart(long id) : base(id) { }
 	}
 }
