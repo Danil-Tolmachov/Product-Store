@@ -3,8 +3,11 @@ import { ChangeDetectionStrategy, Component, Host, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { type IProduct } from '../../../interfaces/IProduct';
 import ImageContainerComponent from '../../image-container/image-container.component';
-import ProductListComponent from '../product-list.component';
+import CartService from '../../../services/cart.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { take } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-product-item-brief',
   standalone: true,
@@ -22,14 +25,16 @@ export default class ProductItemBriefComponent {
     unitMeasure: '',
     imagePaths: [],
     category: null,
-    description: 'Description1',
-    specifications: [{ name: 'Name1', value: 'Value1' }],
+    description: '',
+    specifications: [],
   };
 
-  constructor(@Host() private readonly parent: ProductListComponent) {}
+  constructor(private readonly cartService: CartService) {}
 
   addButtonClick(id: number): void {
-    console.log(this.product);
-    this.parent.addToCart(id);
+    this.cartService
+      .addCartItem(id)
+      .pipe(untilDestroyed(this), take(1))
+      .subscribe();
   }
 }

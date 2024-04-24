@@ -5,13 +5,11 @@ import {
   Component,
 } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable, take, } from 'rxjs';
+import { Observable } from 'rxjs';
 import CartItemComponent from './cart-item/cart-item.component';
 import CartService from '../../../services/cart.service';
 import { ICart } from '../../../interfaces/ICart';
 
-@UntilDestroy()
 @Component({
   selector: 'app-cart-panel',
   standalone: true,
@@ -42,16 +40,5 @@ export default class CartPanelComponent {
   switchCartPanel(): void {
     this.isActive = !this.isActive;
     this.cdr.markForCheck();
-  }
-
-  deleteCartItem(id: number): void {
-    this.cartService
-      .deleteCartItem(id)
-      .pipe(untilDestroyed(this), take(1))
-      .subscribe({
-        complete: () => {
-          this.cdr.markForCheck();
-        },
-      });
   }
 }

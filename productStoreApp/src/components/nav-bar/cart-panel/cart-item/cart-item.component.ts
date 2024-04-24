@@ -1,16 +1,15 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
-  Host,
   Input,
   OnInit,
 } from '@angular/core';
 import ImageContainerComponent from '../../../image-container/image-container.component';
 import { type ICartItem } from '../../../../interfaces/ICartItem';
-import CartPanelComponent from '../cart-panel.component';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import CartService from '../../../../services/cart.service';
-import { Subject, debounceTime, switchMap } from 'rxjs';
+import { Subject, debounceTime, switchMap, take } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -40,7 +39,7 @@ export default class CartItemComponent implements OnInit {
   };
 
   constructor(
-    @Host() private readonly cartPanel: CartPanelComponent,
+    private readonly cdr: ChangeDetectorRef,
     private readonly cartService: CartService
   ) {}
 
@@ -63,7 +62,13 @@ export default class CartItemComponent implements OnInit {
   }
 
   deleteButtonClick(id: number): void {
-    console.log(this.item);
-    this.cartPanel.deleteCartItem(id);
+    this.cartService
+      .deleteCartItem(id)
+      .pipe(untilDestroyed(this), take(1))
+      .subscribe({
+        complete: () => {
+          this.cdr.markForCheck();
+        },
+      });
   }
 }

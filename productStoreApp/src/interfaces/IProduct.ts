@@ -1,4 +1,3 @@
-import { ICategory, ICategoryResponse } from './ICategory';
 import { IImage, IImageResponse } from './IImage';
 import { ISpecification } from './ISpecification';
 
@@ -26,4 +25,16 @@ export interface IProductResponse {
   category: ICategoryResponse;
   specifications: ISpecification[];
   images: IImageResponse[];
+}
+
+export interface ICategory {
+  id: number;
+  name: string;
+  items: IProduct[] | null;
+}
+
+export interface ICategoryResponse {
+  id: number;
+  name: string;
+  products: IProductResponse[] | null;
 }
