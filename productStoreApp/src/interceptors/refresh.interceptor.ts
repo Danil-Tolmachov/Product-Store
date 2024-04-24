@@ -61,6 +61,11 @@ export default class RefreshInterceptor implements HttpInterceptor {
         if (error instanceof HttpErrorResponse) {
           // Check if the error indicates a token expiration
           if (RefreshInterceptor.checkTokenExpiryErr(error)) {
+            // Skip interception if no tokens are available
+            if (!this.tokenService.hasTokens()) {
+              return next.handle(req);
+            }
+
             // If token expired, attempt to refresh the tokens and retry the original request
             return this.ifTokenExpired().pipe(
               untilDestroyed(this),
