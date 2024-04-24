@@ -1,15 +1,16 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
-  OnDestroy,
-  OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Subscription } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import IMessageModel from '../../interfaces/models/IMessageModel';
 import MessageService from '../../services/message.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-message-screen',
   standalone: true,
@@ -27,28 +28,23 @@ import MessageService from '../../services/message.service';
     ]),
   ],
 })
-export default class MessageScreenComponent implements OnInit, OnDestroy {
-  private messageSubscription: Subscription | null = null;
-
-  message: IMessageModel | null = null;
+export default class MessageScreenComponent {
+  message$: Observable<IMessageModel> = this.messageService.message.pipe(
+    tap((message) => {
+      if (MessageScreenComponent.validateMessage(message)) {
+        this.isActivated = true;
+      }
+    }),
+    tap(() => this.cdr.markForCheck())
+  );
 
   isActivated: boolean = false;
 
-  constructor(private readonly messageService: MessageService) {}
-
-  ngOnInit(): void {
-    this.messageSubscription = this.messageService.message.subscribe(
-      (message) => {
-        if (MessageScreenComponent.validateMessage(message)) {
-          this.message = message;
-          this.isActivated = true;
-        }
-      }
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.messageSubscription?.unsubscribe();
+  constructor(
+    private readonly messageService: MessageService,
+    private readonly cdr: ChangeDetectorRef
+  ) {
+    this.message$.pipe(untilDestroyed(this)).subscribe();
   }
 
   closeMessage(): void {

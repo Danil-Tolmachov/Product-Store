@@ -1,8 +1,8 @@
 <div *ngIf="isActivated" class="wrapper" [@fadeInOutAnimation]>
   <div class="container">
-    <h2 class="header">{{ message?.header }}</h2>
+    <h2 class="header">{{ (message$ | async)?.header }}</h2>
     <div class="text">
-      <p *ngFor="let item of message?.message">{{ item }}</p>
+      <p *ngFor="let item of (message$ | async)?.message">{{ item }}</p>
     </div>
   </div>
 
