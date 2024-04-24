@@ -1,7 +1,14 @@
+:host {
+  display: block;
+
+  width: fit-content;
+  height: fit-content;
+}
+
 a {
   width: 60px;
-  height: 25px;
-  line-height: 25px;
+  height: 32px;
+  line-height: 32px;
 
   box-sizing: border-box;
   transition:
@@ -13,7 +20,6 @@ a {
 
   font-size: 11px;
 
-  margin-right: 8px;
   padding: 0 8px;
 
   position: relative;
