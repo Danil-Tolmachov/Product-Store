@@ -4,15 +4,20 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  OnInit,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import UserService from '../../services/user.service';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import CartService from '../../services/cart.service';
+import { tap } from 'rxjs';
 
 interface IDropdownLink {
   text: string;
   link: string;
 }
 
+@UntilDestroy()
 @Component({
   selector: 'app-auth-dropdown',
   standalone: true,
@@ -30,7 +35,7 @@ interface IDropdownLink {
     ]),
   ],
 })
-export default class AuthDropdownComponent {
+export default class AuthDropdownComponent implements OnInit {
   isActive: boolean = false;
 
   dropdownLinks: IDropdownLink[] = [
@@ -46,8 +51,21 @@ export default class AuthDropdownComponent {
 
   constructor(
     private readonly userService: UserService,
-    private readonly cdr: ChangeDetectorRef
+    private readonly cdr: ChangeDetectorRef,
+    private readonly cartService: CartService
   ) {}
+
+  ngOnInit(): void {
+    this.userService.currentUser
+      .pipe(
+        tap((user) => {
+          if (user == null) {
+            this.isActive = false;
+          }
+        })
+      )
+      .subscribe();
+  }
 
   switchDropdown(): void {
     this.isActive = !this.isActive;
@@ -55,8 +73,8 @@ export default class AuthDropdownComponent {
   }
 
   logoutButtonClick(): void {
-    console.log('s0')
     this.userService.logoutSession();
+    this.cartService.clearCart();
     this.cdr.markForCheck();
   }
 }

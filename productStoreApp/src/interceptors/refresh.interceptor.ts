@@ -14,7 +14,6 @@ import TokenService from '../services/token.service';
 @UntilDestroy()
 @Injectable()
 export default class RefreshInterceptor implements HttpInterceptor {
-
   constructor(
     private readonly userService: UserService,
     private readonly tokenService: TokenService

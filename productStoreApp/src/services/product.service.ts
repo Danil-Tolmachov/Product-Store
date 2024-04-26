@@ -5,7 +5,6 @@ import { type IProduct, type IProductResponse } from '../interfaces/IProduct';
 import { type ICategory } from '../interfaces/ICategory';
 import environment from '../environments/environment.development';
 import { IImageResponse } from '../interfaces/IImage';
-import path from 'path';
 
 const url = environment.apiUrl;
 const urlImg = `${url}/image/product`;

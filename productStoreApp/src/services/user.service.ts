@@ -1,14 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { type Observable, map, tap, BehaviorSubject } from 'rxjs';
+import {
+  type Observable,
+  map,
+  tap,
+  BehaviorSubject,
+  catchError,
+  of,
+} from 'rxjs';
 import { IUser, IUserResponse } from '../interfaces/IUser';
 import { IOrder, IOrderResponse } from '../interfaces/IOrder';
 import environment from '../environments/environment';
 import IRegistrationModel from '../interfaces/models/IRegistrationModel';
 import TokenService from './token.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 const url = `${environment.apiUrl}/auth`;
 
+@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
@@ -23,7 +32,7 @@ export default class UserService {
     private readonly tokenService: TokenService
   ) {
     if (this.checkAuthenticated()) {
-      this.getUser().subscribe();
+      this.getUser().pipe(untilDestroyed(this)).subscribe();
     }
   }
 
@@ -57,7 +66,8 @@ export default class UserService {
     const link = `${url}/user`;
     return this.http.get<IUserResponse>(link).pipe(
       map((userResponse) => UserService.adaptUser(userResponse)),
-      tap((user) => this.currentUserSubject.next(user))
+      tap((user) => this.currentUserSubject.next(user)),
+      catchError((err) => of())
     );
   }
 
@@ -71,7 +81,8 @@ export default class UserService {
     return this.getTokens(username, password).pipe(
       tap((response) => {
         this.tokenService.setTokens(response.token, response.refreshToken);
-
+      }),
+      tap(() => {
         this.getUser().subscribe((user) => {
           this.currentUserSubject.next(user);
         });

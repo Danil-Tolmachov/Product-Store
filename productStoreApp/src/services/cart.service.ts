@@ -4,7 +4,6 @@ import { type Observable, map, BehaviorSubject, tap, take } from 'rxjs';
 import environment from '../environments/environment.development';
 import { ICartItem, ICartItemResponse } from '../interfaces/ICartItem';
 import ProductService from './product.service';
-import { IProductResponse } from '../interfaces/IProduct';
 import type IAddCartItemModel from '../interfaces/models/IAddCartItemModel';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import UserService from './user.service';
@@ -67,6 +66,10 @@ export default class CartService {
         this.getCart().pipe(untilDestroyed(this), take(1)).subscribe();
       })
     );
+  }
+
+  clearCart(): void {
+    this.cartSubject.next(null);
   }
 
   static adaptCart(apiCartItem: ICartResponse): ICart {
