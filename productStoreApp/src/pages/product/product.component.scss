@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+$bottom-height: 45px;
+
+.container {
+  width: 900px;
+  height: 500px;
+
+  display: flex;
+
+  border-radius: 3px;
+  background-color: white;
+  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.17);
+}
+
+.carousel {
+  width: 400px;
+  height: 500px;
+}
+
+.info-container {
+  width: 500px - 20px;
+  height: 500px - 20px;
+
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.product-name {
+  font-size: 1.4rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+
+  margin-top: 10px;
+  margin-bottom: 2px;
+
+  overflow-wrap: break-word;
+}
+
+.additional-info {
+  margin: 0;
+  margin-left: 4px;
+  padding: 0;
+
+  font-size: 0.9rem;
+  color: #3d3d3d80;
+
+  display: flex;
+  list-style-type: none;
+}
+
+.additional-info > hr {
+  width: 4px;
+  height: 4px;
+
+  margin: auto;
+  margin-right: 9px;
+  margin-left: 9px;
+
+  border: none;
+  border-radius: 2px;
+  background-color: #3d3d3d80;
+}
+
+.bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+
+  height: $bottom-height;
+}
+
+.bottom .price {
+  font-size: 1.4rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  overflow-wrap: break-word;
+
+  line-height: $bottom-height;
+
+  margin: 0;
+  margin-right: 20px;
+}
+
+.quantity-input {
+  width: 70px;
+  margin-right: 5px;
+  border-width: 1px;
+  border-color: rgba(136, 6, 206, 0.1490196078);
+  border-radius: 3px;
+  background-color: whitesmoke;
+}
+
+app-button {
+  width: 200px;
+  height: 100%;
+}
+
+hr {
+  opacity: 0;
+  height: 40px;
+}
+
+.additional-info p {
+  margin: 0;
+}
+
+.product-description {
+  overflow-y: auto;
+  overflow-wrap: break-word;
+  text-wrap: wrap;
+}

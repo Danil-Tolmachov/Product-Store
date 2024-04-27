@@ -22,16 +22,26 @@ export class ImageCarouselComponent {
   @Input() imagePaths: IImage[] = [];
 
   constructor(private readonly cdr: ChangeDetectorRef) {
-    this.showControls = this.imagePaths.length > 1 ? true : false;
+    this.showControls = this.imagePaths.length > 1;
   }
 
   nextImage(): void {
-    this.selectedImage++;
+    if (this.selectedImage >= this.imagePaths.length) {
+      this.selectedImage = 0;
+    } else {
+      this.selectedImage++;
+    }
+
     this.cdr.markForCheck();
   }
 
   previousImage(): void {
-    this.selectedImage--;
+    if (this.selectedImage <= 0) {
+      this.selectedImage = this.imagePaths.length;
+    } else {
+      this.selectedImage--;
+    }
+
     this.cdr.markForCheck();
   }
 }

@@ -1,55 +1,89 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { type IProduct } from '../../interfaces/IProduct';
 import ProductService from '../../services/product.service';
+import { Observable, map, switchMap, tap } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import ImageContainerComponent from '../../components/image-container/image-container.component';
+import { ImageCarouselComponent } from './image-carousel/image-carousel.component';
+import ButtonComponent from '../../components/button/button.component';
+import CartService from '../../services/cart.service';
+import { SpecificationsContainerComponent } from './specifications-container/specifications-container.component';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    ImageContainerComponent,
+    ImageCarouselComponent,
+    ButtonComponent,
+    SpecificationsContainerComponent,
+  ],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ProductComponent implements OnInit {
-  productId: number = 0;
-
-  product: IProduct = {
-    id: 0,
-    name: '',
-    price: 0,
-    discount: 0,
-    unitMeasure: '',
-    imagePaths: [],
-    category: null,
-    description: '',
-    specifications: [],
-  };
+  protected showSpecifications: boolean = true;
+  protected quantityValue: number = 1;
+  productId$: Observable<number> | null = null;
+  product$: Observable<IProduct> | null = null;
 
   constructor(
     private readonly titleService: Title,
     private readonly productService: ProductService,
-    private readonly route: ActivatedRoute
+    private readonly cartService: CartService,
+    private readonly route: ActivatedRoute,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     // Get productId
-    this.route.paramMap
-      .subscribe((params) => {
-        this.productId = parseInt(params.get('productId') ?? '0', 10);
+    this.productId$ = this.route.paramMap.pipe(
+      map((params) => {
+        return parseInt(params.get('productId') ?? '0', 10);
       })
-      .unsubscribe();
+    );
 
     // Get product
-    this.productService
-      .getProduct(this.productId)
-      .subscribe((product) => {
-        this.product = product;
-
+    this.product$ = this.productId$.pipe(
+      switchMap((id) => {
+        return this.productService.getProduct(id);
+      }),
+      tap((product) => {
         // Set Title
-        this.titleService.setTitle(this.product.name);
+        this.titleService.setTitle(product.name);
+
+        this.cdr.markForCheck();
+      }),
+      tap((product) => {
+        if (product.specifications.length < 1) {
+          this.showSpecifications = false;
+        }
       })
-      .unsubscribe();
+    );
+  }
+
+  onChangeQuantity(newValue: string): void {
+    const quantityNumber = parseInt(newValue);
+    this.quantityValue = quantityNumber;
+  }
+
+  addButtonClick(productId: number): void {
+    this.cartService
+      .addCartItem(productId, this.quantityValue)
+      .pipe(
+        tap(() => {
+          this.cdr.markForCheck();
+        })
+      )
+      .subscribe();
   }
 }
