@@ -12,5 +12,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export default class ImageContainerComponent {
   @Input() imageUrl: string = '';
 
-  @Input() altText: string = '';
+  @Input() altText: string | null = '';
 }
