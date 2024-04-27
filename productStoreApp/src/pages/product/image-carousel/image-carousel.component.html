@@ -1,0 +1,14 @@
+<div class="image">
+  <app-image-container
+    class="image"
+    [imageUrl]="this.imagePaths[this.selectedImage].path"
+    [altText]="this.imagePaths[this.selectedImage].alt"
+  />
+</div>
+
+<ng-container *ngIf="this.showControls">
+  <div class="controls">
+    <button (click)="nextImage()"><</button>
+    <button (click)="previousImage()">></button>
+  </div>
+</ng-container>
