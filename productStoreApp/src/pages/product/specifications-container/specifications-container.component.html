@@ -1,0 +1,16 @@
+<div class="container">
+  <table>
+    <caption>Specifications: </caption>
+    <thead>
+      <th></th>
+      <th></th>
+    </thead>
+
+    @for (spec of specifications; track $index) {
+      <tr>
+        <td>{{ spec.name }}:</td>
+        <td>{{ spec.value }}</td>
+      </tr>
+    }
+  </table>
+</div>
