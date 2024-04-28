@@ -120,7 +120,6 @@ namespace ProductStoreApi.Controllers
 
 		[HttpPost("refresh")]
 		[ProducesResponseType(typeof(object), 200)] // return: JWT Tokens
-		[ProducesResponseType(typeof(string), 400)]
 		[ProducesResponseType(typeof(string), 401)]
 		public async Task<ActionResult<TokensDto>> Refresh([FromBody] RefreshModel model)
 		{
@@ -130,7 +129,7 @@ namespace ProductStoreApi.Controllers
 			{
 				if (!ModelState.IsValid)
 				{
-					return BadRequest("Token is required.");
+					return Unauthorized("Token is required.");
 				}
 
 				if (!(await JwtHelper.VerifyRefreshToken(model.Token, _userService)))
@@ -151,12 +150,12 @@ namespace ProductStoreApi.Controllers
 			catch (InvalidOperationException ex)
 			{
 				_logger.LogException(ex, nameof(Refresh), HttpContext.Request.Method.ToString());
-				return BadRequest("Invalid token.");
+				return Unauthorized("Invalid token.");
 			}
 			catch (ArgumentException ex)
 			{
 				_logger.LogException(ex, nameof(Refresh), HttpContext.Request.Method.ToString());
-				return BadRequest("Invalid token.");
+				return Unauthorized("Invalid token.");
 			}
 			catch (Exception ex)
 			{
