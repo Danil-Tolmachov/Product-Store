@@ -8,12 +8,12 @@ import {
   catchError,
   of,
 } from 'rxjs';
-import { IUser, IUserResponse } from '../interfaces/IUser';
-import { IOrder, IOrderResponse } from '../interfaces/IOrder';
 import environment from '../environments/environment';
 import IRegistrationModel from '../interfaces/models/IRegistrationModel';
 import TokenService from './token.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { IUser, IUserResponse } from '../interfaces/IUser';
+import { IOrder, IOrderResponse } from '../interfaces/IOrder';
 
 const url = `${environment.apiUrl}/auth`;
 
@@ -66,8 +66,7 @@ export default class UserService {
     const link = `${url}/user`;
     return this.http.get<IUserResponse>(link).pipe(
       map((userResponse) => UserService.adaptUser(userResponse)),
-      tap((user) => this.currentUserSubject.next(user)),
-      catchError((err) => of())
+      tap((user) => this.currentUserSubject.next(user))
     );
   }
 

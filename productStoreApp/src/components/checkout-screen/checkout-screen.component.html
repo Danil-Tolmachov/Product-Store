@@ -1,0 +1,12 @@
+<div *ngIf="isActivated" class="wrapper" [@fadeInOutAnimation]>
+  <div class="container">
+    <h2 class="header">Checkout</h2>
+    <div class="form">
+      @if (this.isAuthenticated) {
+        <app-authorized-checkout-form />
+      }
+    </div>
+  </div>
+
+  <button class="background" (click)="closeMessage()"></button>
+</div>
