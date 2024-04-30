@@ -1,36 +1,87 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
-import { IProduct, adaptProduct } from "../interfaces/IProduct";
+import { type Observable, map, BehaviorSubject, tap } from 'rxjs';
+import { type IProduct, type IProductResponse } from '../interfaces/IProduct';
+import { type ICategory } from '../interfaces/ICategory';
+import environment from '../environments/environment.development';
+import { IImageResponse } from '../interfaces/IImage';
+
+const url = environment.apiUrl;
+const urlImg = `${url}/image/product`;
 
 @Injectable({
-    providedIn: "root"
+  providedIn: 'root',
 })
-export class ProductService {
+export default class ProductService {
+  private productsSubject = new BehaviorSubject<IProduct[]>([]);
 
-    constructor(private http: HttpClient) { }
+  public products: Observable<IProduct[]> = this.productsSubject.asObservable();
 
-    getProducts(): Observable<IProduct[]> {
-        let link = this.getApiUrl() + "/product";
+  constructor(private readonly http: HttpClient) {}
 
-        return this.http.get<IProduct[]>(link).pipe(
-            map(response => response.map(product => adaptProduct(product, this.getProductImageApiUrl())))
-        );
-    }
+  /**
+   * Retrieves all products from the server.
+   * @returns An observable emitting an array of products.
+   */
+  getProducts(): Observable<IProduct[]> {
+    const link = `${url}/product`;
 
-    getProduct(id: number): Observable<IProduct> {
-        let link = this.getApiUrl() + `/product/${id}`;
+    return this.http.get<IProductResponse[]>(link).pipe(
+      map((response) =>
+        response.map((product) => ProductService.adaptProduct(product))
+      ),
+      tap((response) => {
+        this.productsSubject.next(response);
+      })
+    );
+  }
 
-        return this.http.get<IProduct>(link).pipe(
-            map(product => adaptProduct(product, this.getProductImageApiUrl()))
-        );
-    }
+  /**
+   * Retrieves a product by its ID from the server.
+   * @param id The ID of the product to retrieve.
+   * @returns An observable emitting the product with the specified ID.
+   */
+  getProduct(id: number): Observable<IProduct> {
+    const link = `${url}/product/${id}`;
 
-    private getApiUrl(): string {
-        return "https://localhost:7048/api";
-    }
+    return this.http
+      .get<IProductResponse>(link)
+      .pipe(map((product) => ProductService.adaptProduct(product)));
+  }
 
-    private getProductImageApiUrl(): string {
-        return "https://localhost:7048/api/image/product";
-    }
+  /**
+   * Adapts a product received from the server to the client-side model.
+   * @param apiProduct The product received from the server.
+   * @returns The adapted client-side product.
+   */
+  static adaptProduct(apiProduct: IProductResponse): IProduct {
+    const category: ICategory = {
+      id: apiProduct.category.id,
+      name: apiProduct.category.name,
+      items: [],
+    };
+
+    return {
+      id: apiProduct.id,
+      name: apiProduct.name,
+      price: apiProduct.price,
+      discount: apiProduct.discount,
+      unitMeasure: apiProduct.unitMeasure,
+      category,
+      description: apiProduct.description,
+      specifications: apiProduct.specifications,
+      imagePaths: (apiProduct.images ?? []).map((image) =>
+        this.adaptImageResponse(image)
+      ),
+    };
+  }
+
+  static adaptImageResponse(apiImage: IImageResponse) {
+    const convertedPath = `${urlImg}/${apiImage.path}`;
+
+    return {
+      path: convertedPath,
+      alt: apiImage.alt,
+    };
+  }
 }

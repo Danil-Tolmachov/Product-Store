@@ -1,13 +1,13 @@
 <div class="container">
-    <app-image-container [imageUrl]="item.product.imagePathes[0]" />
-    <div class="right">
-        <p>{{ item.product.name }}</p>
-        <div class="controls">
-            <p title="${{ item.product.price }}">Price: ${{ item.product.price }}</p>
-            <input type="number" value="{{ item.quantity }}">
-            <button>
-                <div class="pill">Delete</div>
-            </button>
-        </div>
+  <app-image-container [imageUrl]="item.product.imagePaths[0].path" />
+  <div class="right">
+    <p>{{ item.product.name }}</p>
+    <div class="controls">
+      <p title="${{ item.product.price }}">Price: ${{ item.product.price }}</p>
+      <input #quantityInput type="number" value="{{ item.quantity }}" (change)="onInputChange(quantityInput.value)" />
+      <button (click)="deleteButtonClick(item.product.id)">
+        <div class="pill">Delete</div>
+      </button>
     </div>
+  </div>
 </div>

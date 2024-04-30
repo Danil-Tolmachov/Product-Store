@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { type ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ControlsFilterBarComponent } from './controls-filter-bar.component';
+import ControlsFilterBarComponent from './controls-filter-bar.component';
 
 describe('ControlsFilterBarComponent', () => {
   let component: ControlsFilterBarComponent;
@@ -8,10 +8,9 @@ describe('ControlsFilterBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ControlsFilterBarComponent]
-    })
-    .compileComponents();
-    
+      imports: [ControlsFilterBarComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(ControlsFilterBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,40 +1,64 @@
-import { Component } from '@angular/core';
-import { ProductListComponent } from '../../components/product-list/product-list.component';
-import { IProduct } from '../../interfaces/IProduct';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ControlsFilterBarComponent } from '../../components/controls-filter-bar/controls-filter-bar.component';
-import { ProductService } from '../../services/product.service';
-import { ICategory } from '../../interfaces/ICategory';
-import { CategoryService } from '../../services/category.service';
+import { Observable, filter, switchMap, take } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AsyncPipe } from '@angular/common';
+import ProductListComponent from '../../components/product-list/product-list.component';
+import { type IProduct } from '../../interfaces/IProduct';
+import ControlsFilterBarComponent from '../../components/controls-filter-bar/controls-filter-bar.component';
+import ProductService from '../../services/product.service';
+import { type ICategory } from '../../interfaces/ICategory';
+import CategoryService from '../../services/category.service';
+import CartService from '../../services/cart.service';
+import UserService from '../../services/user.service';
 
+@UntilDestroy()
 @Component({
-    selector: 'app-home',
-    standalone: true,
-    imports: [ ProductListComponent,
-               ControlsFilterBarComponent ],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.scss'
+  selector: 'app-home',
+  standalone: true,
+  imports: [ProductListComponent, ControlsFilterBarComponent, AsyncPipe],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent {
-    title: string = 'Product Store';
-    productsList: IProduct[] = [];
-    categoriesList: ICategory[] = [];
+export default class HomeComponent implements OnInit {
+  title: string = 'Product Store';
 
-    constructor(private titleService: Title, private productService: ProductService, private categoryService: CategoryService) { 
-    }
+  categoriesList$: Observable<ICategory[]> | null = null;
 
-    ngOnInit(): void {
-        // Set Title
-        this.titleService.setTitle(this.title);
+  productsList$: Observable<IProduct[]> | null = null;
 
-        // Get products
-        this.productService.getProducts().subscribe(products => {
-            this.productsList = products;
-        });
+  constructor(
+    private readonly titleService: Title,
+    private readonly productService: ProductService,
+    private readonly categoryService: CategoryService,
+    private readonly cartService: CartService,
+    private readonly userService: UserService,
+    private readonly cd: ChangeDetectorRef
+  ) {}
 
-        // Get categories
-        this.categoryService.getCategories().subscribe(categories => {
-            this.categoriesList = categories;
-        });
-    }
+  ngOnInit(): void {
+    // Set Title
+    this.titleService.setTitle(this.title);
+
+    // Get products
+    this.productsList$ = this.productService.getProducts();
+
+    // Get categories
+    this.categoriesList$ = this.categoryService.getCategories();
+
+    this.userService.currentUser
+      .pipe(
+        untilDestroyed(this),
+        filter((user) => !!user),
+        take(1),
+        switchMap(() => this.cartService.getCart())
+      )
+      .subscribe();
+  }
 }

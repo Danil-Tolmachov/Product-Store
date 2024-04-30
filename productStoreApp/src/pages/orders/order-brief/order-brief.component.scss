@@ -1,0 +1,55 @@
+.container {
+  width: 500px;
+
+  padding: 10px;
+  margin: 20px;
+
+  border-radius: 3px;
+  background-color: white;
+  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.16);
+
+  user-select: text;
+}
+
+app-button {
+  height: 30px;
+  width: 60px;
+}
+
+hr {
+  border-color: #00000021;
+  border-radius: 2px;
+}
+
+table {
+  width: 100%;
+}
+
+.header {
+  margin-top: 0;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.margin-tb-20 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+th.quantity-column {
+  width: 80px;
+}
+
+th.product-column {
+  align-content: center;
+}
+
+th.unit-price-column {
+  width: 80px;
+}

@@ -1,0 +1,11 @@
+<form class="container" [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+  <div class="field">
+    <label for="comment">Leave order comment: </label>
+    <textarea type="text" id="comment" formControlName="comment"></textarea>
+  </div>
+
+  <hr />
+  <div class="controls-container">
+    <app-button type="submit">Submit</app-button>
+  </div>
+</form>

@@ -1,0 +1,5 @@
+<div class="container">
+  <ng-container *ngFor="let order of orders$ | async">
+    <app-order-brief [order]="order" />
+  </ng-container>
+</div>

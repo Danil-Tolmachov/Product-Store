@@ -1,35 +1,40 @@
+import { IImage, IImageResponse } from './IImage';
 import { ISpecification } from './ISpecification';
-import { ICategory } from './ICategory';
 
 export interface IProduct {
-    id: number;
-    name: string;
-    price: number;
-    discount: number;
-    unitMeasure: string;
+  id: number;
+  name: string;
+  price: number;
+  discount: number;
+  unitMeasure: string;
 
-    category: ICategory | null;
-    description: string;
-    specifications: ISpecification[];
-    imagePathes: string[];
+  category: ICategory | null;
+  description: string;
+  specifications: ISpecification[];
+  imagePaths: IImage[];
 }
 
-export function adaptProduct(apiProduct: any, imageBasePath: string): IProduct {
-    let category: ICategory = {
-        id: apiProduct.categoryId,
-        name: apiProduct.categoryName,
-        items: [],
-    }
+export interface IProductResponse {
+  id: number;
+  name: string;
+  price: number;
+  discount: number;
+  description: string;
+  unitMeasure: string;
 
-    return {
-        id: apiProduct.id,
-        name: apiProduct.name,
-        price: apiProduct.price,
-        discount: apiProduct.discount,
-        unitMeasure: apiProduct.unitMeasure,
-        category: category,
-        description: apiProduct.description,
-        specifications: apiProduct.specifications,
-        imagePathes: (apiProduct.imagePathes as string[] || []).map(path => imageBasePath + "/" + path),
-    };
+  category: ICategoryResponse;
+  specifications: ISpecification[];
+  images: IImageResponse[];
+}
+
+export interface ICategory {
+  id: number;
+  name: string;
+  items: IProduct[] | null;
+}
+
+export interface ICategoryResponse {
+  id: number;
+  name: string;
+  products: IProductResponse[] | null;
 }

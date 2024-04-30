@@ -1,1 +1,1 @@
-<app-product-list [productsList]="category.items" />
+<app-product-list [productsList]="(category | async)?.items!" />

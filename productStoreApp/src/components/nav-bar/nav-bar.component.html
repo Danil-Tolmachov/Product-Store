@@ -1,35 +1,34 @@
 <nav>
-    <ul>
-        @for (item of [
-        { title: 'About Us', link: '/about-us', styles: {
-            '--pill-accent': 'var(--french-violet)',
-        }},
-        { title: 'Delivery', link: '/delivery', styles: {
-            '--pill-accent': 'var(--french-violet)',
-        }},
-        { title: 'Home', link: '/home', styles: {
-            '--pill-accent': 'var(--french-violet)',
-        }},
-        ]; track item.title) {
-        <li class="nav-link-button">
-            <a [routerLink]=item.link>
-                <div routerLinkActive="pill-active" class="pill" [ngStyle]="item.styles">
-                    {{ item.title }}
-                </div>
-            </a>
-        </li>
-        }
-
-        <li class="nav-logo">
-            <a href="">Product Store</a>
-        </li>
-    </ul>
-    <button class="cart-button" (click)="cartButtonClick()">
-        <div [ngClass]="cartButtonClasses" style="--pill-accent: var(--french-violet)">
-            Cart
-        </div>
+  <div class="auth-controls-container">
+    <button class="nav-button" (click)="loginButtonClick()">
+      <p>
+        {{ (this.user$ | async)?.username ?? 'Login' }}
+      </p>
     </button>
-</nav>
-<app-cart-panel class="cart-panel">
+    <app-auth-dropdown />
+  </div>
 
-</app-cart-panel>
+  <ul>
+    @for (item of navButtons; track item.title) {
+      <li class="nav-link-button">
+        <a [routerLink]="item.link">
+          <div
+            routerLinkActive="pill-active"
+            class="pill"
+            [ngStyle]="item.styles"
+          >
+            {{ item.title }}
+          </div>
+        </a>
+      </li>
+    }
+
+    <li class="nav-logo">
+      <a routerLink="home">Product Store</a>
+    </li>
+  </ul>
+  <button class="nav-button" (click)="cartButtonClick()">
+    <p> Cart </p>
+  </button>
+</nav>
+<app-cart-panel class="cart-panel"> </app-cart-panel>
