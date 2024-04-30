@@ -1,21 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {
-  type Observable,
-  map,
-  tap,
-  BehaviorSubject,
-  catchError,
-  of,
-} from 'rxjs';
+import { type Observable, map, tap, BehaviorSubject } from 'rxjs';
 import environment from '../environments/environment';
 import IRegistrationModel from '../interfaces/models/IRegistrationModel';
 import TokenService from './token.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { IUser, IUserResponse } from '../interfaces/IUser';
 import { IOrder, IOrderResponse } from '../interfaces/IOrder';
+import { IProduct, IProductResponse } from '../interfaces/IProduct';
+import { ICategory } from '../interfaces/ICategory';
+import { IOrderDetail, IOrderDetailResponse } from '../interfaces/IOrderItem';
+import { IImageResponse } from '../interfaces/IImage';
 
 const url = `${environment.apiUrl}/auth`;
+const urlImg = `${url}/image/product`;
 
 @UntilDestroy()
 @Injectable({
@@ -181,9 +179,57 @@ export default class UserService {
       id: apiOrder.id,
       userComment: apiOrder.userComment,
       status: apiOrder.status,
-      userUsername: apiOrder.userUsername,
+      total: apiOrder.total,
       employeeId: apiOrder.employeeId,
-      details: apiOrder.details,
+      isCanceled: apiOrder.isCanceled,
+      isCompleted: apiOrder.isCompleted,
+      details: (apiOrder.details || []).map((detail) => {
+        return this.adaptDetail(detail);
+      }),
+    };
+  }
+
+  static adaptDetail(apiDetail: IOrderDetailResponse): IOrderDetail {
+    return {
+      unitPrice: apiDetail.unitPrice,
+      quantity: apiDetail.quantity,
+      product: this.adaptProduct(apiDetail.product),
+    };
+  }
+
+  /**
+   * Adapts a product received from the server to the client-side model.
+   * @param apiProduct The product received from the server.
+   * @returns The adapted client-side product.
+   */
+  static adaptProduct(apiProduct: IProductResponse): IProduct {
+    const category: ICategory = {
+      id: apiProduct.category.id,
+      name: apiProduct.category.name,
+      items: [],
+    };
+
+    return {
+      id: apiProduct.id,
+      name: apiProduct.name,
+      price: apiProduct.price,
+      discount: apiProduct.discount,
+      unitMeasure: apiProduct.unitMeasure,
+      category,
+      description: apiProduct.description,
+      specifications: apiProduct.specifications,
+      imagePaths: (apiProduct.images ?? []).map((image) =>
+        this.adaptImageResponse(image)
+      ),
+    };
+  }
+
+  static adaptImageResponse(apiImage: IImageResponse) {
+    const convertedPath = `${urlImg}/${apiImage.path}`;
+
+    return {
+      path: convertedPath,
+      alt: apiImage.alt,
     };
   }
 }

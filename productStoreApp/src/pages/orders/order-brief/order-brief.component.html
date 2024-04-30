@@ -1,0 +1,41 @@
+<div class="container">
+  <h3 class="header">Order - {{ order?.id }}</h3>
+
+  <hr />
+
+  <p><b>Status:</b> {{ order?.status }}</p>
+  @if (order?.userComment) {
+    <p><b>User comment:</b> {{ order?.userComment }} </p>
+  }
+
+  <hr />
+
+  <div class="items-list">
+    <table>
+      <thead>
+        <th class="quantity-column">Quantity</th>
+        <th class="product-column">Product</th>
+        <th class="unit-price-column">Unit price</th>
+      </thead>
+      @for (detail of order?.details; track detail.product.id) {
+        <tr>
+          <td class="center-text">
+            {{ detail.quantity }}
+          </td>
+          <td>
+            <a routerLink="/product/{{ detail.product.id }}">
+              {{ detail.product.name }}
+            </a>
+          </td>
+          <td class="center-text"> ${{ detail.unitPrice }} </td>
+        </tr>
+      }
+    </table>
+  </div>
+  <p class="margin-tb-20"><b>Total:</b> ${{ order?.total }}</p>
+  @if (!order?.isCanceled && !order?.isCompleted) {
+    <app-button (click)="order?.id ? cancelButtonClick(order?.id!) : null">
+      Cancel
+    </app-button>
+  }
+</div>
