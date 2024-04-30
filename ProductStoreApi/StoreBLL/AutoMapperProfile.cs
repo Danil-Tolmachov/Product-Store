@@ -43,14 +43,22 @@ namespace StoreBLL
 
 			CreateMap<Order, OrderModel>()
 				.ForMember(om => om.Status, o => o.MapFrom(x => x.Status.Name))
+				.ForMember(om => om.IsCompleted, o => o.MapFrom(x => x.Status.Id == StatusConfiguration.CompletedStatusId))
+				.ForMember(om => om.IsCanceled, o => o.MapFrom(x => x.Status.Id == StatusConfiguration.CanceledStatusId))
 				.ReverseMap();
 
 			CreateMap<OrderDetail, OrderDetailModel>()
 				.ForMember(dm => dm.OrderId, d => d.MapFrom(x => x.Order.Id))
 				.ForMember(dm => dm.ProductId, d => d.MapFrom(x => x.Product.Id))
 				.ForMember(dm => dm.Product, d => d.MapFrom(x => x.Product))
-				.ForMember(dm => dm.Order, d => d.MapFrom(x => x.Order))
-				.ReverseMap();
+				.ForMember(dm => dm.Order, d => d.MapFrom(x => x.Order));
+
+			CreateMap<OrderDetailModel, OrderDetail>()
+				.ForMember(d => d.Id, dm => dm.MapFrom(x => 0))
+				.ForMember(d => d.ProductId, dm => dm.MapFrom(x => x.ProductId))
+				.ForMember(d => d.OrderId, dm => dm.MapFrom(x => x.OrderId))
+				.ForMember(d => d.Product, dm => dm.Ignore())
+				.ForMember(d => d.Order, dm => dm.Ignore());
 
 			CreateMap<Person, PersonModel>()
 				.ReverseMap();
@@ -125,11 +133,12 @@ namespace StoreBLL
 				.ForMember(cd => cd.Type, cm => cm.MapFrom(x => x.Name));
 
 			CreateMap<OrderDetailModel, OrderDetailDto>()
-				.ForMember(od => od.Product, om => om.Ignore());
+				.ForMember(od => od.Product, om => om.MapFrom(x => x.Product));
 
 			CreateMap<OrderModel, OrderBriefDto>();
 
 			CreateMap<OrderModel, OrderDto>()
+				.ForMember(od => od.Total, om => om.MapFrom(x => x.Details.Select(y => y.UnitPrice * y.Quantity).Sum()))
 				.ForMember(od => od.Details, om => om.MapFrom(x => x.Details));
 
 			CreateMap<CartItemModel, CartItemDto>()

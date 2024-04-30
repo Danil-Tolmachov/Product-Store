@@ -187,6 +187,7 @@ namespace StoreDAL.Infrastructure.Data
 				new Status(1) { Name = "Waiting for approve" },
 				new Status(2) { Name = "In process" },
 				new Status(3) { Name = "Delivered" },
+				new Status(4) { Name = "Canceled" },
 			};
 		}
 

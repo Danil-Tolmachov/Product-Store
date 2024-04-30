@@ -11,7 +11,7 @@ namespace StoreDAL.Entities
 		public long UserId { get; set; }
 		public long EmployeeId { get; set; }
 		public long StatusId { get; set; }
-		public string UserComment { get; set; } = string.Empty;
+		public string? UserComment { get; set; }
 
 		public virtual User User { get; set; } = null!;
 		public virtual Employee Employee { get; set; } = null!;

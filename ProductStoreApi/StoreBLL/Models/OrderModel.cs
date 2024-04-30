@@ -14,6 +14,9 @@ namespace StoreBLL.Models
 
 		public long EmployeeId { get; set; }
 
+		public bool IsCanceled { get; set; }
+		public bool IsCompleted { get; set; }
+
 		public IEnumerable<OrderDetailModel> Details { get; set; } = new List<OrderDetailModel>();
 	}
 }

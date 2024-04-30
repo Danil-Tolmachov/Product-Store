@@ -17,6 +17,7 @@ namespace StoreDAL.Entities
 		public virtual Product Product { get; set; } = null!;
 		public virtual Order Order { get; set; } = null!;
 
+		public OrderDetail() : base(0) { }
 		public OrderDetail(long id) : base(id) { }
 	}
 }
