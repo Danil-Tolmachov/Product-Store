@@ -6,7 +6,7 @@ import { ISpecification } from '../../../interfaces/ISpecification';
   standalone: true,
   imports: [],
   templateUrl: './specifications-container.component.html',
-  styleUrl: './specifications-container.component.scss'
+  styleUrl: './specifications-container.component.scss',
 })
 export class SpecificationsContainerComponent {
   @Input() specifications: ISpecification[] = [];
