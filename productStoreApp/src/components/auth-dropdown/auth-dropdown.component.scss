@@ -7,10 +7,25 @@
   position: fixed;
 }
 
-ul {
+.close-trigger {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+
+  opacity: 0;
+
+  z-index: 9998;
+}
+
+.dropdown {
   width: 200px;
 
   display: flex;
+  position: relative;
   padding: 0;
   flex-direction: column;
 
@@ -18,6 +33,8 @@ ul {
 
   background-color: white;
   border-radius: 3px;
+
+  z-index: 10000;
 
   box-shadow: 1px 1px 2px 0px #00000029;
 }

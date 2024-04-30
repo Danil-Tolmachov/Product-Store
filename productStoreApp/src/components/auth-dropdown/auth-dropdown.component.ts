@@ -45,7 +45,7 @@ export default class AuthDropdownComponent implements OnInit {
     },
     {
       text: 'My Orders',
-      link: '#',
+      link: 'orders',
     },
   ];
 
