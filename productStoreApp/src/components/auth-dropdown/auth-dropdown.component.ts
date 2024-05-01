@@ -41,11 +41,11 @@ export default class AuthDropdownComponent implements OnInit {
   dropdownLinks: IDropdownLink[] = [
     {
       text: 'My Profile',
-      link: '#',
+      link: '/profile',
     },
     {
       text: 'My Orders',
-      link: 'orders',
+      link: '/orders',
     },
   ];
 

@@ -4,7 +4,6 @@ import { IOrder, IOrderResponse } from './IOrder';
 
 export interface IUser {
   id: number;
-  isActive: boolean;
   username: string;
   firstName: string;
   lastName: string;
@@ -17,7 +16,6 @@ export interface IUser {
 
 export interface IUserResponse {
   id: number;
-  isActive: boolean;
   username: string;
   password: never;
   firstName: string;

@@ -9,6 +9,7 @@ import AuthGuard from '../guards/auth.guard';
 import RegistrationComponent from '../pages/registration/registration.component';
 import { OrdersComponent } from '../pages/orders/orders.component';
 import UnAuthGuard from '../guards/unauth.guard';
+import { ProfileComponent } from '../pages/profile/profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect from root to '/home'
@@ -27,6 +28,11 @@ const routes: Routes = [
   {
     path: 'orders',
     component: OrdersComponent,
+    canActivate: [UnAuthGuard],
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
     canActivate: [UnAuthGuard],
   },
 ];

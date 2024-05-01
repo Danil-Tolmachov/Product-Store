@@ -1,0 +1,52 @@
+<app-text-panel>
+  <ng-container *ngIf="user$ | async as user">
+    <div class="container">
+      <h2 class="header">{{ user.username }}</h2>
+
+      <p><b>User discount:</b> {{ user.discount * 100 }}%</p>
+
+      @if (userForm != null) {
+        <form [formGroup]="userForm" (submit)="onSubmit()">
+          <div class="field">
+            <label for="firstName">First name: </label>
+            <input
+              type="text"
+              id="firstName"
+              formControlName="firstName"
+              value="{{ user.firstName }}"
+            />
+          </div>
+  
+          <div class="field">
+            <label for="lastName">Last name: </label>
+            <input
+              type="text"
+              id="lastName"
+              formControlName="lastName"
+              value="{{ user.lastName }}"
+            />
+          </div>
+  
+          <div class="field">
+            <label for="address">Address: </label>
+            <input
+              type="text"
+              id="address"
+              formControlName="address"
+              value="{{ user.address }}"
+            />
+          </div>
+  
+          <app-button type="submit">Update</app-button>
+        </form>
+      }
+
+      <h3>Contacts:</h3>
+      <div class="contacts">
+        @for (contact of user.contacts; track $index) {
+          <p>{{ contact.type }}: {{ contact.value }}</p>
+        }
+      </div>
+    </div>
+  </ng-container>
+</app-text-panel>

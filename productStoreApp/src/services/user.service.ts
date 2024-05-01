@@ -15,6 +15,20 @@ import { IImageResponse } from '../interfaces/IImage';
 const url = `${environment.apiUrl}/auth`;
 const urlImg = `${url}/image/product`;
 
+/**
+ * Interface representing a token response from the server.
+ */
+interface ITokenResponse {
+  token: string;
+  refreshToken: string;
+}
+
+interface IUpdateUserModel {
+  firstName: string;
+  lastName: string;
+  address: string | null;
+}
+
 @UntilDestroy()
 @Injectable({
   providedIn: 'root',
@@ -66,6 +80,12 @@ export default class UserService {
       map((userResponse) => UserService.adaptUser(userResponse)),
       tap((user) => this.currentUserSubject.next(user))
     );
+  }
+
+  updateUser(data: IUpdateUserModel): Observable<void> {
+    const link = `${url}/update`;
+
+    return this.http.put<void>(link, data);
   }
 
   /**
@@ -155,7 +175,6 @@ export default class UserService {
   private static adaptUser(apiUser: IUserResponse): IUser {
     return {
       id: apiUser.id,
-      isActive: apiUser.isActive,
       username: apiUser.username,
       firstName: apiUser.firstName,
       lastName: apiUser.lastName,
@@ -232,12 +251,4 @@ export default class UserService {
       alt: apiImage.alt,
     };
   }
-}
-
-/**
- * Interface representing a token response from the server.
- */
-interface ITokenResponse {
-  token: string;
-  refreshToken: string;
 }
