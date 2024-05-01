@@ -188,5 +188,46 @@ namespace ProductStoreApi.Controllers
 				throw;
 			}
 		}
+
+		[HttpPut("update")]
+		[Authorize]
+		[ProducesResponseType(typeof(string), 200)]
+		[ProducesResponseType(400)]
+		[ProducesResponseType(401)]
+		public async Task<IActionResult> UpdateUser(UpdateUserModel model)
+		{
+			_logger.LogRequest(nameof(UpdateUser), HttpContext.Request.Method.ToString());
+
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					return BadRequest(ModelState);
+				}
+
+				string? username = HttpContext.User.FindFirstValue("username");
+
+				if (username is null)
+				{
+					return Unauthorized();
+				}
+
+				var user = await _userService.GetByUsername(username);
+
+				if (user is null)
+				{
+					return Unauthorized();
+				}
+
+				await _userService.UpdateInfo(model, user.Id);
+
+				return Ok(new { message = "Update successful" });
+			}
+			catch (Exception ex)
+			{
+				_logger.LogException(ex, nameof(UpdateUser), HttpContext.Request.Method.ToString());
+				throw;
+			}
+		}
 	}
 }

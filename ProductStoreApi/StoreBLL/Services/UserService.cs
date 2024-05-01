@@ -136,5 +136,24 @@ namespace StoreBLL.Services
 			}
 
 		}
+
+		public async Task<bool> UpdateInfo(UpdateUserModel model, long userId)
+		{
+			try
+			{
+				User user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
+
+				user.Person.FirstName = model.FirstName;
+				user.Person.LastName = model.LastName;
+				user.Person.Address = model.Address;
+
+				await _unitOfWork.SaveAsync();
+				return true;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+		}
 	}
 }

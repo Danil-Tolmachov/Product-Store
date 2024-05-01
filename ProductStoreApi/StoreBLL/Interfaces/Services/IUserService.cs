@@ -15,5 +15,6 @@ namespace StoreBLL.Interfaces.Services
 		Task UpdateRefreshToken(string username, string token);
 
 		Task<bool> Register(RegisterModel model);
+		Task<bool> UpdateInfo(UpdateUserModel model, long userId);
 	}
 }
