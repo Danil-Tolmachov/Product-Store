@@ -1,12 +1,42 @@
 <form class="container" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
   <div class="field">
-    <label for="username">Username: </label>
+    @if (username.invalid && (username.dirty || username.touched)) {
+      <label class="alert-text" for="username">Username: </label>
+    } @else {
+      <label for="username">Username:</label>
+    }
+
     <input type="text" id="username" formControlName="username" />
+    <div
+      *ngIf="username.invalid && (username.dirty || username.touched)"
+      class="validator-alert"
+      [@fadeInOutAnimation]
+    >
+      <div *ngIf="username.errors?.['required']">Username is required.</div>
+      <div *ngIf="username.errors?.['minlength']">
+        Username must be at least 3 characters long.
+      </div>
+    </div>
   </div>
 
   <div class="field">
-    <label for="password">Password: </label>
+    @if (password.invalid && (password.dirty || password.touched)) {
+      <label class="alert-text" for="password"> Password: </label>
+    } @else {
+      <label for="password">Password: </label>
+    }
+
     <input type="password" id="password" formControlName="password" />
+    <div
+      *ngIf="password.invalid && (password.dirty || password.touched)"
+      class="validator-alert"
+      [@fadeInOutAnimation]
+    >
+      <div *ngIf="password.errors?.['required']">Password is required.</div>
+      <div *ngIf="password.errors?.['minlength']">
+        Password must be at least 6 characters long.
+      </div>
+    </div>
   </div>
 
   <hr />

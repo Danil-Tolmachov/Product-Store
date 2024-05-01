@@ -1,3 +1,5 @@
+@import '../../shared/variables.scss';
+
 .container {
   padding: 10px;
 }
@@ -37,4 +39,20 @@ app-button {
 
   margin: 20px;
   margin-left: 0px;
+}
+
+.alert-text {
+  color: $alert-text-color;
+}
+
+.validator-alert {
+  width: calc(100% - 8px);
+
+  margin-top: 10px;
+  padding: 4px;
+
+  color: $validator-alert-text-color;
+
+  background-color: $validator-alert-background-color;
+  border-radius: 3px;
 }

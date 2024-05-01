@@ -1,3 +1,5 @@
+@import '../../shared/variables.scss';
+
 .container {
   width: 200px;
 }
@@ -6,20 +8,17 @@
   display: flex;
   flex-direction: column;
 
-  width: 100%;
-
   margin-bottom: 10px;
 }
 
 .field label {
   margin: 5px;
-
-  font-weight: 300;
+  position: sticky;
+  font-weight: 400;
 }
 
 .field input {
   height: 30px;
-  width: 100%;
 
   border-radius: 3px;
 
@@ -40,4 +39,20 @@ app-button {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.alert-text {
+  color: $alert-text-color;
+}
+
+.validator-alert {
+  width: calc(100% - 8px);
+
+  margin-top: 10px;
+  padding: 4px;
+
+  color: $validator-alert-text-color;
+
+  background-color: $validator-alert-background-color;
+  border-radius: 3px;
 }

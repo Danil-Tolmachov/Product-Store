@@ -1,3 +1,5 @@
+@import '../../shared/variables.scss';
+
 .container {
   width: 200px;
 }
@@ -38,4 +40,20 @@ app-button {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.alert-text {
+  color: $alert-text-color;
+}
+
+.validator-alert {
+  width: calc(100% - 8px);
+
+  margin-top: 10px;
+  padding: 4px;
+
+  color: $validator-alert-text-color;
+
+  background-color: $validator-alert-background-color;
+  border-radius: 3px;
 }
