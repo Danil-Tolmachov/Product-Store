@@ -1,4 +1,4 @@
-<div class="product-item-brief">
+<div class="product-item-brief" [@fadeInOutAnimation]>
   <a routerLink="/product/{{ product.id }}">
     <p class="product-brief-id">{{ product.id }}</p>
     <app-image-container [imageUrl]="product.imagePaths[0].path" />

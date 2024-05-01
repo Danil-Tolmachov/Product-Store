@@ -1,2 +1,18 @@
-<img *ngIf="imageUrl" ngOptimizedImg [alt]="altText" width="400" height="400" priority="1" [ngSrc]="imageUrl" />
-<img *ngIf="!imageUrl" [alt]="altText" src="assets\no-pic.svg" class="no-pic" />
+<img
+  (load)="onLoaded()"
+  *ngIf="imageUrl"
+  ngOptimizedImg
+
+  width="400"
+  height="400"
+
+  [alt]="altText"
+  [ngSrc]="imageUrl"
+  [ngStyle]="{opacity: loaded ? 1 : 0}"
+/>
+<img
+  *ngIf="!imageUrl"
+  [alt]="altText"
+  src="assets\no-pic.svg"
+  class="no-pic"
+/>

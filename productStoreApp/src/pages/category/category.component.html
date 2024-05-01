@@ -1,1 +1,5 @@
-<app-product-list [productsList]="(category | async)?.items!" />
+@defer (when categorySignal()) {
+  <app-product-list [productsList]="categorySignal()?.items!" />
+} @placeholder {
+  <app-product-list-skeleton [skeletonProductsCount]="4" />
+}

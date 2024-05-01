@@ -1,0 +1,16 @@
+.app-product-list-skeleton {
+  width: 900px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.app-product-skeleton {
+  width: 217px;
+  height: 300px;
+  margin: 4px;
+
+  border-radius: 3px;
+  background-color: #d3d3d378;
+}

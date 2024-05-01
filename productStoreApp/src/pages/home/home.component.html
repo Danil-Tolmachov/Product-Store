@@ -1,2 +1,7 @@
-<app-controls-filter-bar [categories]="categoriesList$ | async" />
-<app-product-list [productsList]="productsList$ | async" />
+@defer (when categoriesListSignal() && productsListSignal()) {
+  <app-controls-filter-bar [categories]="categoriesListSignal()!" />
+  <app-product-list [productsList]="productsListSignal()!" />
+} @placeholder {
+  <div class="app-controls-filter-bar-skeleton"></div>
+  <app-product-list-skeleton [skeletonProductsCount]="8" />
+}

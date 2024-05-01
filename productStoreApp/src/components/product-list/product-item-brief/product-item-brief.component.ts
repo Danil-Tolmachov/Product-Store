@@ -6,6 +6,7 @@ import ImageContainerComponent from '../../image-container/image-container.compo
 import CartService from '../../../services/cart.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { take } from 'rxjs';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @UntilDestroy()
 @Component({
@@ -15,6 +16,15 @@ import { take } from 'rxjs';
   templateUrl: './product-item-brief.component.html',
   styleUrl: './product-item-brief.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('fadeInOutAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('0.2s', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [animate('0.2s', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export default class ProductItemBriefComponent {
   @Input() product: IProduct = {
