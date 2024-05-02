@@ -8,9 +8,6 @@ import {
   take,
   switchMap,
 } from 'rxjs';
-import environment from '../environments/environment';
-import IRegistrationModel from '../interfaces/models/IRegistrationModel';
-import TokenService from './token.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { IUser, IUserResponse } from '../interfaces/IUser';
 import { IOrder, IOrderResponse } from '../interfaces/IOrder';
@@ -18,6 +15,9 @@ import { IProduct, IProductResponse } from '../interfaces/IProduct';
 import { ICategory } from '../interfaces/ICategory';
 import { IOrderDetail, IOrderDetailResponse } from '../interfaces/IOrderItem';
 import { IImageResponse } from '../interfaces/IImage';
+import environment from '../environments/environment';
+import IRegistrationModel from '../interfaces/models/IRegistrationModel';
+import TokenService from './token.service';
 
 const url = `${environment.apiUrl}/auth`;
 const urlImg = `${url}/image/product`;

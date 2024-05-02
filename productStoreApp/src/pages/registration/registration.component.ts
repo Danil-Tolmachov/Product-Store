@@ -7,12 +7,12 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { CommonModule } from '@angular/common';
 import UserService from '../../services/user.service';
 import MessageService from '../../services/message.service';
 import LinkButtonComponent from '../../components/link-button/link-button.component';
 import ButtonComponent from '../../components/button/button.component';
-import { trigger, transition, style, animate } from '@angular/animations';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-registration',

@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import CartItemComponent from './cart-item/cart-item.component';
 import CartService from '../../../services/cart.service';
 import { ICart } from '../../../interfaces/ICart';
-import { CheckoutScreenService } from '../../../services/checkout-screen.service';
+import CheckoutScreenService from '../../../services/checkout-screen.service';
 
 @Component({
   selector: 'app-cart-panel',

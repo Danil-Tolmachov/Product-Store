@@ -16,6 +16,6 @@ import { Component, Input } from '@angular/core';
     ]),
   ],
 })
-export class ProductListSkeletonComponent {
+export default class ProductListSkeletonComponent {
   @Input() skeletonProductsCount: number = 8;
 }

@@ -12,7 +12,7 @@ import { type ICategory } from '../../interfaces/ICategory';
 import CategoryService from '../../services/category.service';
 import CartService from '../../services/cart.service';
 import UserService from '../../services/user.service';
-import { ProductListSkeletonComponent } from '../../components/product-list/product-list-skeleton/product-list-skeleton.component';
+import ProductListSkeletonComponent from '../../components/product-list/product-list-skeleton/product-list-skeleton.component';
 
 @UntilDestroy()
 @Component({

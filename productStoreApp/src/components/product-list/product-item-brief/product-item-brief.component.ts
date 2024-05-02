@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Host, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { type IProduct } from '../../../interfaces/IProduct';
-import ImageContainerComponent from '../../image-container/image-container.component';
-import CartService from '../../../services/cart.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { take } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { type IProduct } from '../../../interfaces/IProduct';
+import ImageContainerComponent from '../../image-container/image-container.component';
+import CartService from '../../../services/cart.service';
 
 @UntilDestroy()
 @Component({

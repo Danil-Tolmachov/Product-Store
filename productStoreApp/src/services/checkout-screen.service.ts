@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class CheckoutScreenService {
+export default class CheckoutScreenService {
   private isActiveSubject: Subject<null>;
 
   public isActive: Observable<null>;

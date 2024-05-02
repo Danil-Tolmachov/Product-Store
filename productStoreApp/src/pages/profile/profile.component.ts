@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import UserService from '../../services/user.service';
-import TextPanelComponent from '../../components/text-panel/text-panel.component';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -9,12 +7,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { take, tap } from 'rxjs';
-import ButtonComponent from '../../components/button/button.component';
-import MessageService from '../../services/message.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { take, tap } from 'rxjs';
+import ButtonComponent from '../../components/button/button.component';
+import MessageService from '../../services/message.service';
+import UserService from '../../services/user.service';
+import TextPanelComponent from '../../components/text-panel/text-panel.component';
 
 @UntilDestroy()
 @Component({
@@ -38,21 +38,21 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
     ]),
   ],
 })
-export class ProfileComponent implements OnInit {
+export default class ProfileComponent implements OnInit {
   user$ = this.userService.currentUser;
 
   userForm: FormGroup | null = null;
 
   get firstName() {
-    return this.userForm?.get("firstName")!;
+    return this.userForm?.get('firstName')!;
   }
 
   get lastName() {
-    return this.userForm?.get("lastName")!;
+    return this.userForm?.get('lastName')!;
   }
 
   get address() {
-    return this.userForm?.get("address")!;
+    return this.userForm?.get('address')!;
   }
 
   constructor(
@@ -114,14 +114,14 @@ export class ProfileComponent implements OnInit {
   }
 
   private ValidateHttpError(error: HttpErrorResponse): void {
-    if (error.status == 400) {
+    if (error.status === 400) {
       this.messageService.showMessage({
         header: 'Update Failed',
         message: ['Invalid input.'],
       });
     }
 
-    if (error.status == 401) {
+    if (error.status === 401) {
       this.messageService.showMessage({
         header: 'Update Failed',
         message: ['Authentication fail.'],

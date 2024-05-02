@@ -7,10 +7,10 @@ import {
   OnInit,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import UserService from '../../services/user.service';
-import { UntilDestroy } from '@ngneat/until-destroy';
-import CartService from '../../services/cart.service';
 import { tap } from 'rxjs';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import UserService from '../../services/user.service';
+import CartService from '../../services/cart.service';
 
 interface IDropdownLink {
   text: string;

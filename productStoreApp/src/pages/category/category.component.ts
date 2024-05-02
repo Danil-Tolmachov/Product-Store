@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { type ICategory } from '../../interfaces/ICategory';
-import ProductListComponent from '../../components/product-list/product-list.component';
-import ControlsFilterBarComponent from '../../components/controls-filter-bar/controls-filter-bar.component';
-import CategoryService from '../../services/category.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, map, switchMap, take, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ProductListSkeletonComponent } from '../../components/product-list/product-list-skeleton/product-list-skeleton.component';
+import { type ICategory } from '../../interfaces/ICategory';
+import ProductListComponent from '../../components/product-list/product-list.component';
+import ControlsFilterBarComponent from '../../components/controls-filter-bar/controls-filter-bar.component';
+import CategoryService from '../../services/category.service';
+import ProductListSkeletonComponent from '../../components/product-list/product-list-skeleton/product-list-skeleton.component';
 
 @UntilDestroy()
 @Component({

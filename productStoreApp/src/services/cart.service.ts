@@ -25,8 +25,7 @@ export default class CartService {
   constructor(
     private readonly http: HttpClient,
     private readonly userService: UserService
-  ) {
-  }
+  ) {}
 
   /**
    * Retrieves user's cart from the server.

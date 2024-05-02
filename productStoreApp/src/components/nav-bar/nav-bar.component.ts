@@ -3,12 +3,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { Observable, take, tap } from 'rxjs';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Observable, tap } from 'rxjs';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import CartPanelComponent from './cart-panel/cart-panel.component';
 import UserService from '../../services/user.service';
 import AuthDropdownComponent from '../auth-dropdown/auth-dropdown.component';
@@ -38,7 +37,7 @@ export default class NavBarComponent {
   cartPanelInstance: CartPanelComponent | null = null;
 
   user$: Observable<IUser | null> = this.userService.currentUser.pipe(
-    tap(() => this.cdr.markForCheck()),
+    tap(() => this.cdr.markForCheck())
   );
 
   navButtons: INavButton[] = [

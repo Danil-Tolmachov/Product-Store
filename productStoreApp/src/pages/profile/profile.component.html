@@ -5,7 +5,7 @@
 
       <p><b>User discount:</b> {{ user.discount * 100 }}%</p>
 
-      @if (userForm != null) {
+      @if (userForm !== null) {
         <form [formGroup]="userForm" (submit)="onSubmit()">
           <div class="field">
             @if (firstName.invalid && (firstName.dirty || firstName.touched)) {

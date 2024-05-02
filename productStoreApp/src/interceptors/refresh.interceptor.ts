@@ -15,7 +15,6 @@ import MessageService from '../services/message.service';
 @UntilDestroy()
 @Injectable()
 export default class RefreshInterceptor implements HttpInterceptor {
-
   constructor(private readonly injector: Injector) {}
 
   /**
@@ -59,7 +58,7 @@ export default class RefreshInterceptor implements HttpInterceptor {
     // Refresh if suddenly unauthorized
     return next.handle(req).pipe(
       catchError((error) => {
-        if (error.status == 401) {
+        if (error.status === 401) {
           return this.handle401Error(userService, messageService).pipe(
             switchMap(() => {
               return next.handle(req);
@@ -72,12 +71,15 @@ export default class RefreshInterceptor implements HttpInterceptor {
     );
   }
 
-  private handle401Error(userService: UserService, messageService: MessageService): Observable<IUser> {
+  private handle401Error(
+    userService: UserService,
+    messageService: MessageService
+  ): Observable<IUser> {
     return userService.refreshSession().pipe(
       untilDestroyed(this),
       catchError((error) => {
         // If the refresh token is also expired, log out the user
-        if (error.status == 401) {
+        if (error.status === 401) {
           messageService.showMessage({
             header: 'Expired session',
             message: ['Unauthorized'],

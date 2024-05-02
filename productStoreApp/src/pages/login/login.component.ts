@@ -9,12 +9,12 @@ import {
 import { HttpErrorResponse } from '@angular/common/http';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { take } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { trigger, transition, style, animate } from '@angular/animations';
 import UserService from '../../services/user.service';
 import MessageService from '../../services/message.service';
 import LinkButtonComponent from '../../components/link-button/link-button.component';
 import ButtonComponent from '../../components/button/button.component';
-import { CommonModule } from '@angular/common';
-import { trigger, transition, style, animate } from '@angular/animations';
 
 @UntilDestroy()
 @Component({

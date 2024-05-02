@@ -7,9 +7,9 @@ import CategoryComponent from '../pages/category/category.component';
 import LoginComponent from '../pages/login/login.component';
 import AuthGuard from '../guards/auth.guard';
 import RegistrationComponent from '../pages/registration/registration.component';
-import { OrdersComponent } from '../pages/orders/orders.component';
+import OrdersComponent from '../pages/orders/orders.component';
 import UnAuthGuard from '../guards/unauth.guard';
-import { ProfileComponent } from '../pages/profile/profile.component';
+import ProfileComponent from '../pages/profile/profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect from root to '/home'
