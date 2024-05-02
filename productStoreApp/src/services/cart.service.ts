@@ -26,9 +26,6 @@ export default class CartService {
     private readonly http: HttpClient,
     private readonly userService: UserService
   ) {
-    if (this.userService.checkAuthenticated()) {
-      this.getCart().pipe(untilDestroyed(this), take(1)).subscribe();
-    }
   }
 
   /**

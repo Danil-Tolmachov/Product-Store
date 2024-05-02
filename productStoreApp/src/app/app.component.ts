@@ -5,7 +5,6 @@ import NavBarComponent from '../components/nav-bar/nav-bar.component';
 import ProductItemBriefComponent from '../components/product-list/product-item-brief/product-item-brief.component';
 import FooterComponent from '../components/footer/footer.component';
 import MessageScreenComponent from '../components/message-screen/message-screen.component';
-import UserService from '../services/user.service';
 import { CheckoutScreenComponent } from '../components/checkout-screen/checkout-screen.component';
 
 @Component({
@@ -19,7 +18,7 @@ import { CheckoutScreenComponent } from '../components/checkout-screen/checkout-
     MessageScreenComponent,
     CheckoutScreenComponent,
   ],
-  providers: [HttpClientModule, UserService],
+  providers: [HttpClientModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

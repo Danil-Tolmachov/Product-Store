@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import ButtonComponent from '../../button/button.component';
 import { CheckoutScreenComponent } from '../checkout-screen.component';
 import OrderService from '../../../services/order.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { switchMap, take } from 'rxjs';
 import CartService from '../../../services/cart.service';
 

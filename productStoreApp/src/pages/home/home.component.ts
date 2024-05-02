@@ -31,12 +31,12 @@ import { ProductListSkeletonComponent } from '../../components/product-list/prod
 export default class HomeComponent implements OnInit {
   title: string = 'Product Store';
 
+  productsList$: Observable<IProduct[]> = this.productService.getProducts();
   categoriesList$: Observable<ICategory[]> =
     this.categoryService.getCategories();
-  categoriesListSignal = toSignal(this.categoriesList$);
 
-  productsList$: Observable<IProduct[]> = this.productService.getProducts();
   productsListSignal = toSignal(this.productsList$);
+  categoriesListSignal = toSignal(this.categoriesList$);
 
   constructor(
     private readonly titleService: Title,
@@ -50,6 +50,8 @@ export default class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userService.getUser().pipe(untilDestroyed(this), take(1)).subscribe();
+
     this.userService.currentUser
       .pipe(
         untilDestroyed(this),

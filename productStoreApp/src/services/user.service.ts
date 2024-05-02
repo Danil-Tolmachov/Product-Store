@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { type Observable, map, tap, BehaviorSubject } from 'rxjs';
+import {
+  type Observable,
+  map,
+  tap,
+  BehaviorSubject,
+  take,
+  switchMap,
+} from 'rxjs';
 import environment from '../environments/environment';
 import IRegistrationModel from '../interfaces/models/IRegistrationModel';
 import TokenService from './token.service';
@@ -42,11 +49,7 @@ export default class UserService {
   constructor(
     private readonly http: HttpClient,
     private readonly tokenService: TokenService
-  ) {
-    if (this.checkAuthenticated()) {
-      this.getUser().pipe(untilDestroyed(this)).subscribe();
-    }
-  }
+  ) {}
 
   /**
    * Checks if the user is authenticated based on the presence of tokens and their expiration.
@@ -100,9 +103,7 @@ export default class UserService {
         this.tokenService.setTokens(response.token, response.refreshToken);
       }),
       tap(() => {
-        this.getUser().subscribe((user) => {
-          this.currentUserSubject.next(user);
-        });
+        this.getUser().pipe(untilDestroyed(this), take(1)).subscribe();
       })
     );
   }
@@ -119,14 +120,13 @@ export default class UserService {
    * Refreshes the user session tokens and updates the current user from the server.
    * @returns An observable emitting void.
    */
-  refreshSession(): Observable<void> {
+  refreshSession(): Observable<IUser> {
     return this.getRefreshedTokens().pipe(
+      untilDestroyed(this),
       map((response) => {
         this.tokenService.setTokens(response.token, response.refreshToken);
       }),
-      tap(() =>
-        this.getUser().subscribe((user) => this.currentUserSubject.next(user))
-      )
+      switchMap(() => this.getUser())
     );
   }
 

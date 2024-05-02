@@ -30,14 +30,16 @@ import { IUser } from '../../interfaces/IUser';
   styleUrl: './nav-bar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class NavBarComponent implements OnInit {
+export default class NavBarComponent {
   @ViewChild(AuthDropdownComponent)
   authDropdownInstance: AuthDropdownComponent | null = null;
 
   @ViewChild(CartPanelComponent)
   cartPanelInstance: CartPanelComponent | null = null;
 
-  user$: Observable<IUser | null> = this.userService.currentUser;
+  user$: Observable<IUser | null> = this.userService.currentUser.pipe(
+    tap(() => this.cdr.markForCheck()),
+  );
 
   navButtons: INavButton[] = [
     {
@@ -68,17 +70,6 @@ export default class NavBarComponent implements OnInit {
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef
   ) {}
-
-  ngOnInit(): void {
-    // Get user
-    if (this.userService.checkAuthenticated()) {
-      this.userService.getUser().pipe(
-        take(1),
-        untilDestroyed(this),
-        tap(() => this.cdr.markForCheck())
-      );
-    }
-  }
 
   loginButtonClick(): void {
     if (this.userService.checkAuthenticated()) {

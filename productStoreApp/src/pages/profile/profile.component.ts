@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import UserService from '../../services/user.service';
 import TextPanelComponent from '../../components/text-panel/text-panel.component';
 import { CommonModule } from '@angular/common';
@@ -9,12 +9,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { tap } from 'rxjs';
+import { take, tap } from 'rxjs';
 import ButtonComponent from '../../components/button/button.component';
 import MessageService from '../../services/message.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -36,7 +38,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ]),
   ],
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   user$ = this.userService.currentUser;
 
   userForm: FormGroup | null = null;
@@ -77,6 +79,10 @@ export class ProfileComponent {
         })
       )
       .subscribe();
+  }
+
+  ngOnInit(): void {
+    this.userService.getUser().pipe(untilDestroyed(this), take(1)).subscribe();
   }
 
   onSubmit(): void {
