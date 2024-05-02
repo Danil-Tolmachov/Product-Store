@@ -61,6 +61,7 @@ namespace ProductStoreApi
 							ValidateLifetime = true,
 							IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
 							ValidateIssuerSigningKey = true,
+							ClockSkew = TimeSpan.FromSeconds(60),
 						};
 					});
 		}

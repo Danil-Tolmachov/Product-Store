@@ -8,7 +8,7 @@ namespace ProductStoreApi.Authentication
 		public const string ISSUER = "https://localhost:7048/";
 		public const string AUDIENCE = "https://localhost:4200/";
 
-		public static readonly TimeSpan TOKEN_LIFETIME = TimeSpan.FromMinutes(10);
+		public static readonly TimeSpan TOKEN_LIFETIME = TimeSpan.FromMinutes(8);
 		public static readonly TimeSpan REFRESH_LIFETIME = TimeSpan.FromDays(30);
 
 		const string KEY = "This is my temporary secret key, don't use me!!!";
