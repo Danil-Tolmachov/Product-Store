@@ -8,27 +8,58 @@
     <app-auth-dropdown />
   </div>
 
-  <ul>
-    @for (item of navButtons; track item.title) {
-      <li class="nav-link-button">
-        <a [routerLink]="item.link">
-          <div
-            routerLinkActive="pill-active"
-            class="pill"
-            [ngStyle]="item.styles"
-          >
-            {{ item.title }}
-          </div>
-        </a>
-      </li>
-    }
+  <div class="nav-links-container">
+    <a class="logo" routerLink="home">Product Store</a>
 
-    <li class="nav-logo">
-      <a routerLink="home">Product Store</a>
-    </li>
-  </ul>
+    @if (isMobile) {
+      <button
+        *ngIf="isMobile"
+        class="mobile-links-dropdown-button"
+        (click)="mobileDropdownLinksButton()"
+      >
+        <div class="background">
+          <img src="assets\right-arrow.png" alt="Pages dropdown button" />
+        </div>
+      </button>
+    } @else {
+      <ul class="nav-links">
+        @for (item of navButtons; track item.title) {
+          <li class="nav-link-button">
+            <a [routerLink]="item.link">
+              <div
+                routerLinkActive="pill-active"
+                class="pill"
+                [ngStyle]="item.styles"
+              >
+                {{ item.title }}
+              </div>
+            </a>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
   <button class="nav-button" (click)="cartButtonClick()">
     <p> Cart </p>
   </button>
 </nav>
+
+<div *ngIf="isMobileLinksDropdownActive" class="nav-links-panel">
+  <ul class="nav-links mobile">
+    @for (item of navButtons; track item.title) {
+      <li class="nav-link-button mobile">
+        <a
+          [routerLink]="item.link"
+          (click)="isMobileLinksDropdownActive = false"
+        >
+          <p routerLinkActive="active">
+            {{ item.title }}
+          </p>
+        </a>
+      </li>
+    }
+  </ul>
+</div>
+
 <app-cart-panel class="cart-panel"> </app-cart-panel>
