@@ -10,11 +10,11 @@ import CartService from '../../../services/cart.service';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-product-item-brief',
+  selector: 'app-product-card',
   standalone: true,
   imports: [CommonModule, RouterLink, ImageContainerComponent],
-  templateUrl: './product-item-brief.component.html',
-  styleUrl: './product-item-brief.component.scss',
+  templateUrl: './product-card.component.html',
+  styleUrl: './product-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('fadeInOutAnimation', [
@@ -26,7 +26,7 @@ import CartService from '../../../services/cart.service';
     ]),
   ],
 })
-export default class ProductItemBriefComponent {
+export default class ProductCardComponent {
   @Input() product: IProduct = {
     id: 0,
     name: 'null',

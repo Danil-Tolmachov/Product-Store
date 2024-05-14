@@ -1,9 +1,10 @@
 .app-product-list-skeleton {
-  width: 900px;
+  max-width: 900px;
 
   display: flex;
+
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .app-product-skeleton {
