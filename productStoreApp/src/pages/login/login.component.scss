@@ -1,5 +1,10 @@
 @import '../../shared/variables.scss';
 
+:host {
+  display: flex;
+  justify-content: center;
+}
+
 .container {
   width: 200px;
 }
@@ -42,7 +47,7 @@ app-button {
 }
 
 .alert-text {
-  color: $alert-text-color;
+  color: $alert-text-color !important;
 }
 
 .validator-alert {
@@ -55,4 +60,15 @@ app-button {
 
   background-color: $validator-alert-background-color;
   border-radius: 3px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .field label {
+    color: $dark-mode-secondary-font-color;
+  }
+
+  .field input {
+    color: $dark-mode-main-font-color;
+    background-color: $dark-mode-foreground-color;
+  }
 }

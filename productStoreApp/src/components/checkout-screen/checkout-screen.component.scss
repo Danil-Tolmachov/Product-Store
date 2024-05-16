@@ -1,3 +1,5 @@
+@import '../../shared/variables.scss';
+
 $box-radius: 3px;
 $box-padding: 7px;
 
@@ -72,4 +74,20 @@ $box-padding: 7px;
 
 .form {
   padding: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    color: $dark-mode-main-font-color;
+    background-color: $dark-mode-foreground-color;
+  }
+
+  .container {
+    color: $dark-mode-secondary-font-color;
+    background-color: $dark-mode-background-color;
+  }
+
+  .text {
+    color: $dark-mode-main-font-color;
+  }
 }

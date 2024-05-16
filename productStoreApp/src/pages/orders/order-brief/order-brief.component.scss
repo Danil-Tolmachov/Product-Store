@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import '../../../shared/variables.scss';
+
 .container {
   width: 500px;
 
@@ -5,7 +8,7 @@
   margin: 20px;
 
   border-radius: 3px;
-  background-color: white;
+  background-color: $light-mode-foreground-color;
   box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.16);
 
   user-select: text;
@@ -52,4 +55,61 @@ th.product-column {
 
 th.unit-price-column {
   width: 80px;
+}
+
+.finished {
+  opacity: 0.5;
+}
+
+.cancel {
+  width: 60px;
+  height: 30px;
+
+  box-sizing: border-box;
+  transition:
+    opacity 0.2s ease-in,
+    top 0.2s ease-in;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+
+  font-size: 0.75rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+
+  padding: 0 8px;
+
+  position: relative;
+
+  text-align: center;
+  top: 0;
+  vertical-align: top;
+  white-space: nowrap;
+
+  background-color: #d8d8d8;
+}
+
+.cancel:hover {
+  opacity: 0.8;
+}
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    color: $dark-mode-main-font-color;
+  }
+
+  table {
+    color: $dark-mode-main-font-color;
+  }
+
+  .container {
+    background-color: $dark-mode-foreground-color;
+  }
+
+  .cancel {
+    color: $dark-mode-secondary-font-color;
+    background-color: $dark-mode-background-color;
+  }
 }

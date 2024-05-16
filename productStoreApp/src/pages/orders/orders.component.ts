@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, take } from 'rxjs';
+import { Observable, map, take } from 'rxjs';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import OrderService from '../../services/order.service';
@@ -16,7 +16,9 @@ import { IOrder } from '../../interfaces/IOrder';
   styleUrl: './orders.component.scss',
 })
 export default class OrdersComponent implements OnInit {
-  orders$: Observable<IOrder[] | null> = this.orderService.orders;
+  orders$: Observable<IOrder[] | null> = this.orderService.orders.pipe(
+    map((orders) => orders?.reverse() ?? [])
+  );
 
   constructor(
     private readonly orderService: OrderService,

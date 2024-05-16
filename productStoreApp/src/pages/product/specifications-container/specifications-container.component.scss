@@ -1,8 +1,13 @@
+@import '../../../shared/variables.scss';
+
 .container {
   width: 900px;
 
-  background-color: white;
+  border-radius: 3px;
+  background-color: $light-mode-foreground-color;
   box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.17);
+
+  user-select: text;
 }
 
 table {
@@ -41,4 +46,18 @@ caption {
   font-weight: 400;
   font-style: normal;
   text-align: left;
+}
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    background-color: $dark-mode-foreground-color;
+  }
+
+  caption {
+    color: $dark-mode-main-font-color;
+  }
+
+  td {
+    color: $dark-mode-main-font-color;
+  }
 }

@@ -11,10 +11,10 @@ nav {
   left: 0;
 
   height: $nav-height;
-  width: calc(100vw - $nav-padding * 2);
+  width: calc(100% - $nav-padding * 2);
   padding: $nav-padding;
 
-  background-color: white;
+  background-color: $light-mode-foreground-color;
   z-index: 10000;
 
   box-shadow: 0px -2px 5px black;
@@ -121,7 +121,7 @@ a {
 
   height: 100%;
 
-  --pill-accent: var(--hot-red);
+  --pill-accent: #{$light-mode-pill-accents};
   background: color-mix(in srgb, var(--pill-accent) 5%, transparent);
   color: var(--pill-accent);
 
@@ -179,8 +179,8 @@ a {
   height: calc(100% - 12px * 2);
 
   padding: 12px;
- 
-  border-radius: 4px; 
+
+  border-radius: 4px;
   transition: 0.3s;
 }
 
@@ -230,7 +230,7 @@ a {
 }
 
 .nav-links.mobile a:hover p {
-  background-color: lightgray;
+  background-color: $light-mode-foreground-color;
 }
 
 .nav-links.mobile p {
@@ -255,6 +255,45 @@ a {
   top: calc($nav-height-mobile + $nav-padding * 2);
   left: 0;
 
-  background-color: whitesmoke;
+  background-color: $light-mode-background-color;
   z-index: 9999;
+}
+
+@media (prefers-color-scheme: dark) {
+  nav {
+    background-color: $dark-mode-foreground-color;
+  }
+
+  .logo {
+    color: $dark-mode-main-font-color;
+  }
+
+  .pill {
+    --pill-accent: #{$dark-mode-pill-accent};
+    background: color-mix(in srgb, var(--pill-accent) 8%, transparent);
+  }
+
+  .pill:hover {
+    background: color-mix(in srgb, var(--pill-accent) 25%, transparent);
+  }
+
+  .pill-active {
+    background: color-mix(in srgb, var(--pill-accent) 25%, transparent);
+  }
+
+  .nav-links-panel {
+    background-color: $dark-mode-background-color;
+  }
+
+  .nav-links.mobile p {
+    color: $dark-mode-secondary-font-color;
+  }
+
+  .nav-links.mobile a:hover p {
+    background-color: $dark-mode-foreground-color;
+  }
+
+  .nav-button > p:hover {
+    background: rgba(53, 53, 53, 0.7);
+  }
 }

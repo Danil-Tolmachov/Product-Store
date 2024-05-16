@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import '../../shared/variables.scss';
 
 $bottom-height: 45px;
 
@@ -26,6 +27,8 @@ $bottom-height: 45px;
 
   display: flex;
   flex-direction: column;
+
+  user-select: text;
 }
 
 .product-name {
@@ -36,6 +39,8 @@ $bottom-height: 45px;
 
   margin-top: 10px;
   margin-bottom: 2px;
+
+  color: $light-mode-main-font-color;
 
   overflow-wrap: break-word;
 }
@@ -89,16 +94,16 @@ $bottom-height: 45px;
 
 .quantity-input {
   width: 70px;
+
   margin-right: 5px;
   border-width: 1px;
   border-color: rgba(136, 6, 206, 0.1490196078);
+
+  text-align: right;
+  font-size: 1rem;
+
   border-radius: 3px;
   background-color: whitesmoke;
-}
-
-app-button {
-  width: 200px;
-  height: 100%;
 }
 
 hr {
@@ -114,4 +119,72 @@ hr {
   overflow-y: auto;
   overflow-wrap: break-word;
   text-wrap: wrap;
+}
+
+@media (prefers-color-scheme: dark) {
+  .additional-info {
+    color: $dark-mode-special-font-color
+  }
+
+  .container {
+    background-color: $dark-mode-foreground-color;
+  }
+
+  .product-name {
+    color: $dark-mode-main-font-color;
+  }
+
+  .price {
+    color: $dark-mode-special-font-color;
+  }
+
+  .product-description {
+    color: $dark-mode-secondary-font-color;
+  }
+
+  .quantity-input {
+    color: $dark-mode-secondary-font-color;
+    background-color: $dark-mode-background-color;
+  }
+}
+
+.add-button {
+  width: 200px;
+  height: 100%;
+
+  box-sizing: border-box;
+  transition:
+    opacity 0.2s ease-in,
+    top 0.2s ease-in;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+
+  padding: 0 8px;
+
+  position: relative;
+
+  text-align: center;
+  top: 0;
+  vertical-align: top;
+  white-space: nowrap;
+
+  background-color: #d8d8d8;
+}
+
+.add-button:hover {
+  opacity: 0.8;
+}
+
+@media (prefers-color-scheme: dark) {
+  .add-button {
+    color: $dark-mode-main-font-color;
+    background-color: $dark-mode-background-color;
+  }
 }

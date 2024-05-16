@@ -1,8 +1,28 @@
-$alert-text-color: #ff0000;
-$validator-alert-text-color: #c73636;
+$alert-text-color: rgba(243, 134, 134, 0.76);
+$validator-alert-text-color: #702e2e;
 $validator-alert-background-color: #f38686c2;
 
 
 $nav-height: 40px;
 $nav-height-mobile: 40px;
 $nav-padding: 8px;
+
+
+$light-mode-pill-accents: var(--french-violet);
+$dark-mode-pill-accent: #bd5cf5;
+
+
+$dark-mode-background-color: #292929;
+$dark-mode-foreground-color: #3f3f3f;
+
+$light-mode-background-color: whitesmoke;
+$light-mode-foreground-color: white;
+
+
+$dark-mode-main-font-color: whitesmoke;
+$dark-mode-secondary-font-color: gray;
+$dark-mode-special-font-color: #a800ff;
+
+$light-mode-main-font-color: black;
+$light-mode-secondary-font-color: lightgray;
+$light-mode-special-font-color: var(--french-violet);

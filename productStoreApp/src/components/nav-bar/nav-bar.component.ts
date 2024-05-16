@@ -53,23 +53,17 @@ export default class NavBarComponent implements OnInit {
     {
       title: 'About Us',
       link: '/about-us',
-      styles: {
-        '--pill-accent': 'var(--french-violet)',
-      },
+      styles: {},
     },
     {
       title: 'Delivery',
       link: '/delivery',
-      styles: {
-        '--pill-accent': 'var(--french-violet)',
-      },
+      styles: {},
     },
     {
       title: 'Home',
       link: '/home',
-      styles: {
-        '--pill-accent': 'var(--french-violet)',
-      },
+      styles: {},
     },
   ];
 
