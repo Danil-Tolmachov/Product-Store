@@ -6,37 +6,44 @@ using System.Security.Claims;
 
 namespace ProductStoreApi.Authentication
 {
-	public static class JwtHelper
+	public class JwtHelper
 	{
-		public static string GetAccessToken(string username)
+		private readonly AuthOptions _authOptions;
+
+		public JwtHelper(AuthOptions options)
+		{
+			_authOptions = options;
+		}
+
+		public string GetAccessToken(string username)
 		{
 			var claims = new List<Claim> { new Claim("username", username) };
 			var jwt = new JwtSecurityToken(
-					issuer: AuthOptions.ISSUER,
-					audience: AuthOptions.AUDIENCE,
+					issuer: _authOptions.ISSUER,
+					audience: _authOptions.AUDIENCE,
 					claims: claims,
-					expires: DateTime.UtcNow.Add(AuthOptions.TOKEN_LIFETIME),
-					signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+					expires: DateTime.UtcNow.Add(_authOptions.TOKEN_LIFETIME),
+					signingCredentials: new SigningCredentials(_authOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
 			string token = new JwtSecurityTokenHandler().WriteToken(jwt);
 			return token;
 		}
 
-		public static string GetRefreshToken(string username)
+		public string GetRefreshToken(string username)
 		{
 			var claims = new List<Claim> { new Claim("refresh", username) };
 			var jwt = new JwtSecurityToken(
-					issuer: AuthOptions.ISSUER,
-					audience: AuthOptions.AUDIENCE,
+					issuer: _authOptions.ISSUER,
+					audience: _authOptions.AUDIENCE,
 					claims: claims,
-					expires: DateTime.UtcNow.Add(AuthOptions.REFRESH_LIFETIME),
-					signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+					expires: DateTime.UtcNow.Add(_authOptions.REFRESH_LIFETIME),
+					signingCredentials: new SigningCredentials(_authOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
 			string token = new JwtSecurityTokenHandler().WriteToken(jwt);
 			return token;
 		}
 
-		public static async Task<UserModel> GetUser(string jwt, IUserService userService)
+		public async Task<UserModel> GetUser(string jwt, IUserService userService)
 		{
 			JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 			JwtSecurityToken token = tokenHandler.ReadJwtToken(jwt);
@@ -54,7 +61,7 @@ namespace ProductStoreApi.Authentication
 			return user;
 		}
 
-		public static async Task<UserModel> GetUserFromRefresh(string refresh, IUserService userService)
+		public async Task<UserModel> GetUserFromRefresh(string refresh, IUserService userService)
 		{
 			JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 			JwtSecurityToken token = tokenHandler.ReadJwtToken(refresh);
@@ -72,7 +79,7 @@ namespace ProductStoreApi.Authentication
 			return user;
 		}
 
-		public static async Task<bool> VerifyRefreshToken(string jwt, IUserService userService)
+		public async Task<bool> VerifyRefreshToken(string jwt, IUserService userService)
 		{
 			try
 			{

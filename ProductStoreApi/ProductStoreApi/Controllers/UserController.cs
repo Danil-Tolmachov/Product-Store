@@ -18,12 +18,14 @@ namespace ProductStoreApi.Controllers
 		private readonly ILogger<UserController> _logger;
 		private readonly IMapper _mapper;
 		private readonly IUserService _userService;
+		private readonly JwtHelper _jwtHelper;
 
-		public UserController(ILogger<UserController> logger, IUserService userService, IMapper mapper)
+		public UserController(ILogger<UserController> logger, IUserService userService, IMapper mapper, JwtHelper jwtHelper)
 		{
 			_logger = logger;
 			_mapper = mapper;
 			_userService = userService;
+			_jwtHelper = jwtHelper;
 		}
 
 
@@ -38,7 +40,7 @@ namespace ProductStoreApi.Controllers
 
 			try
 			{
-				return Ok();
+				return Ok(new { message = "User is Authorized!" });
 			}
 			catch (Exception ex)
 			{
@@ -85,8 +87,8 @@ namespace ProductStoreApi.Controllers
 					return Unauthorized("Invalid credentals.");
 				}
 
-				string token = JwtHelper.GetAccessToken(user.Username);
-				string refreshToken = JwtHelper.GetRefreshToken(user.Username);
+				string token = _jwtHelper.GetAccessToken(user.Username);
+				string refreshToken = _jwtHelper.GetRefreshToken(user.Username);
 
 				// Attach refresh token to user
 				await _userService.UpdateRefreshToken(user.Username, refreshToken);
@@ -114,15 +116,15 @@ namespace ProductStoreApi.Controllers
 					return Unauthorized("Token is required.");
 				}
 
-				if (!(await JwtHelper.VerifyRefreshToken(model.Token, _userService)))
+				if (!(await _jwtHelper.VerifyRefreshToken(model.Token, _userService)))
 				{
 					return Unauthorized("Invalid refresh token.");
 				}
 
-				UserModel user = await JwtHelper.GetUserFromRefresh(model.Token, _userService);
+				UserModel user = await _jwtHelper.GetUserFromRefresh(model.Token, _userService);
 
-				string token = JwtHelper.GetAccessToken(user.Username);
-				string refreshToken = JwtHelper.GetRefreshToken(user.Username);
+				string token = _jwtHelper.GetAccessToken(user.Username);
+				string refreshToken = _jwtHelper.GetRefreshToken(user.Username);
 
 				// Attach refresh token to user
 				await _userService.UpdateRefreshToken(user.Username, refreshToken);

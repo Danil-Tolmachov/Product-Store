@@ -40,6 +40,10 @@ namespace ProductStoreApi
 				options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
 			});
 
+			// Add Auth services
+			services.AddSingleton<AuthOptions>();
+			services.AddSingleton<JwtHelper>();
+
 			// Add PasswordHasher for UserService
 			services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
@@ -56,14 +60,16 @@ namespace ProductStoreApi
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 					.AddJwtBearer(options =>
 					{
+						var authOptions = new AuthOptions(Configuration);
+
 						options.TokenValidationParameters = new TokenValidationParameters
 						{
 							ValidateIssuer = true,
-							ValidIssuer = AuthOptions.ISSUER,
+							ValidIssuer = authOptions.ISSUER,
 							ValidateAudience = true,
-							ValidAudience = AuthOptions.AUDIENCE,
+							ValidAudience = authOptions.AUDIENCE,
 							ValidateLifetime = true,
-							IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+							IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
 							ValidateIssuerSigningKey = true,
 							ClockSkew = TimeSpan.FromSeconds(60),
 						};

@@ -3,16 +3,40 @@ using System.Text;
 
 namespace ProductStoreApi.Authentication
 {
-	public static class AuthOptions
+	public class AuthOptions
 	{
-		public const string ISSUER = "https://localhost:7048/";
-		public const string AUDIENCE = "https://localhost:4200/";
+		public readonly string ISSUER = string.Empty;
+		public readonly string AUDIENCE = string.Empty;
 
-		public static readonly TimeSpan TOKEN_LIFETIME = TimeSpan.FromMinutes(8);
-		public static readonly TimeSpan REFRESH_LIFETIME = TimeSpan.FromDays(30);
+		public readonly TimeSpan TOKEN_LIFETIME = TimeSpan.FromMinutes(8);
+		public readonly TimeSpan REFRESH_LIFETIME = TimeSpan.FromDays(30);
 
-		const string KEY = "This is my temporary secret key, don't use me!!!";
-		public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
-			new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
+		private readonly string KEY = "This is my temporary secret key, don't use me!!!";
+
+		public AuthOptions(IConfiguration configuration)
+		{
+			IConfigurationSection auth = configuration.GetSection("Auth");
+
+			ISSUER = auth.GetValue<string>("JwtIssuer") ?? string.Empty;
+			AUDIENCE = auth.GetValue<string>("JwtAudience") ?? string.Empty;
+			KEY = auth.GetValue<string>("SecretKey") ?? string.Empty;
+
+			int TokenLifetimeMinutes = auth.GetValue<int>("TokenLifetime");
+			if (TokenLifetimeMinutes > 0)
+			{
+				TOKEN_LIFETIME = TimeSpan.FromMinutes(TokenLifetimeMinutes);
+			}
+
+			int RefreshTokenLifetimeDays = auth.GetValue<int>("RefreshTokenLifetime");
+			if (RefreshTokenLifetimeDays > 0)
+			{
+				REFRESH_LIFETIME = TimeSpan.FromDays(RefreshTokenLifetimeDays);
+			}
+		}
+
+		public SymmetricSecurityKey GetSymmetricSecurityKey()
+		{
+			return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
+		}
 	}
 }
