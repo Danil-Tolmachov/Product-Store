@@ -2,28 +2,27 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductStoreApi.Extensions;
+using ProductStoreApi.Filters;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
 using StoreBLL.Models.Dto;
 using StoreBLL.Models.Extra;
-using System.Security.Claims;
 
 namespace ProductStoreApi.Controllers
 {
 	[ApiController]
 	[Route("api/cart")]
+	[ServiceFilter(typeof(FetchUserFilter))]
 	public class CartController : ControllerBase
 	{
 		private readonly ILogger<CartController> _logger;
 		private readonly ICartService _cartService;
-		private readonly IUserService _userService;
 		private readonly IMapper _mapper;
 
-		public CartController(ILogger<CartController> logger, ICartService cartService, IUserService userService, IMapper mapper)
+		public CartController(ILogger<CartController> logger, ICartService cartService, IMapper mapper)
 		{
 			_logger = logger;
 			_cartService = cartService;
-			_userService = userService;
 			_mapper = mapper;
 		}
 
@@ -37,19 +36,7 @@ namespace ProductStoreApi.Controllers
 
 			try
 			{
-				string? username = HttpContext.User.FindFirstValue("username");
-
-				if (username is null)
-				{
-					return Unauthorized();
-				}
-
-				var user = await _userService.GetByUsername(username);
-
-				if (user is null)
-				{
-					return Unauthorized();
-				}
+				UserModel user = (UserModel)HttpContext.Items["User"]!;
 
 				var models = _mapper.Map<CartDto>(await _cartService.GetUserCart(user.Id));
 				return Ok(models);
@@ -72,25 +59,13 @@ namespace ProductStoreApi.Controllers
 
 			try
 			{
-				string? username = HttpContext.User.FindFirstValue("username");
-
-				if (username is null)
-				{
-					return Unauthorized();
-				}
-
-				var user = await _userService.GetByUsername(username);
-
-				if (user is null)
-				{
-					return Unauthorized();
-				}
+				UserModel user = (UserModel)HttpContext.Items["User"]!;
 
 				var cartItemModel = new CartItemModel()
 				{
 					Quantity = requestModel.Quantity,
 					ProductId = requestModel.ProductId,
-					CartId = user.CartId
+					CartId = user.Cart.Id
 				};
 
 				await _cartService.AddProduct(cartItemModel, user.Id);
@@ -118,19 +93,7 @@ namespace ProductStoreApi.Controllers
 
 			try
 			{
-				string? username = HttpContext.User.FindFirstValue("username");
-
-				if (username is null)
-				{
-					return Unauthorized();
-				}
-
-				var user = await _userService.GetByUsername(username);
-
-				if (user is null)
-				{
-					return Unauthorized();
-				}
+				UserModel user = (UserModel)HttpContext.Items["User"]!;
 
 				await _cartService.ClearUserCart(user.Id);
 				return Ok();
@@ -153,19 +116,7 @@ namespace ProductStoreApi.Controllers
 
 			try
 			{
-				string? username = HttpContext.User.FindFirstValue("username");
-
-				if (username is null)
-				{
-					return Unauthorized();
-				}
-
-				var user = await _userService.GetByUsername(username);
-
-				if (user is null)
-				{
-					return Unauthorized();
-				}
+				UserModel user = (UserModel)HttpContext.Items["User"]!;
 
 				var productModel = new ProductModel()
 				{

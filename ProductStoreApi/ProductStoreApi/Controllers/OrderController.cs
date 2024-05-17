@@ -2,28 +2,28 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductStoreApi.Extensions;
+using ProductStoreApi.Filters;
 using StoreBLL.Interfaces.Services;
+using StoreBLL.Models;
 using StoreBLL.Models.Dto;
 using StoreBLL.Models.Extra;
-using System.Security.Claims;
 
 namespace ProductStoreApi.Controllers
 {
 	[ApiController]
 	[Route("api/order")]
+	[ServiceFilter(typeof(FetchUserFilter))]
 	public class OrderController : ControllerBase
 	{
 		private readonly ILogger<OrderController> _logger;
 		private readonly IOrderService _orderService;
-		private readonly IUserService _userService;
 		private readonly IMapper _mapper;
 
-		public OrderController(ILogger<OrderController> logger, IOrderService orderService, IMapper mapper, IUserService userService)
+		public OrderController(ILogger<OrderController> logger, IOrderService orderService, IMapper mapper)
 		{
 			_logger = logger;
 			_orderService = orderService;
 			_mapper = mapper;
-			_userService = userService;
 		}
 
 
@@ -38,22 +38,16 @@ namespace ProductStoreApi.Controllers
 
 			try
 			{
-				string? username = HttpContext.User.FindFirstValue("username");
+				UserModel user = (UserModel)HttpContext.Items["User"]!;
 
-				if (username is null)
+				var model = await _orderService.GetById(orderId);
+
+				if (user.Id == model.UserId)
 				{
-					return Unauthorized();
+					return Ok(_mapper.Map<OrderDto>(model));
 				}
 
-				var user = await _userService.GetByUsername(username);
-
-				if (user is null)
-				{
-					return Unauthorized();
-				}
-
-				var model = _mapper.Map<OrderDto>(await _orderService.GetById(orderId));
-				return Ok(model);
+				return BadRequest();
 			}
 			catch (InvalidOperationException ex)
 			{
@@ -77,22 +71,10 @@ namespace ProductStoreApi.Controllers
 
 			try
 			{
-				string? username = HttpContext.User.FindFirstValue("username");
+				UserModel user = (UserModel)HttpContext.Items["User"]!;
 
-				if (username is null)
-				{
-					return Unauthorized();
-				}
-
-				var user = await _userService.GetByUsername(username);
-
-				if (user is null)
-				{
-					return Unauthorized();
-				}
-
-				var models = _mapper.Map<IList<OrderDto>>(await _orderService.GetUserOrders(user.Id));
-				return Ok(models);
+				var dtos = _mapper.Map<IList<OrderDto>>(await _orderService.GetUserOrders(user.Id));
+				return Ok(dtos);
 			}
 			catch (Exception ex)
 			{
@@ -111,19 +93,7 @@ namespace ProductStoreApi.Controllers
 
 			try
 			{
-				string? username = HttpContext.User.FindFirstValue("username");
-
-				if (username is null)
-				{
-					return Unauthorized();
-				}
-
-				var user = await _userService.GetByUsername(username);
-
-				if (user is null)
-				{
-					return Unauthorized();
-				}
+				UserModel user = (UserModel)HttpContext.Items["User"]!;
 
 				// Create Order
 				SubmitOrderModel model = new()
@@ -155,23 +125,17 @@ namespace ProductStoreApi.Controllers
 
 			try
 			{
-				string? username = HttpContext.User.FindFirstValue("username");
+				UserModel user = (UserModel)HttpContext.Items["User"]!;
 
-				if (username is null)
+				var orderModel = await _orderService.GetById(model.orderId);
+
+				if (user.Id == orderModel.UserId)
 				{
-					return Unauthorized();
+					await _orderService.CancelOrder(model.orderId);
+					return Ok();
 				}
 
-				var user = await _userService.GetByUsername(username);
-
-				if (user is null)
-				{
-					return Unauthorized();
-				}
-
-				await _orderService.CancelOrder(model.orderId);
-
-				return Ok();
+				return BadRequest();
 			}
 			catch (Exception ex)
 			{

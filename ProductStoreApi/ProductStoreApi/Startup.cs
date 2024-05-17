@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProductStoreApi.Authentication;
 using ProductStoreApi.Extensions;
+using ProductStoreApi.Filters;
 using StoreDAL;
 using StoreDAL.Infrastructure;
 using StoreDAL.Infrastructure.Data;
@@ -47,6 +48,9 @@ namespace ProductStoreApi
 
 			// Add data services
 			services.AddStoreServices();
+
+			// Add filters
+			services.AddScoped<FetchUserFilter>();
 
 			// Add JWT
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

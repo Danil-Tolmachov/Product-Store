@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductStoreApi.Authentication;
 using ProductStoreApi.Extensions;
+using ProductStoreApi.Filters;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
 using StoreBLL.Models.Dto;
 using StoreBLL.Models.Extra;
-using System.Security.Claims;
 
 namespace ProductStoreApi.Controllers
 {
@@ -31,26 +31,13 @@ namespace ProductStoreApi.Controllers
 		[Authorize]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(401)]
-		public async Task<ActionResult> CheckAuthorization()
+		[ServiceFilter(typeof(FetchUserFilter))]
+		public ActionResult CheckAuthorization()
 		{
 			_logger.LogRequest(nameof(CheckAuthorization), HttpContext.Request.Method.ToString());
 
 			try
 			{
-				string? username = HttpContext.User.FindFirstValue("username");
-
-				if (username is null)
-				{
-					return Unauthorized();
-				}
-
-				var model = await _userService.GetByUsername(username);
-
-				if (model is null)
-				{
-					return Unauthorized();
-				}
-
 				return Ok();
 			}
 			catch (Exception ex)
@@ -64,21 +51,16 @@ namespace ProductStoreApi.Controllers
 		[Authorize]
 		[ProducesResponseType(typeof(UserDto), 200)]
 		[ProducesResponseType(typeof(string), 401)]
-		public async Task<ActionResult<UserDto>> GetUser()
+		[ServiceFilter(typeof(FetchUserFilter))]
+		public ActionResult<UserDto> GetUser()
 		{
 			_logger.LogRequest(nameof(GetUser), HttpContext.Request.Method.ToString());
 
 			try
 			{
-				string? username = HttpContext.User.FindFirstValue("username");
+				UserModel user = (UserModel)HttpContext.Items["User"]!;
 
-				if (username is null)
-				{
-					return Unauthorized("Invalid token.");
-				}
-
-				var model = _mapper.Map<UserDto>(await _userService.GetByUsername(username));
-				return Ok(model);
+				return Ok(_mapper.Map<UserDto>(user));
 			}
 			catch (Exception ex)
 			{
@@ -194,6 +176,7 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(typeof(string), 200)]
 		[ProducesResponseType(400)]
 		[ProducesResponseType(401)]
+		[ServiceFilter(typeof(FetchUserFilter))]
 		public async Task<IActionResult> UpdateUser(UpdateUserModel model)
 		{
 			_logger.LogRequest(nameof(UpdateUser), HttpContext.Request.Method.ToString());
@@ -205,20 +188,7 @@ namespace ProductStoreApi.Controllers
 					return BadRequest(ModelState);
 				}
 
-				string? username = HttpContext.User.FindFirstValue("username");
-
-				if (username is null)
-				{
-					return Unauthorized();
-				}
-
-				var user = await _userService.GetByUsername(username);
-
-				if (user is null)
-				{
-					return Unauthorized();
-				}
-
+				UserModel user = (UserModel)HttpContext.Items["User"]!;
 				await _userService.UpdateInfo(model, user.Id);
 
 				return Ok(new { message = "Update successful" });
