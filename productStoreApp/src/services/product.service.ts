@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { type Observable, map, BehaviorSubject, tap } from 'rxjs';
-import { type IProduct, type IProductResponse } from '../interfaces/IProduct';
+import {
+  IProductPage,
+  IProductPageResponse,
+  type IProduct,
+  type IProductResponse,
+} from '../interfaces/IProduct';
 import { type ICategory } from '../interfaces/ICategory';
 import environment from '../environments/environment.development';
 import { IImageResponse } from '../interfaces/IImage';
@@ -14,8 +19,11 @@ const urlImg = `${url}/image/product`;
 })
 export default class ProductService {
   private productsSubject = new BehaviorSubject<IProduct[]>([]);
+  private productsPageSubject = new BehaviorSubject<IProductPage | null>(null);
 
   public products: Observable<IProduct[]> = this.productsSubject.asObservable();
+  public productsPage: Observable<IProductPage | null> =
+    this.productsPageSubject.asObservable();
 
   constructor(private readonly http: HttpClient) {}
 
@@ -26,12 +34,44 @@ export default class ProductService {
   getProducts(): Observable<IProduct[]> {
     const link = `${url}/product`;
 
-    return this.http.get<IProductResponse[]>(link).pipe(
+    return this.http.get<IProductPageResponse>(link).pipe(
       map((response) =>
-        response.map((product) => ProductService.adaptProduct(product))
+        ProductService.adaptProductPage(response).products
       ),
       tap((response) => {
         this.productsSubject.next(response);
+      })
+    );
+  }
+
+  /**
+   * Retrieves products page from the server.
+   * @param page Number of Page to retrieve.
+   * @param count Count of products per page. (default = 10)
+   * @returns An observable emitting a products page.
+   */
+  getProductsPage(page: number, count: number = 10): Observable<IProductPage> {
+    const link = `${url}/product?page=${page}&count=${count}`;
+
+    return this.http.get<IProductPageResponse>(link).pipe(
+      map(
+        (response) => ProductService.adaptProductPage(response)
+      ),
+      tap((response) => {
+        this.productsPageSubject.next(response);
+      })
+    );
+  }
+
+  getProductsPageByCategory(categoryId: number, page: number, count: number = 10): Observable<IProductPage> {
+    const link = `${url}/product/category/${categoryId}?page=${page}&count=${count}`;
+
+    return this.http.get<IProductPageResponse>(link).pipe(
+      map(
+        (response) => ProductService.adaptProductPage(response)
+      ),
+      tap((response) => {
+        this.productsPageSubject.next(response);
       })
     );
   }
@@ -73,6 +113,19 @@ export default class ProductService {
       imagePaths: (apiProduct.images ?? []).map((image) =>
         this.adaptImageResponse(image)
       ),
+    };
+  }
+
+  static adaptProductPage(apiProduct: IProductPageResponse): IProductPage {
+    return {
+      products: apiProduct.products.map((product) =>
+        ProductService.adaptProduct(product)
+      ),
+
+      currentPage: apiProduct.currentPage,
+      totalCount: apiProduct.totalCount,
+      pagesCount: apiProduct.pagesCount,
+      pageSize: apiProduct.pageSize,
     };
   }
 

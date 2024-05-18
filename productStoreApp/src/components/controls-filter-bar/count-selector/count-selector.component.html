@@ -1,0 +1,14 @@
+<select (change)="onSelectionChange($event)">
+  @for (option of options; track $index) {
+    <option
+      [value]="option"
+      [selected]="
+        (chosenPreset | async) === null
+          ? defaultPreset == +option
+          : (chosenPreset | async) == +option
+      "
+    >
+      {{ option }}
+    </option>
+  }
+</select>

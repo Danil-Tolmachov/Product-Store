@@ -1,5 +1,6 @@
 <div class="container">
   <ng-container *ngIf="categories !== null">
     <app-category-selector [categories]="categories" />
+    <app-count-selector [chosenPreset]="chosenCountPreset"/>
   </ng-container>
 </div>

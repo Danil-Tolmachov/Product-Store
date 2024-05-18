@@ -1,7 +1,16 @@
-@defer (when categoriesListSignal() && productsListSignal()) {
-  <app-controls-filter-bar [categories]="categoriesListSignal()!" />
-  <app-product-list [productsList]="productsListSignal()!" />
+@defer (when categoriesListSignal() && productsPageSignal()) {
+  <app-controls-filter-bar
+    [categories]="categoriesListSignal()!"
+    [chosenCountPreset]="countSubject$"
+  />
+  <app-product-list [productsList]="productsPageSignal()!.products" />
+  <app-page-bar
+    [pagesCount$]="pagesCount$"
+    [currentPage$]="pageSubject$"
+    [countQuery$]="countSubject$"
+  />
 } @placeholder {
-  <div class="app-controls-filter-bar-skeleton"></div>
-  <app-product-list-skeleton [skeletonProductsCount]="8" />
+  <app-controls-filter-bar-skeleton />
+  <app-product-list-skeleton [skeletonProductsCount$]="countSubject$" />
+  <app-page-bar-skeleton />
 }

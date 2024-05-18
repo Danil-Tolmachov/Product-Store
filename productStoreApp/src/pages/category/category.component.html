@@ -1,5 +1,11 @@
-@defer (when categorySignal()) {
-  <app-product-list [productsList]="categorySignal()?.items!" />
+@defer (when productsSignal()) {
+  <app-product-list [productsList]="productsSignal()?.products!" />
+  <app-page-bar
+    [pagesCount$]="pagesCount$"
+    [currentPage$]="pageSubject$"
+    [countQuery$]="countSubject$"
+  />
 } @placeholder {
-  <app-product-list-skeleton [skeletonProductsCount]="4" />
+  <app-product-list-skeleton [skeletonProductsCount$]="countSubject$" />
+  <app-page-bar-skeleton />
 }

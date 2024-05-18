@@ -27,6 +27,24 @@ export interface IProductResponse {
   images: IImageResponse[];
 }
 
+export interface IProductPage {
+  products: IProduct[];
+
+  currentPage: number | null;
+  totalCount: number | null;
+  pagesCount: number | null;
+  pageSize: number | null;
+}
+
+export interface IProductPageResponse {
+  products: IProductResponse[];
+
+  currentPage: number | null;
+  totalCount: number | null;
+  pagesCount: number | null;
+  pageSize: number | null;
+}
+
 export interface ICategory {
   id: number;
   name: string;
