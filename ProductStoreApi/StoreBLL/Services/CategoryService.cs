@@ -24,5 +24,11 @@ namespace StoreBLL.Services
 			var entities = await _unitOfWork.ProductRepository.GetByCategoryId(id);
 			return _mapper.Map<IList<ProductModel>>(entities);
 		}
+
+		public async Task<IEnumerable<ProductModel>> GetProducts(long id, int pageNumber, int rowCount)
+		{
+			var entities = await _unitOfWork.ProductRepository.GetByCategoryId(id, pageNumber, rowCount);
+			return _mapper.Map<IList<ProductModel>>(entities);
+		}
 	}
 }
