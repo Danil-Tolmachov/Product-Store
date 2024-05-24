@@ -1,4 +1,5 @@
-FROM node:alpine
+# Install
+FROM node:20.9.0-alpine as base
 
 WORKDIR /usr/src/app
 COPY . /usr/src/app
@@ -10,10 +11,13 @@ RUN npm install
 # Install lite server
 RUN npm install lite-server
 
-# Build app
+# Publish app
+FROM base as buid
 RUN npm run build-prod
 
-EXPOSE 3000
+# Run app
+FROM buid as final
+EXPOSE 3001
 
 WORKDIR /usr/src/app/dist/products-app/browser
 CMD ["npx", "lite-server"]
