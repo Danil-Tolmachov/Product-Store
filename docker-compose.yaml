@@ -1,26 +1,47 @@
 version: '3.8'
 
 services:
-  sql-server:
-    image: mcr.microsoft.com/mssql/server:latest
-    environment:
-      SA_PASSWORD: "YourStrong!Passw0rd"
-      ACCEPT_EULA: "Y"
+  angular:
+    restart: on-failure
+    build:
+      context: /productStoreApp/
+      dockerfile: /Build.Dockerfile
     ports:
-      - "1433:1433"
-    volumes:
-      - sql-data:/var/opt/mssql
+      - "4200:4200"
+    environment:
+      - API_URL=http://localhost:80/
+    networks:
+      - api-network
 
   webapi:
+    restart: on-failure
     build:
       context: /ProductStoreApi/
       dockerfile: /Dockerfile
     ports:
       - "80:80"
     depends_on:
-      - sql-server
+      - mssql
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - api-network
+
+  mssql:
+    build: 
+      dockerfile: /Sqlserver.DockerFile
+    environment:
+      SA_USERNAME: "SA"
+      SA_PASSWORD: "YourStrong!Passw0rd"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql-data:/var/opt/mssql
+    networks:
+      - api-network
       
 volumes:
   sql-data:
+
+networks:
+  api-network:

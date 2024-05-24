@@ -37,7 +37,17 @@ namespace ProductStoreApi
 			// Add StoreDbContext
 			services.AddDbContext<StoreDbContext>(options =>
 			{
-				options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
+				string? variable = Environment.GetEnvironmentVariable("IsDockerContainer");
+				bool isDockerContainer;
+
+				if (bool.TryParse(variable, out isDockerContainer) && isDockerContainer)
+				{
+					options.UseSqlServer(this.Configuration.GetConnectionString("DockerConnection"));
+				}
+				else
+				{
+					options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
+				}
 			});
 
 			// Add Auth services
@@ -104,6 +114,20 @@ namespace ProductStoreApi
 					name: "default",
 					pattern: "{controller=Home}/{action=Index}/{id?}")
 			);
+
+
+			ApplyDatabaseMigrations(app.ApplicationServices);
+		}
+
+		private static void ApplyDatabaseMigrations(IServiceProvider provider)
+		{
+			using (var scope = provider.CreateScope())
+			{
+				var services = scope.ServiceProvider;
+				var context = services.GetRequiredService<StoreDbContext>();
+
+				context.ApplyMigrations();
+			}
 		}
 	}
 }

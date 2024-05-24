@@ -275,5 +275,13 @@ namespace StoreDAL.Infrastructure
 
 			base.OnModelCreating(modelBuilder);
 		}
-    }
+
+		public void ApplyMigrations()
+		{
+			if (Database.GetPendingMigrations().Any())
+			{
+				Database.Migrate();
+			}
+		}
+	}
 }

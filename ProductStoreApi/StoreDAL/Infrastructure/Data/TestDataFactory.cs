@@ -1,4 +1,5 @@
-﻿using StoreDAL.Entities;
+﻿using Microsoft.Extensions.Configuration;
+using StoreDAL.Entities;
 using StoreDAL.Interfaces.Repositories;
 
 namespace StoreDAL.Infrastructure.Data
@@ -210,10 +211,18 @@ namespace StoreDAL.Infrastructure.Data
 
 		public override ProductImage[] GetProductImageData()
 		{
-			// For Docker
-			// string seedDir = "SeedImages/";
-			// For local 
-			string seedDir = "..\\StoreDAL\\Infrastructure\\Data\\SeedImages\\";
+			string? variable = Environment.GetEnvironmentVariable("IsDockerContainer");
+			bool isDockerContainer;
+
+
+			// Path for local 
+			string seedDir = "..\\StoreDAL\\SeedImages\\";
+
+			// Path for Docker container
+			if (bool.TryParse(variable, out isDockerContainer) && isDockerContainer)
+			{
+				seedDir = "./StoreDAL/SeedImages/";
+			}
 
 			return new ProductImage[]
 			{
