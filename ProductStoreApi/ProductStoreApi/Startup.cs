@@ -16,10 +16,12 @@ namespace ProductStoreApi
 	public class Startup
 	{
 		public IConfiguration Configuration { get; }
+		public IWebHostEnvironment Env { get; }
 
-		public Startup(IConfiguration configuration)
+		public Startup(IConfiguration configuration, IWebHostEnvironment env)
 		{
 			Configuration = configuration;
+			Env = env;
 		}
 
 		public void ConfigureServices(IServiceCollection services)
@@ -86,15 +88,19 @@ namespace ProductStoreApi
 					});
 		}
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app)
 		{
 			// Configure the HTTP request pipeline.
 
 			// Development environment middlewares.
-			if (env.IsDevelopment())
+			if (Env.IsDevelopment())
 			{
 				app.UseSwagger();
 				app.UseSwaggerUI();
+			}
+			else
+			{
+				app.UseHsts();
 			}
 
 			// Logging middleware.

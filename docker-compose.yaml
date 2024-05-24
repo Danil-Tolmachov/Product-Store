@@ -9,7 +9,7 @@ services:
     ports:
       - "3000:3001"
     environment:
-      - API_URL=http://localhost:80/
+      - API_URL=https://localhost:8080/
     networks:
       - api-network
 
@@ -18,12 +18,18 @@ services:
     build:
       context: /ProductStoreApi/
       dockerfile: /Dockerfile
+      args:
+        CERTIFICATE_PASSWORD: "test"
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
       - mssql
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80;https://+:443
+      - ASPNETCORE_HTTPS_PORT=443
+      - ASPNETCORE_HTTPS_PORTS=443
     networks:
       - api-network
 
