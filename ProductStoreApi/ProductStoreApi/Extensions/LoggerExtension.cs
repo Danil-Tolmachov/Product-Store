@@ -2,14 +2,14 @@
 {
 	public static class LoggerExtension
 	{
-		public static void LogException(this ILogger logger, Exception ex, string endpointName, string method)
+		public static void LogInternalError(this ILogger logger, string path, string method)
 		{
-			logger.LogError(ex, "!! {Method}: {EndpointName}", method, endpointName);
+			logger.LogError("Internal Error on {Method}: {Path}", method, path);
 		}
 
-		public static void LogRequest(this ILogger logger, string endpointName, string method)
+		public static void LogRequest(this ILogger logger, string path, string method)
 		{
-			logger.LogInformation("// {Method}: {EndpointName}", method, endpointName);
+			logger.LogInformation("Request on {Method}: {Path}", method, path);
 		}
 	}
 }

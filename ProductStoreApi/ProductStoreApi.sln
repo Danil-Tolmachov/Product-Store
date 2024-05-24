@@ -9,7 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreTest", "StoreTest\Stor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreBLL", "StoreBLL\StoreBLL.csproj", "{F43C246E-B6FB-4D25-938E-120417A6D08D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreDAL", "StoreDAL\StoreDAL.csproj", "{036920E7-EA19-4C81-A652-3798C3154072}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreDAL", "StoreDAL\StoreDAL.csproj", "{036920E7-EA19-4C81-A652-3798C3154072}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B7DC330-E280-4117-8EE5-A26CA3F479FA}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.gitignore = .gitignore
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

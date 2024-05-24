@@ -11,20 +11,17 @@ namespace ProductStoreApi.Controllers
 	[Route("/api/image")]
 	public class ImageController : ControllerBase
 	{
-		private readonly ILogger<ImageController> _logger;
 		private readonly IProductImageService _imageService;
 
 		public ImageController(IProductImageService imageService, ILogger<ImageController> logger)
 		{
 			_imageService = imageService;
-			_logger = logger;
 		}
 
 		[HttpGet("product/{path}")]
 		[ProducesResponseType(typeof(byte[]), 200)]
 		public async Task<IActionResult> GetProductImage(string path)
 		{
-			_logger.LogRequest(nameof(GetProductImage), HttpContext.Request.Method.ToString());
 
 			try
 			{
@@ -37,9 +34,8 @@ namespace ProductStoreApi.Controllers
 
 				return File(image, "image/webp");
 			}
-			catch (ArgumentException ex)
+			catch
 			{
-				_logger.LogException(ex, nameof(GetProductImage), HttpContext.Request.Method.ToString());
 				return BadRequest("Image with provided id has not founded.");
 			}
 		}

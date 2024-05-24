@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProductStoreApi.Extensions;
 using ProductStoreApi.Filters;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
@@ -15,13 +14,11 @@ namespace ProductStoreApi.Controllers
 	[ServiceFilter(typeof(FetchUserFilter))]
 	public class OrderController : ControllerBase
 	{
-		private readonly ILogger<OrderController> _logger;
 		private readonly IOrderService _orderService;
 		private readonly IMapper _mapper;
 
-		public OrderController(ILogger<OrderController> logger, IOrderService orderService, IMapper mapper)
+		public OrderController(IOrderService orderService, IMapper mapper)
 		{
-			_logger = logger;
 			_orderService = orderService;
 			_mapper = mapper;
 		}
@@ -34,7 +31,6 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(404)]
 		public async Task<ActionResult<OrderDto>> GetOrder(long orderId)
 		{
-			_logger.LogRequest(nameof(GetOrder), HttpContext.Request.Method.ToString());
 
 			try
 			{
@@ -49,15 +45,9 @@ namespace ProductStoreApi.Controllers
 
 				return BadRequest();
 			}
-			catch (InvalidOperationException ex)
+			catch (InvalidOperationException)
 			{
-				_logger.LogException(ex, nameof(GetOrder), HttpContext.Request.Method.ToString());
 				return NotFound();
-			}
-			catch (Exception ex)
-			{
-				_logger.LogException(ex, nameof(GetOrder), HttpContext.Request.Method.ToString());
-				throw;
 			}
 		}
 
@@ -67,7 +57,6 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(401)]
 		public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
 		{
-			_logger.LogRequest(nameof(GetOrders), HttpContext.Request.Method.ToString());
 
 			try
 			{
@@ -76,9 +65,8 @@ namespace ProductStoreApi.Controllers
 				var dtos = _mapper.Map<IList<OrderDto>>(await _orderService.GetUserOrders(user.Id));
 				return Ok(dtos);
 			}
-			catch (Exception ex)
+			catch
 			{
-				_logger.LogException(ex, nameof(GetOrders), HttpContext.Request.Method.ToString());
 				return new List<OrderDto>();
 			}
 		}
@@ -89,30 +77,20 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(401)]
 		public async Task<ActionResult> SubmitCart(SubmitCartModel submitCartModel)
 		{
-			_logger.LogRequest(nameof(SubmitCart), HttpContext.Request.Method.ToString());
+			UserModel user = (UserModel)HttpContext.Items["User"]!;
 
-			try
+			// Create Order
+			SubmitOrderModel model = new()
 			{
-				UserModel user = (UserModel)HttpContext.Items["User"]!;
+				UserId = user.Id,
+				UserComment = submitCartModel.Comment,
+				CartItems = user.Cart.CartItems,
+			};
 
-				// Create Order
-				SubmitOrderModel model = new()
-				{
-					UserId = user.Id,
-					UserComment = submitCartModel.Comment,
-					CartItems = user.Cart.CartItems,
-				};
+			await _orderService.SubmitCart(model);
+			await _orderService.ClearCart(user.Id);
 
-				await _orderService.SubmitCart(model);
-				await _orderService.ClearCart(user.Id);
-
-				return Ok();
-			}
-			catch (Exception ex)
-			{
-				_logger.LogException(ex, nameof(SubmitCart), HttpContext.Request.Method.ToString());
-				throw;
-			}
+			return Ok();
 		}
 
 		[HttpPost("cancel")]
@@ -121,27 +99,17 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(401)]
 		public async Task<ActionResult> CancelOrder(CancelOrderModel model)
 		{
-			_logger.LogRequest(nameof(CancelOrder), HttpContext.Request.Method.ToString());
+			UserModel user = (UserModel)HttpContext.Items["User"]!;
 
-			try
+			var orderModel = await _orderService.GetById(model.orderId);
+
+			if (user.Id == orderModel.UserId)
 			{
-				UserModel user = (UserModel)HttpContext.Items["User"]!;
-
-				var orderModel = await _orderService.GetById(model.orderId);
-
-				if (user.Id == orderModel.UserId)
-				{
-					await _orderService.CancelOrder(model.orderId);
-					return Ok();
-				}
-
-				return BadRequest();
+				await _orderService.CancelOrder(model.orderId);
+				return Ok();
 			}
-			catch (Exception ex)
-			{
-				_logger.LogException(ex, nameof(CancelOrder), HttpContext.Request.Method.ToString());
-				throw;
-			}
+
+			return BadRequest();
 		}
 	}
 }

@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using ProductStoreApi.Authentication;
 using ProductStoreApi.Extensions;
 using ProductStoreApi.Filters;
+using ProductStoreApi.Middleware;
 using StoreDAL;
 using StoreDAL.Infrastructure;
 using StoreDAL.Infrastructure.Data;
@@ -28,19 +29,18 @@ namespace ProductStoreApi
 			services.AddControllers();
 			services.AddCors();
 
-			// Database seed data services
+			// Database seed data services.
 			services.AddSingleton<IDataFactory, TestDataFactory>();
 
-			// Add Mapper
+			// Add Mapper.
 			services.AddAutoMapper();
 
-			// Add StoreDbContext
+			// Add StoreDbContext.
 			services.AddDbContext<StoreDbContext>(options =>
 			{
 				string? variable = Environment.GetEnvironmentVariable("IsDockerContainer");
-				bool isDockerContainer;
 
-				if (bool.TryParse(variable, out isDockerContainer) && isDockerContainer)
+				if (bool.TryParse(variable, out bool isDockerContainer) && isDockerContainer)
 				{
 					options.UseSqlServer(this.Configuration.GetConnectionString("DockerConnection"));
 				}
@@ -50,23 +50,23 @@ namespace ProductStoreApi
 				}
 			});
 
-			// Add Auth services
+			// Add Auth services.
 			services.AddSingleton<AuthOptions>();
 			services.AddSingleton<JwtHelper>();
 
-			// Add PasswordHasher for UserService
+			// Add PasswordHasher for UserService.
 			services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
-			// Add UnitOfWork
+			// Add UnitOfWork.
 			services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-			// Add data services
+			// Add data services.
 			services.AddStoreServices();
 
-			// Add filters
+			// Add filters.
 			services.AddScoped<FetchUserFilter>();
 
-			// Add JWT
+			// Add JWT.
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 					.AddJwtBearer(options =>
 					{
@@ -89,14 +89,19 @@ namespace ProductStoreApi
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			// Configure the HTTP request pipeline.
+
+			// Development environment middlewares.
 			if (env.IsDevelopment())
 			{
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
 
-			app.UseHttpsRedirection();
+			// Logging middleware.
+			app.UseMiddleware<LoggingRequestMiddleware>();
 
+			// Add Routing Middlewares.
+			app.UseHttpsRedirection();
 			app.UseRouting();
 
 			app.UseCors(
@@ -106,6 +111,7 @@ namespace ProductStoreApi
 								  .AllowCredentials()
 			);
 
+			// Auth middlewares.
 			app.UseAuthentication();
 			app.UseAuthorization();
 
@@ -114,7 +120,6 @@ namespace ProductStoreApi
 					name: "default",
 					pattern: "{controller=Home}/{action=Index}/{id?}")
 			);
-
 
 			ApplyDatabaseMigrations(app.ApplicationServices);
 		}

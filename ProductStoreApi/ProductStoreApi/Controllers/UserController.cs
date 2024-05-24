@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductStoreApi.Authentication;
-using ProductStoreApi.Extensions;
 using ProductStoreApi.Filters;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
@@ -15,14 +14,12 @@ namespace ProductStoreApi.Controllers
 	[Route("/api/auth")]
 	public class UserController : ControllerBase
 	{
-		private readonly ILogger<UserController> _logger;
 		private readonly IMapper _mapper;
 		private readonly IUserService _userService;
 		private readonly JwtHelper _jwtHelper;
 
-		public UserController(ILogger<UserController> logger, IUserService userService, IMapper mapper, JwtHelper jwtHelper)
+		public UserController(IUserService userService, IMapper mapper, JwtHelper jwtHelper)
 		{
-			_logger = logger;
 			_mapper = mapper;
 			_userService = userService;
 			_jwtHelper = jwtHelper;
@@ -36,17 +33,7 @@ namespace ProductStoreApi.Controllers
 		[ServiceFilter(typeof(FetchUserFilter))]
 		public ActionResult CheckAuthorization()
 		{
-			_logger.LogRequest(nameof(CheckAuthorization), HttpContext.Request.Method.ToString());
-
-			try
-			{
-				return Ok(new { message = "User is Authorized!" });
-			}
-			catch (Exception ex)
-			{
-				_logger.LogException(ex, nameof(CheckAuthorization), HttpContext.Request.Method.ToString());
-				throw;
-			}
+			return Ok(new { message = "User is Authorized!" });
 		}
 
 		[HttpGet("user")]
@@ -56,19 +43,9 @@ namespace ProductStoreApi.Controllers
 		[ServiceFilter(typeof(FetchUserFilter))]
 		public ActionResult<UserDto> GetUser()
 		{
-			_logger.LogRequest(nameof(GetUser), HttpContext.Request.Method.ToString());
+			UserModel user = (UserModel)HttpContext.Items["User"]!;
 
-			try
-			{
-				UserModel user = (UserModel)HttpContext.Items["User"]!;
-
-				return Ok(_mapper.Map<UserDto>(user));
-			}
-			catch (Exception ex)
-			{
-				_logger.LogException(ex, nameof(GetUser), HttpContext.Request.Method.ToString());
-				throw;
-			}
+			return Ok(_mapper.Map<UserDto>(user));
 		}
 
 		[HttpPost("login")]
@@ -76,30 +53,20 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(typeof(string), 401)]
 		public async Task<ActionResult<TokensDto>> Login([FromBody] LoginModel model)
 		{
-			_logger.LogRequest(nameof(Login), HttpContext.Request.Method.ToString());
+			var user = await _userService.Login(model.Username, model.Password);
 
-			try
+			if (user is null)
 			{
-				var user = await _userService.Login(model.Username, model.Password);
-
-				if (user is null)
-				{
-					return Unauthorized("Invalid credentals.");
-				}
-
-				string token = _jwtHelper.GetAccessToken(user.Username);
-				string refreshToken = _jwtHelper.GetRefreshToken(user.Username);
-
-				// Attach refresh token to user
-				await _userService.UpdateRefreshToken(user.Username, refreshToken);
-
-				return Ok(new { token, refreshToken });
+				return Unauthorized("Invalid credentals.");
 			}
-			catch (Exception ex)
-			{
-				_logger.LogException(ex, nameof(Login), HttpContext.Request.Method.ToString());
-				throw;
-			}
+
+			string token = _jwtHelper.GetAccessToken(user.Username);
+			string refreshToken = _jwtHelper.GetRefreshToken(user.Username);
+
+			// Attach refresh token to user
+			await _userService.UpdateRefreshToken(user.Username, refreshToken);
+
+			return Ok(new { token, refreshToken });
 		}
 
 		[HttpPost("refresh")]
@@ -107,7 +74,6 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(typeof(string), 401)]
 		public async Task<ActionResult<TokensDto>> Refresh([FromBody] RefreshModel model)
 		{
-			_logger.LogRequest(nameof(Refresh), HttpContext.Request.Method.ToString());
 
 			try
 			{
@@ -131,20 +97,13 @@ namespace ProductStoreApi.Controllers
 
 				return Ok(new { token, refreshToken });
 			}
-			catch (InvalidOperationException ex)
+			catch (InvalidOperationException)
 			{
-				_logger.LogException(ex, nameof(Refresh), HttpContext.Request.Method.ToString());
 				return Unauthorized("Invalid token.");
 			}
-			catch (ArgumentException ex)
+			catch (ArgumentException)
 			{
-				_logger.LogException(ex, nameof(Refresh), HttpContext.Request.Method.ToString());
 				return Unauthorized("Invalid token.");
-			}
-			catch (Exception ex)
-			{
-				_logger.LogException(ex, nameof(Refresh), HttpContext.Request.Method.ToString());
-				throw;
 			}
 		}
 
@@ -153,24 +112,14 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(400)]
 		public async Task<IActionResult> Register([FromBody] RegisterModel model)
 		{
-			_logger.LogRequest(nameof(Register), HttpContext.Request.Method.ToString());
-
-			try
+			if (!ModelState.IsValid)
 			{
-				if (!ModelState.IsValid)
-				{
-					return BadRequest(ModelState);
-				}
-
-				await _userService.Register(model);
-
-				return Ok(new { message = "Registration successful" });
+				return BadRequest(ModelState);
 			}
-			catch (Exception ex)
-			{
-				_logger.LogException(ex, nameof(Register), HttpContext.Request.Method.ToString());
-				throw;
-			}
+
+			await _userService.Register(model);
+
+			return Ok(new { message = "Registration successful" });
 		}
 
 		[HttpPut("update")]
@@ -181,25 +130,15 @@ namespace ProductStoreApi.Controllers
 		[ServiceFilter(typeof(FetchUserFilter))]
 		public async Task<IActionResult> UpdateUser(UpdateUserModel model)
 		{
-			_logger.LogRequest(nameof(UpdateUser), HttpContext.Request.Method.ToString());
-
-			try
+			if (!ModelState.IsValid)
 			{
-				if (!ModelState.IsValid)
-				{
-					return BadRequest(ModelState);
-				}
-
-				UserModel user = (UserModel)HttpContext.Items["User"]!;
-				await _userService.UpdateInfo(model, user.Id);
-
-				return Ok(new { message = "Update successful" });
+				return BadRequest(ModelState);
 			}
-			catch (Exception ex)
-			{
-				_logger.LogException(ex, nameof(UpdateUser), HttpContext.Request.Method.ToString());
-				throw;
-			}
+
+			UserModel user = (UserModel)HttpContext.Items["User"]!;
+			await _userService.UpdateInfo(model, user.Id);
+
+			return Ok(new { message = "Update successful" });
 		}
 	}
 }

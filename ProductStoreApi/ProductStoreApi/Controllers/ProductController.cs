@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using ProductStoreApi.Extensions;
 using StoreBLL.Interfaces.Services;
-using StoreBLL.Models;
 using StoreBLL.Models.Dto;
-using StoreBLL.Services;
-using System.Collections.Generic;
 
 namespace ProductStoreApi.Controllers
 {
@@ -13,18 +9,16 @@ namespace ProductStoreApi.Controllers
 	[Route("/api/product")]
 	public class ProductController : ControllerBase
 	{
-		private readonly ILogger<ProductController> _logger;
 		private readonly IProductService _productService;
 		private readonly ICategoryService _categoryService;
 		private readonly IMapper _mapper;
 
 		private const int productsPerPage = 10;
 
-		public ProductController(IProductService productService, ICategoryService categoryService, ILogger<ProductController> logger, IMapper mapper)
+		public ProductController(IProductService productService, ICategoryService categoryService, IMapper mapper)
 		{
 			_productService = productService;
 			_categoryService = categoryService;
-			_logger = logger;
 			_mapper = mapper;
 		}
 
@@ -32,8 +26,6 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(typeof(IEnumerable<ProductPageDto>), 200)]
 		public async Task<ActionResult<IEnumerable<ProductPageDto>>> GetProducts([FromQuery] int? page, [FromQuery] int count = productsPerPage)
 		{
-			_logger.LogRequest(nameof(GetProducts), HttpContext.Request.Method.ToString());
-
 			try
 			{
 				IList<ProductDto> products;
@@ -66,9 +58,8 @@ namespace ProductStoreApi.Controllers
 
 				return Ok(dto);
 			}
-			catch (Exception ex)
+			catch
 			{
-				_logger.LogException(ex, nameof(GetProducts), HttpContext.Request.Method.ToString());
 				return new List<ProductPageDto>();
 			}
 		}
@@ -77,8 +68,6 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(typeof(IEnumerable<ProductPageDto>), 200)]
 		public async Task<ActionResult<IEnumerable<ProductPageDto>>> GetProductsByCategory(long id, [FromQuery] int? page, [FromQuery] int count = productsPerPage)
 		{
-			_logger.LogRequest(nameof(GetProductsByCategory), HttpContext.Request.Method.ToString());
-
 			try
 			{
 				IList<ProductDto> products;
@@ -111,9 +100,8 @@ namespace ProductStoreApi.Controllers
 
 				return Ok(dto);
 			}
-			catch (Exception ex)
+			catch
 			{
-				_logger.LogException(ex, nameof(GetProductsByCategory), HttpContext.Request.Method.ToString());
 				return new List<ProductPageDto>();
 			}
 		}
@@ -123,16 +111,13 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(typeof(string), 404)]
 		public async Task<ActionResult<ProductDto>> GetProduct(long id)
 		{
-			_logger.LogRequest(nameof(GetProduct), HttpContext.Request.Method.ToString());
-
 			try
 			{
 				var model = _mapper.Map<ProductDto>(await _productService.GetById(id));
 				return Ok(model);
 			}
-			catch (ArgumentException ex)
+			catch (ArgumentException)
 			{
-				_logger.LogException(ex, nameof(GetProduct), HttpContext.Request.Method.ToString());
 				return NotFound("Product with provided id has not founded.");
 			}
 		}

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProductStoreApi.Extensions;
 using ProductStoreApi.Filters;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models;
@@ -15,13 +14,11 @@ namespace ProductStoreApi.Controllers
 	[ServiceFilter(typeof(FetchUserFilter))]
 	public class CartController : ControllerBase
 	{
-		private readonly ILogger<CartController> _logger;
 		private readonly ICartService _cartService;
 		private readonly IMapper _mapper;
 
-		public CartController(ILogger<CartController> logger, ICartService cartService, IMapper mapper)
+		public CartController(ICartService cartService, IMapper mapper)
 		{
-			_logger = logger;
 			_cartService = cartService;
 			_mapper = mapper;
 		}
@@ -32,20 +29,10 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(401)]
 		public async Task<ActionResult<CartDto>> GetCart()
 		{
-			_logger.LogRequest(nameof(GetCart), HttpContext.Request.Method.ToString());
+			UserModel user = (UserModel)HttpContext.Items["User"]!;
 
-			try
-			{
-				UserModel user = (UserModel)HttpContext.Items["User"]!;
-
-				var models = _mapper.Map<CartDto>(await _cartService.GetUserCart(user.Id));
-				return Ok(models);
-			}
-			catch (Exception ex)
-			{
-				_logger.LogException(ex, nameof(GetCart), HttpContext.Request.Method.ToString());
-				throw;
-			}
+			var models = _mapper.Map<CartDto>(await _cartService.GetUserCart(user.Id));
+			return Ok(models);
 		}
 
 		[HttpPost]
@@ -55,7 +42,6 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(401)]
 		public async Task<IActionResult> AddToCart(AddCartItemModel requestModel)
 		{
-			_logger.LogRequest(nameof(AddToCart), HttpContext.Request.Method.ToString());
 
 			try
 			{
@@ -71,15 +57,9 @@ namespace ProductStoreApi.Controllers
 				await _cartService.AddProduct(cartItemModel, user.Id);
 				return Ok();
 			}
-			catch (ArgumentException ex)
+			catch (ArgumentException)
 			{
-				_logger.LogException(ex, nameof(AddToCart), HttpContext.Request.Method.ToString());
 				return BadRequest("Invalid input.");
-			}
-			catch (Exception ex)
-			{
-				_logger.LogException(ex, nameof(AddToCart), HttpContext.Request.Method.ToString());
-				throw;
 			}
 		}
 
@@ -89,20 +69,10 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(401)]
 		public async Task<IActionResult> ClearCart()
 		{
-			_logger.LogRequest(nameof(AddToCart), HttpContext.Request.Method.ToString());
+			UserModel user = (UserModel)HttpContext.Items["User"]!;
 
-			try
-			{
-				UserModel user = (UserModel)HttpContext.Items["User"]!;
-
-				await _cartService.ClearUserCart(user.Id);
-				return Ok();
-			}
-			catch (Exception ex)
-			{
-				_logger.LogException(ex, nameof(AddToCart), HttpContext.Request.Method.ToString());
-				throw;
-			}
+			await _cartService.ClearUserCart(user.Id);
+			return Ok();
 		}
 
 		[HttpDelete("{id}")]
@@ -112,7 +82,6 @@ namespace ProductStoreApi.Controllers
 		[ProducesResponseType(401)]
 		public async Task<IActionResult> RemoveFromCart(long id)
 		{
-			_logger.LogRequest(nameof(AddToCart), HttpContext.Request.Method.ToString());
 
 			try
 			{
@@ -126,15 +95,9 @@ namespace ProductStoreApi.Controllers
 				await _cartService.RemoveProduct(productModel, user.Id);
 				return Ok();
 			}
-			catch (ArgumentException ex)
+			catch (ArgumentException)
 			{
-				_logger.LogException(ex, nameof(AddToCart), HttpContext.Request.Method.ToString());
 				return BadRequest("Invalid id was provided.");
-			}
-			catch (Exception ex)
-			{
-				_logger.LogException(ex, nameof(AddToCart), HttpContext.Request.Method.ToString());
-				throw;
 			}
 		}
 	}
