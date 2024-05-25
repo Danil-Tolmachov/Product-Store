@@ -10,6 +10,9 @@ using StoreDAL.Interfaces;
 
 namespace StoreBLL.Services
 {
+	/// <summary>
+	/// Provides services for managing users.
+	/// </summary>
 	public class UserService : AbstractAdminPanelItem<User, UserModel>, IUserService
 	{
 		private readonly IMapper _mapper;
@@ -21,23 +24,45 @@ namespace StoreBLL.Services
 			_unitOfWork = unitOfWork;
 		}
 
+		/// <summary>
+		/// Gets all users with details.
+		/// </summary>
+		/// <returns>A task that represents the asynchronous operation. The task result contains a list of user models.</returns>
 		public async Task<IEnumerable<UserModel>> GetAllWithDetails()
 		{
 			List<User> entities = (await _unitOfWork.UserRepository.GetAllWithDetails()).ToList();
 			return _mapper.Map<IList<UserModel>>(entities);
 		}
 
+		/// <summary>
+		/// Gets all users with details, with pagination.
+		/// </summary>
+		/// <param name="pageNumber">The page number.</param>
+		/// <param name="rowCount">The number of rows per page.</param>
+		/// <returns>A task that represents the asynchronous operation. The task result contains a list of user models.</returns>
 		public async Task<IEnumerable<UserModel>> GetAllWithDetails(int pageNumber, int rowCount)
 		{
 			List<User> entities = (await _unitOfWork.UserRepository.GetAllWithDetails(pageNumber, rowCount)).ToList();
 			return _mapper.Map<IList<UserModel>>(entities);
 		}
 
+		/// <summary>
+		/// Changes the password of a user.
+		/// </summary>
+		/// <param name="userId">The user identifier.</param>
+		/// <param name="oldPassword">The old password.</param>
+		/// <param name="newPassword">The new password.</param>
+		/// <returns>A task that represents the asynchronous operation.</returns>
 		public Task ChangePassword(long userId, string oldPassword, string newPassword)
 		{
 			throw new NotImplementedException();
 		}
 
+		/// <summary>
+		/// Gets a user by username.
+		/// </summary>
+		/// <param name="username">The username.</param>
+		/// <returns>A task that represents the asynchronous operation. The task result contains the user model or null if not found.</returns>
 		public async Task<UserModel?> GetByUsername(string username)
 		{
 			try
@@ -51,12 +76,23 @@ namespace StoreBLL.Services
 			}
 		}
 
+		/// <summary>
+		/// Gets the refresh token of a user by username.
+		/// </summary>
+		/// <param name="username">The username.</param>
+		/// <returns>A task that represents the asynchronous operation. The task result contains the refresh token or null if not found.</returns>
 		public async Task<string?> GetRefreshToken(string username)
 		{
 			var entity = await _unitOfWork.UserRepository.GetByUsername(username);
 			return entity?.RefreshToken;
 		}
 
+		/// <summary>
+		/// Updates the refresh token of a user by username.
+		/// </summary>
+		/// <param name="username">The username.</param>
+		/// <param name="token">The new refresh token.</param>
+		/// <returns>A task that represents the asynchronous operation.</returns>
 		public async Task UpdateRefreshToken(string username, string token)
 		{
 			var entity = await _unitOfWork.UserRepository.GetByUsername(username);
@@ -71,6 +107,12 @@ namespace StoreBLL.Services
 			await _unitOfWork.SaveAsync();
 		}
 
+		/// <summary>
+		/// Logs in a user.
+		/// </summary>
+		/// <param name="username">The username.</param>
+		/// <param name="password">The password.</param>
+		/// <returns>A task that represents the asynchronous operation. The task result contains the user model or null if login failed.</returns>
 		public async Task<UserModel?> Login(string username, string password)
 		{
 			try
@@ -85,6 +127,11 @@ namespace StoreBLL.Services
 			
 		}
 
+		/// <summary>
+		/// Registers a new user.
+		/// </summary>
+		/// <param name="model">The registration model.</param>
+		/// <returns>A task that represents the asynchronous operation. The task result indicates whether the registration was successful.</returns>
 		public async Task<bool> Register(RegisterModel model)
 		{
 			try
@@ -137,6 +184,12 @@ namespace StoreBLL.Services
 
 		}
 
+		/// <summary>
+		/// Updates the information of a user.
+		/// </summary>
+		/// <param name="model">The update user model.</param>
+		/// <param name="userId">The user identifier.</param>
+		/// <returns>A task that represents the asynchronous operation. The task result indicates whether the update was successful.</returns>
 		public async Task<bool> UpdateInfo(UpdateUserModel model, long userId)
 		{
 			try

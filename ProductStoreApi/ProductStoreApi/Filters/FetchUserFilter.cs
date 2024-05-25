@@ -8,6 +8,9 @@ using System.Security.Claims;
 
 namespace ProductStoreApi.Filters
 {
+	/// <summary>
+	/// Action filter for fetching and attaching user details to the HTTP context.
+	/// </summary>
 	public class FetchUserFilter : IAsyncActionFilter
 	{
 		private readonly IUserService _userService;

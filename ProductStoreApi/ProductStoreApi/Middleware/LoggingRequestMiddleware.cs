@@ -2,6 +2,9 @@
 
 namespace ProductStoreApi.Middleware
 {
+	/// <summary>
+	/// Middleware for logging HTTP request details.
+	/// </summary>
 	public class LoggingRequestMiddleware
 	{
 		private readonly ILogger _logger;
