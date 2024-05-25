@@ -56,7 +56,7 @@ export default class RegistrationComponent {
     ]),
     address: new FormControl(null, Validators.minLength(6)),
     phone: new FormControl(null, [
-      Validators.pattern('[- +()0-9]+'),
+      Validators.pattern('^\\+?[1-9]\\d{0,2}[-.\\s]?(\\(?\\d{1,4}\\)?[-.\\s]?)*\\d{1,4}[-.\\s]?\\d{1,9}$'),
       Validators.minLength(3),
     ]),
   });

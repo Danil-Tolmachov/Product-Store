@@ -15,14 +15,14 @@
     >
       <div *ngIf="username.errors?.['required']">Username is required.</div>
       <div *ngIf="username.errors?.['minlength']">
-        Username must be at least 6 characters long.
+        Username must be at least 3 characters long.
       </div>
     </div>
   </div>
 
   <div class="field">
     @if (password.invalid && (password.dirty || password.touched)) {
-      <label class="alert-text" for="firstName">First name: </label>
+      <label class="alert-text" for="firstName">Password: </label>
     } @else {
       <label for="password">Password: </label>
     }
