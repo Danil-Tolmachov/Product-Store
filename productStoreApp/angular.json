@@ -60,12 +60,14 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "ssr": false
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
+              "ssr": false,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
