@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { type Observable, map, BehaviorSubject, tap, take } from 'rxjs';
+import { type Observable, map, BehaviorSubject, tap, take, catchError, EMPTY } from 'rxjs';
 import environment from '../environments/environment.development';
 import { ICartItem, ICartItemResponse } from '../interfaces/ICartItem';
 import ProductService from './product.service';
@@ -36,7 +36,14 @@ export default class CartService {
 
     return this.http.get<ICartResponse>(link).pipe(
       map((cart) => CartService.adaptCart(cart)),
-      tap((cart) => this.cartSubject.next(cart))
+      tap((cart) => this.cartSubject.next(cart)),
+      catchError((error, caught) => {
+        if (error.status === 0) {
+          return EMPTY;
+        }
+
+        return caught;
+      })
     );
   }
 

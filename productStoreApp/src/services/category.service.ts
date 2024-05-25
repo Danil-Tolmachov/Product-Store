@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { type Observable, map, BehaviorSubject } from 'rxjs';
+import { type Observable, map, BehaviorSubject, catchError, EMPTY } from 'rxjs';
 import {
   type ICategory,
   type ICategoryResponse,
@@ -30,13 +30,18 @@ export default class CategoryService {
   getCategories(): Observable<ICategory[]> {
     const link = `${url}/category`;
 
-    return this.http
-      .get<ICategoryResponse[]>(link)
-      .pipe(
-        map((response) =>
-          response.map((category) => CategoryService.adaptCategory(category))
-        )
-      );
+    return this.http.get<ICategoryResponse[]>(link).pipe(
+      map((response) =>
+        response.map((category) => CategoryService.adaptCategory(category))
+      ),
+      catchError((error, caught) => {
+        if (error.status === 0) {
+          return EMPTY;
+        }
+
+        return caught;
+      })
+    );
   }
 
   /**
@@ -47,9 +52,16 @@ export default class CategoryService {
   getCategory(id: number): Observable<ICategory> {
     const link = `${url}/category/${id}`;
 
-    return this.http
-      .get<ICategoryResponse>(link)
-      .pipe(map((category) => CategoryService.adaptCategory(category)));
+    return this.http.get<ICategoryResponse>(link).pipe(
+      map((category) => CategoryService.adaptCategory(category)),
+      catchError((error, caught) => {
+        if (error.status === 0) {
+          return EMPTY;
+        }
+
+        return caught;
+      })
+    );
   }
 
   /**

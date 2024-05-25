@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { type Observable, map, BehaviorSubject, tap } from 'rxjs';
+import {
+  type Observable,
+  map,
+  BehaviorSubject,
+  tap,
+  catchError,
+  EMPTY,
+} from 'rxjs';
 import {
   IProductPage,
   IProductPageResponse,
@@ -40,6 +47,13 @@ export default class ProductService {
       map((response) => ProductService.adaptProductPage(response).products),
       tap((response) => {
         this.productsSubject.next(response);
+      }),
+      catchError((error, caught) => {
+        if (error.status === 0) {
+          return EMPTY;
+        }
+
+        return caught;
       })
     );
   }
@@ -57,6 +71,13 @@ export default class ProductService {
       map((response) => ProductService.adaptProductPage(response)),
       tap((response) => {
         this.productsPageSubject.next(response);
+      }),
+      catchError((error, caught) => {
+        if (error.status === 0) {
+          return EMPTY;
+        }
+
+        return caught;
       })
     );
   }
@@ -79,6 +100,13 @@ export default class ProductService {
       map((response) => ProductService.adaptProductPage(response)),
       tap((response) => {
         this.productsPageSubject.next(response);
+      }),
+      catchError((error, caught) => {
+        if (error.status === 0) {
+          return EMPTY;
+        }
+
+        return caught;
       })
     );
   }
@@ -91,9 +119,16 @@ export default class ProductService {
   getProduct(id: number): Observable<IProduct> {
     const link = `${url}/product/${id}`;
 
-    return this.http
-      .get<IProductResponse>(link)
-      .pipe(map((product) => ProductService.adaptProduct(product)));
+    return this.http.get<IProductResponse>(link).pipe(
+      map((product) => ProductService.adaptProduct(product)),
+      catchError((error, caught) => {
+        if (error.status === 0) {
+          return EMPTY;
+        }
+
+        return caught;
+      })
+    );
   }
 
   /**

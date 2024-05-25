@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { type Observable, map, BehaviorSubject, tap, switchMap } from 'rxjs';
+import {
+  type Observable,
+  map,
+  BehaviorSubject,
+  tap,
+  switchMap,
+  EMPTY,
+  catchError,
+} from 'rxjs';
 import environment from '../environments/environment.development';
 import UserService from './user.service';
 import { IOrder, IOrderResponse } from '../interfaces/IOrder';
@@ -54,7 +62,14 @@ export default class OrderService {
 
     return this.http.get<IOrderResponse>(link).pipe(
       untilDestroyed(this),
-      map((response) => OrderService.adaptOrder(response))
+      map((response) => OrderService.adaptOrder(response)),
+      catchError((error, caught) => {
+        if (error.status === 0) {
+          return EMPTY;
+        }
+
+        return caught;
+      })
     );
   }
 
@@ -72,6 +87,13 @@ export default class OrderService {
       }),
       tap((orders) => {
         this.ordersSubject.next(orders);
+      }),
+      catchError((error, caught) => {
+        if (error.status === 0) {
+          return EMPTY;
+        }
+
+        return caught;
       })
     );
   }

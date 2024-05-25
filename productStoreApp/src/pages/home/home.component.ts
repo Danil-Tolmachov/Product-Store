@@ -3,7 +3,9 @@ import { Title } from '@angular/platform-browser';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   BehaviorSubject,
+  EMPTY,
   Observable,
+  catchError,
   filter,
   map,
   switchMap,

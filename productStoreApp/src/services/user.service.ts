@@ -7,6 +7,8 @@ import {
   BehaviorSubject,
   take,
   switchMap,
+  EMPTY,
+  catchError,
 } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { IUser, IUserResponse } from '../interfaces/IUser';
@@ -81,7 +83,15 @@ export default class UserService {
     const link = `${url}/user`;
     return this.http.get<IUserResponse>(link).pipe(
       map((userResponse) => UserService.adaptUser(userResponse)),
-      tap((user) => this.currentUserSubject.next(user))
+      tap((user) => this.currentUserSubject.next(user)),
+      catchError((error, caught) => {
+        if (error.status === 0) {
+          return EMPTY;
+        }
+
+        this.currentUserSubject.next(null)
+        return caught;
+      })
     );
   }
 
