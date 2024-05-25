@@ -8,10 +8,9 @@ describe('PageBarSkeletonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PageBarSkeletonComponent]
-    })
-    .compileComponents();
-    
+      imports: [PageBarSkeletonComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(PageBarSkeletonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

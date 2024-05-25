@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { jwtDecode } from 'jwt-decode';
-import { ITokens } from './token.models';
+
+/**
+ * Interface representing a pair of tokens.
+ */
+export interface ITokens {
+  token: string;
+  refreshToken: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +18,7 @@ export default class TokenService {
 
   /**
    * Checks if both token and refresh token are present in cookies.
-   * @returns True if both tokens are present, false otherwise.
+   * @returns {boolean} True if both tokens are present, false otherwise.
    */
   hasTokens(): boolean {
     if (!this.cookieService.get('token')) {
@@ -27,7 +34,7 @@ export default class TokenService {
 
   /**
    * Retrieves the expiration date of the token from cookies.
-   * @returns The expiration date of the token, or null if not available or invalid.
+   * @returns {Date | null} The expiration date of the token, or null if not available or invalid.
    */
   getExpiration(): Date | null {
     const expiration = this.cookieService.get('expires_at');
@@ -51,8 +58,8 @@ export default class TokenService {
 
   /**
    * Sets the token and refresh token in cookies.
-   * @param token The JWT token to set.
-   * @param refreshToken The refresh token to set.
+   * @param {string} token - The JWT token to set.
+   * @param {string} refreshToken - The refresh token to set.
    */
   setTokens(token: string, refreshToken: string): void {
     this.cookieService.set('token', token);
@@ -67,7 +74,7 @@ export default class TokenService {
 
   /**
    * Retrieves the current tokens from cookies.
-   * @returns An object containing the token and refresh token.
+   * @returns {ITokens} An object containing the token and refresh token.
    */
   getCurrentTokens(): ITokens {
     return {

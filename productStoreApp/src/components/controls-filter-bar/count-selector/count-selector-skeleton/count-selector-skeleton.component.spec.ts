@@ -8,10 +8,9 @@ describe('CountSelectorSkeletonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CountSelectorSkeletonComponent]
-    })
-    .compileComponents();
-    
+      imports: [CountSelectorSkeletonComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(CountSelectorSkeletonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -53,7 +53,7 @@ export default class UserService {
 
   /**
    * Checks if the user is authenticated based on the presence of tokens and their expiration.
-   * @returns True if the user is authenticated, false otherwise.
+   * @returns {boolean} True if the user is authenticated, false otherwise.
    */
   checkAuthenticated(): boolean {
     const expiration = this.tokenService.getExpiration();
@@ -75,7 +75,7 @@ export default class UserService {
 
   /**
    * Retrieves the current user from the server.
-   * @returns An observable emitting the current user.
+   * @returns {Observable<IUser>} An observable emitting the current user.
    */
   getUser(): Observable<IUser> {
     const link = `${url}/user`;
@@ -85,6 +85,11 @@ export default class UserService {
     );
   }
 
+  /**
+   * Updates the user's information on the server.
+   * @param {IUpdateUserModel} data - The user's updated information.
+   * @returns {Observable<void>} An observable emitting void when the update is complete.
+   */
   updateUser(data: IUpdateUserModel): Observable<void> {
     const link = `${url}/update`;
 
@@ -93,9 +98,9 @@ export default class UserService {
 
   /**
    * Logs in the user session and updates tokens and current user.
-   * @param username The username of the user.
-   * @param password The password of the user.
-   * @returns An observable emitting the token response.
+   * @param {string} username - The username of the user.
+   * @param {string} password - The password of the user.
+   * @returns {Observable<ITokenResponse>} An observable emitting the token response.
    */
   loginSession(username: string, password: string): Observable<ITokenResponse> {
     return this.getTokens(username, password).pipe(
@@ -118,7 +123,7 @@ export default class UserService {
 
   /**
    * Refreshes the user session tokens and updates the current user from the server.
-   * @returns An observable emitting void.
+   * @returns {Observable<IUser>} An observable emitting the updated user.
    */
   refreshSession(): Observable<IUser> {
     return this.getRefreshedTokens().pipe(
@@ -132,8 +137,8 @@ export default class UserService {
 
   /**
    * Registers a new user.
-   * @param model The registration model containing user details.
-   * @returns An observable emitting null.
+   * @param {IRegistrationModel} model - The registration model containing user details.
+   * @returns {Observable<null>} An observable emitting null when the registration is complete.
    */
   registration(model: IRegistrationModel) {
     const link = `${url}/register`;
@@ -143,9 +148,9 @@ export default class UserService {
 
   /**
    * Retrieves tokens from server for a given username and password.
-   * @param username The username of the user.
-   * @param password The password of the user.
-   * @returns An observable emitting the token response.
+   * @param {string} username - The username of the user.
+   * @param {string} password - The password of the user.
+   * @returns {Observable<ITokenResponse>} An observable emitting the token response.
    */
   private getTokens(
     username: string,
@@ -158,7 +163,7 @@ export default class UserService {
 
   /**
    * Retrieves refreshed tokens from server using the current refresh token.
-   * @returns An observable emitting the token response.
+   * @returns {Observable<ITokenResponse>} An observable emitting the token response.
    */
   private getRefreshedTokens(): Observable<ITokenResponse> {
     const link = `${url}/refresh`;
@@ -169,8 +174,8 @@ export default class UserService {
 
   /**
    * Adapts a user response from the server to the client-side model.
-   * @param apiUser The user response received from the server.
-   * @returns The adapted client-side user model.
+   * @param {IUserResponse} apiUser - The user response received from the server.
+   * @returns {IUser} The adapted client-side user model.
    */
   private static adaptUser(apiUser: IUserResponse): IUser {
     return {
@@ -190,8 +195,8 @@ export default class UserService {
 
   /**
    * Adapts an order response from the server to the client-side model.
-   * @param apiOrder The order response received from the server.
-   * @returns The adapted client-side order model.
+   * @param {IOrderResponse} apiOrder - The order response received from the server.
+   * @returns {IOrder} The adapted client-side order model.
    */
   private static adaptOrder(apiOrder: IOrderResponse): IOrder {
     return {
@@ -208,6 +213,11 @@ export default class UserService {
     };
   }
 
+  /**
+   * Adapts an order detail response from the server to the client-side model.
+   * @param {IOrderDetailResponse} apiDetail - The order detail response received from the server.
+   * @returns {IOrderDetail} The adapted client-side order detail model.
+   */
   static adaptDetail(apiDetail: IOrderDetailResponse): IOrderDetail {
     return {
       unitPrice: apiDetail.unitPrice,
@@ -218,8 +228,8 @@ export default class UserService {
 
   /**
    * Adapts a product received from the server to the client-side model.
-   * @param apiProduct The product received from the server.
-   * @returns The adapted client-side product.
+   * @param {IProductResponse} apiProduct - The product received from the server.
+   * @returns {IProduct} The adapted client-side product.
    */
   static adaptProduct(apiProduct: IProductResponse): IProduct {
     const category: ICategory = {
@@ -243,6 +253,11 @@ export default class UserService {
     };
   }
 
+  /**
+   * Adapts an image response from the server to the client-side model.
+   * @param {IImageResponse} apiImage - The image response from the server.
+   * @returns {{ path: string, alt: string }} The adapted client-side image.
+   */
   static adaptImageResponse(apiImage: IImageResponse) {
     const convertedPath = `${urlImg}/${apiImage.path}`;
 

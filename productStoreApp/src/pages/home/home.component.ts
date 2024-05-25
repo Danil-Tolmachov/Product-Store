@@ -12,6 +12,7 @@ import {
 } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AsyncPipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import ProductListComponent from '../../components/product-list/product-list.component';
 import { IProductPage } from '../../interfaces/IProduct';
 import ControlsFilterBarComponent from '../../components/controls-filter-bar/controls-filter-bar.component';
@@ -21,7 +22,6 @@ import CategoryService from '../../services/category.service';
 import CartService from '../../services/cart.service';
 import UserService from '../../services/user.service';
 import ProductListSkeletonComponent from '../../components/product-list/product-list-skeleton/product-list-skeleton.component';
-import { ActivatedRoute } from '@angular/router';
 import { PageBarComponent } from '../../components/page-bar/page-bar.component';
 import { PageBarSkeletonComponent } from '../../components/page-bar/page-bar-skeleton/page-bar-skeleton.component';
 import { ControlsFilterBarSkeletonComponent } from '../../components/controls-filter-bar/controls-filter-bar-skeleton/controls-filter-bar-skeleton.component';
@@ -50,6 +50,7 @@ export default class HomeComponent implements OnInit {
   title: string = 'Product Store';
 
   pageSubject$ = new BehaviorSubject<number>(DEFAULT_PAGE);
+
   pageQuery: Observable<number> = this.route.queryParams.pipe(
     map((params) => {
       return params['page'] ?? DEFAULT_PAGE;
@@ -60,6 +61,7 @@ export default class HomeComponent implements OnInit {
   );
 
   countSubject$ = new BehaviorSubject<number>(PRODUCTS_PER_PAGE);
+
   countQuery: Observable<number> = this.route.queryParams.pipe(
     map((params) => {
       return params['count'] ?? PRODUCTS_PER_PAGE;
@@ -87,6 +89,7 @@ export default class HomeComponent implements OnInit {
     this.categoryService.getCategories();
 
   productsPageSignal = toSignal(this.productsPage$);
+
   categoriesListSignal = toSignal(this.categoriesList$);
 
   constructor(

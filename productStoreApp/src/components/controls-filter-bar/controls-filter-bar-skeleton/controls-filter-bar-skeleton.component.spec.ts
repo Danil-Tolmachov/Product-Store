@@ -8,10 +8,9 @@ describe('ControlsFilterBarSkeletonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ControlsFilterBarSkeletonComponent]
-    })
-    .compileComponents();
-    
+      imports: [ControlsFilterBarSkeletonComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(ControlsFilterBarSkeletonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

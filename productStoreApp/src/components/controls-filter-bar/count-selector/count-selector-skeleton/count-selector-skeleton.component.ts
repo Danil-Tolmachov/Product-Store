@@ -5,8 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './count-selector-skeleton.component.html',
-  styleUrl: './count-selector-skeleton.component.scss'
+  styleUrl: './count-selector-skeleton.component.scss',
 })
-export class CountSelectorSkeletonComponent {
-
-}
+export class CountSelectorSkeletonComponent {}

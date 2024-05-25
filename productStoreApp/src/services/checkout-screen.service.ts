@@ -16,8 +16,7 @@ export default class CheckoutScreenService {
   }
 
   /**
-   * Shows a message by updating the message subject.
-   * @param message The message to be shown.
+   * Activates the checkout screen by emitting a value through the isActiveSubject.
    */
   showScreen(): void {
     this.isActiveSubject.next(null);

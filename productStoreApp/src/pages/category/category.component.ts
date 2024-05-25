@@ -55,6 +55,7 @@ export default class CategoryComponent implements OnInit {
   );
 
   pageSubject$ = new BehaviorSubject<number>(DEFAULT_PAGE);
+
   pageQuery: Observable<number> = this.route.queryParams.pipe(
     map((params) => {
       return params['page'] ?? DEFAULT_PAGE;
@@ -65,6 +66,7 @@ export default class CategoryComponent implements OnInit {
   );
 
   countSubject$ = new BehaviorSubject<number>(PRODUCTS_PER_PAGE);
+
   countQuery: Observable<number> = this.route.queryParams.pipe(
     map((params) => {
       return params['count'] ?? PRODUCTS_PER_PAGE;

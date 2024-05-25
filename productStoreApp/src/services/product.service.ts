@@ -9,7 +9,7 @@ import {
 } from '../interfaces/IProduct';
 import { type ICategory } from '../interfaces/ICategory';
 import environment from '../environments/environment.development';
-import { IImageResponse } from '../interfaces/IImage';
+import { IImage, IImageResponse } from '../interfaces/IImage';
 
 const url = environment.apiUrl;
 const urlImg = `${url}/image/product`;
@@ -19,9 +19,11 @@ const urlImg = `${url}/image/product`;
 })
 export default class ProductService {
   private productsSubject = new BehaviorSubject<IProduct[]>([]);
+
   private productsPageSubject = new BehaviorSubject<IProductPage | null>(null);
 
   public products: Observable<IProduct[]> = this.productsSubject.asObservable();
+
   public productsPage: Observable<IProductPage | null> =
     this.productsPageSubject.asObservable();
 
@@ -29,15 +31,13 @@ export default class ProductService {
 
   /**
    * Retrieves all products from the server.
-   * @returns An observable emitting an array of products.
+   * @returns {Observable<IProduct[]>} An observable emitting an array of products.
    */
   getProducts(): Observable<IProduct[]> {
     const link = `${url}/product`;
 
     return this.http.get<IProductPageResponse>(link).pipe(
-      map((response) =>
-        ProductService.adaptProductPage(response).products
-      ),
+      map((response) => ProductService.adaptProductPage(response).products),
       tap((response) => {
         this.productsSubject.next(response);
       })
@@ -46,30 +46,37 @@ export default class ProductService {
 
   /**
    * Retrieves products page from the server.
-   * @param page Number of Page to retrieve.
-   * @param count Count of products per page. (default = 10)
-   * @returns An observable emitting a products page.
+   * @param {number} page - The page number to retrieve.
+   * @param {number} [count=10] - The count of products per page. Defaults to 10.
+   * @returns {Observable<IProductPage>} An observable emitting a products page.
    */
   getProductsPage(page: number, count: number = 10): Observable<IProductPage> {
     const link = `${url}/product?page=${page}&count=${count}`;
 
     return this.http.get<IProductPageResponse>(link).pipe(
-      map(
-        (response) => ProductService.adaptProductPage(response)
-      ),
+      map((response) => ProductService.adaptProductPage(response)),
       tap((response) => {
         this.productsPageSubject.next(response);
       })
     );
   }
 
-  getProductsPageByCategory(categoryId: number, page: number, count: number = 10): Observable<IProductPage> {
+  /**
+   * Retrieves a page of products by category from the server.
+   * @param {number} categoryId - The ID of the category.
+   * @param {number} page - The page number to retrieve.
+   * @param {number} [count=10] - The count of products per page. Defaults to 10.
+   * @returns {Observable<IProductPage>} An observable emitting a products page by category.
+   */
+  getProductsPageByCategory(
+    categoryId: number,
+    page: number,
+    count: number = 10
+  ): Observable<IProductPage> {
     const link = `${url}/product/category/${categoryId}?page=${page}&count=${count}`;
 
     return this.http.get<IProductPageResponse>(link).pipe(
-      map(
-        (response) => ProductService.adaptProductPage(response)
-      ),
+      map((response) => ProductService.adaptProductPage(response)),
       tap((response) => {
         this.productsPageSubject.next(response);
       })
@@ -78,8 +85,8 @@ export default class ProductService {
 
   /**
    * Retrieves a product by its ID from the server.
-   * @param id The ID of the product to retrieve.
-   * @returns An observable emitting the product with the specified ID.
+   * @param {number} id - The ID of the product to retrieve.
+   * @returns {Observable<IProduct>} An observable emitting the product with the specified ID.
    */
   getProduct(id: number): Observable<IProduct> {
     const link = `${url}/product/${id}`;
@@ -91,8 +98,8 @@ export default class ProductService {
 
   /**
    * Adapts a product received from the server to the client-side model.
-   * @param apiProduct The product received from the server.
-   * @returns The adapted client-side product.
+   * @param {IProductResponse} apiProduct - The product received from the server.
+   * @returns {IProduct} The adapted client-side product.
    */
   static adaptProduct(apiProduct: IProductResponse): IProduct {
     const category: ICategory = {
@@ -116,6 +123,11 @@ export default class ProductService {
     };
   }
 
+  /**
+   * Adapts a product page received from the server to the client-side model.
+   * @param {IProductPageResponse} apiProduct - The product page received from the server.
+   * @returns {IProductPage} The adapted client-side product page.
+   */
   static adaptProductPage(apiProduct: IProductPageResponse): IProductPage {
     return {
       products: apiProduct.products.map((product) =>
@@ -129,7 +141,12 @@ export default class ProductService {
     };
   }
 
-  static adaptImageResponse(apiImage: IImageResponse) {
+  /**
+   * Adapts an image response from the server to the client-side model.
+   * @param {IImageResponse} apiImage - The image response from the server.
+   * @returns {IImage} The adapted client-side image.
+   */
+  static adaptImageResponse(apiImage: IImageResponse): IImage {
     const convertedPath = `${urlImg}/${apiImage.path}`;
 
     return {

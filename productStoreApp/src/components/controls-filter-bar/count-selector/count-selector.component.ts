@@ -15,6 +15,7 @@ const DEFAULT_PRESET: number = 8;
 })
 export class CountSelectorComponent {
   protected options: number[] = countPresets;
+
   defaultPreset: number = DEFAULT_PRESET;
 
   @Input() chosenPreset: Observable<number> | null = null;

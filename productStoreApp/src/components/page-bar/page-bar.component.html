@@ -4,7 +4,7 @@
 
   @for (page of pagesArray; track $index) {
     <a
-      class="{{ this.currentPage == page ? 'selected' : '' }}"
+      class="{{ +this.currentPage === page ? 'selected' : '' }}"
       [routerLink]="[]"
       [queryParams]="{ page, count: this.countQuery }"
       (click)="updateArray()"

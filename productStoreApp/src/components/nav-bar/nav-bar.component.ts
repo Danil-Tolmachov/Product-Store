@@ -9,15 +9,15 @@ import {
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import CartPanelComponent from './cart-panel/cart-panel.component';
-import UserService from '../../services/user.service';
-import AuthDropdownComponent from '../auth-dropdown/auth-dropdown.component';
-import { IUser } from '../../interfaces/IUser';
 import {
   BreakpointObserver,
   BreakpointState,
   Breakpoints,
 } from '@angular/cdk/layout';
+import CartPanelComponent from './cart-panel/cart-panel.component';
+import UserService from '../../services/user.service';
+import AuthDropdownComponent from '../auth-dropdown/auth-dropdown.component';
+import { IUser } from '../../interfaces/IUser';
 
 @UntilDestroy()
 @Component({
@@ -47,6 +47,7 @@ export default class NavBarComponent implements OnInit {
   );
 
   isMobile: boolean = false;
+
   isMobileLinksDropdownActive: boolean = false;
 
   navButtons: INavButton[] = [

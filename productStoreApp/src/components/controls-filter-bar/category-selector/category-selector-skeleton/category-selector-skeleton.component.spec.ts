@@ -8,10 +8,9 @@ describe('CategorySelectorSkeletonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CategorySelectorSkeletonComponent]
-    })
-    .compileComponents();
-    
+      imports: [CategorySelectorSkeletonComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(CategorySelectorSkeletonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

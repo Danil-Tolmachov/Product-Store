@@ -68,7 +68,6 @@ export default class OrderBriefComponent {
         header: 'Cancelation failed',
         message: ['Server error.'],
       });
-      return;
     }
   }
 }

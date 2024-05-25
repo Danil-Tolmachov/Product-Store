@@ -4,8 +4,8 @@
       [value]="option"
       [selected]="
         (chosenPreset | async) === null
-          ? defaultPreset == +option
-          : (chosenPreset | async) == +option
+          ? defaultPreset === +option
+          : (chosenPreset | async) === +option
       "
     >
       {{ option }}

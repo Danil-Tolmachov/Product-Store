@@ -7,8 +7,6 @@ import { CountSelectorSkeletonComponent } from '../count-selector/count-selector
   standalone: true,
   imports: [CategorySelectorSkeletonComponent, CountSelectorSkeletonComponent],
   templateUrl: './controls-filter-bar-skeleton.component.html',
-  styleUrl: './controls-filter-bar-skeleton.component.scss'
+  styleUrl: './controls-filter-bar-skeleton.component.scss',
 })
-export class ControlsFilterBarSkeletonComponent {
-
-}
+export class ControlsFilterBarSkeletonComponent {}

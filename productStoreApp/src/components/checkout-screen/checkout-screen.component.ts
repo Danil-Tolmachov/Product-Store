@@ -2,8 +2,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { tap } from 'rxjs';
-import CheckoutScreenService from '../../services/checkout-screen.service';
 import { CommonModule } from '@angular/common';
+import CheckoutScreenService from '../../services/checkout-screen.service';
 import AuthorizedCheckoutFormComponent from './authorized-checkout-form/authorized-checkout-form.component';
 
 import UserService from '../../services/user.service';
@@ -27,6 +27,7 @@ import UserService from '../../services/user.service';
 })
 export default class CheckoutScreenComponent implements OnInit {
   isActivated: boolean = false;
+
   isAuthenticated: boolean = false;
 
   constructor(

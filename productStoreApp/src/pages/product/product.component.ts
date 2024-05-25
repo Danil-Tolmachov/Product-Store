@@ -32,9 +32,11 @@ import SpecificationsContainerComponent from './specifications-container/specifi
 })
 export default class ProductComponent implements OnInit {
   protected showSpecifications: boolean = true;
+
   protected quantityValue: number = 1;
 
   productId$: Observable<number> | null = null;
+
   product$: Observable<IProduct> | null = null;
 
   constructor(

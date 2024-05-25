@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 import CategorySelectorComponent from './category-selector/category-selector.component';
 import { type ICategory } from '../../interfaces/ICategory';
 import { CountSelectorComponent } from './count-selector/count-selector.component';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-controls-filter-bar',
@@ -15,5 +15,6 @@ import { Observable } from 'rxjs';
 })
 export default class ControlsFilterBarComponent {
   @Input() categories: ICategory[] | null = [];
+
   @Input() chosenCountPreset: Observable<number> | null = null;
 }

@@ -18,6 +18,7 @@ import ImageContainerComponent from '../../../components/image-container/image-c
 })
 export default class ImageCarouselComponent {
   protected selectedImage: number = 0;
+
   protected showControls: boolean = true;
 
   @Input() imagePaths: IImage[] = [];
@@ -30,7 +31,7 @@ export default class ImageCarouselComponent {
     if (this.selectedImage >= this.imagePaths.length) {
       this.selectedImage = 0;
     } else {
-      this.selectedImage++;
+      this.selectedImage += 1;
     }
 
     this.cdr.markForCheck();
@@ -40,7 +41,7 @@ export default class ImageCarouselComponent {
     if (this.selectedImage <= 0) {
       this.selectedImage = this.imagePaths.length;
     } else {
-      this.selectedImage--;
+      this.selectedImage -= 1;
     }
 
     this.cdr.markForCheck();

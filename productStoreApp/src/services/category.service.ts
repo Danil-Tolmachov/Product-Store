@@ -7,7 +7,7 @@ import {
 } from '../interfaces/ICategory';
 import { type IProduct, type IProductResponse } from '../interfaces/IProduct';
 import environment from '../environments/environment';
-import { IImageResponse } from '../interfaces/IImage';
+import { IImage, IImageResponse } from '../interfaces/IImage';
 
 const url = environment.apiUrl;
 const urlImg = `${url}/image/product`;
@@ -25,7 +25,7 @@ export default class CategoryService {
 
   /**
    * Retrieves all categories from the server.
-   * @returns An observable emitting an array of categories.
+   * @returns {Observable<ICategory[]>} An observable emitting an array of categories.
    */
   getCategories(): Observable<ICategory[]> {
     const link = `${url}/category`;
@@ -41,8 +41,8 @@ export default class CategoryService {
 
   /**
    * Retrieves a category by its ID from the server.
-   * @param id The ID of the category to retrieve.
-   * @returns An observable emitting the category with the specified ID.
+   * @param {number} id - The ID of the category to retrieve.
+   * @returns {Observable<ICategory>} An observable emitting the category with the specified ID.
    */
   getCategory(id: number): Observable<ICategory> {
     const link = `${url}/category/${id}`;
@@ -54,8 +54,8 @@ export default class CategoryService {
 
   /**
    * Adapts a category received from the server to the client-side model.
-   * @param apiCategory The category received from the server.
-   * @returns The adapted client-side category.
+   * @param {ICategoryResponse} apiCategory - The category received from the server.
+   * @returns {ICategory} The adapted client-side category.
    */
   static adaptCategory(apiCategory: ICategoryResponse): ICategory {
     return {
@@ -69,8 +69,8 @@ export default class CategoryService {
 
   /**
    * Adapts a product received from the server to the client-side model.
-   * @param apiProduct The product received from the server.
-   * @returns The adapted client-side product.
+   * @param {IProductResponse} apiProduct - The product received from the server.
+   * @returns {IProduct} The adapted client-side product.
    */
   static adaptProduct(apiProduct: IProductResponse): IProduct {
     const category: ICategory = {
@@ -94,7 +94,12 @@ export default class CategoryService {
     };
   }
 
-  static adaptImageResponse(apiImage: IImageResponse) {
+  /**
+   * Adapts an image response from the server to the client-side model.
+   * @param {IImageResponse} apiImage - The image response from the server.
+   * @returns {IImage} The adapted client-side image.
+   */
+  static adaptImageResponse(apiImage: IImageResponse): IImage {
     const convertedPath = `${urlImg}/${apiImage.path}`;
 
     return {
