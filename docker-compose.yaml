@@ -7,9 +7,9 @@ services:
       context: /productStoreApp/
       dockerfile: /Build.Dockerfile
     ports:
-      - "3000:3001"
+      - "4000:4000"
     environment:
-      - API_URL=https://localhost:8080/
+      - API_URL=https://localhost:443/
     networks:
       - api-network
 

@@ -8,16 +8,13 @@ COPY . /usr/src/app
 RUN npm install -g @angular/cli
 RUN npm install
 
-# Install lite server
-RUN npm install lite-server
-
 # Publish app
 FROM base as buid
 RUN npm run build-prod
 
 # Run app
 FROM buid as final
-EXPOSE 3001
+EXPOSE 4000
 
-WORKDIR /usr/src/app/dist/products-app/browser
-CMD ["npx", "lite-server"]
+WORKDIR /usr/src/app/dist/products-app/server
+CMD ["node", ".\server.mjs"]

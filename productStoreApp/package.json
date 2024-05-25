@@ -10,7 +10,8 @@
     "test": "ng test",
     "serve:sFsr:productsApp": "node dist/products-app/server/server.mjs",
     "lint": "ng lint",
-    "lint:fix": "ng lint --fix"
+    "lint:fix": "ng lint --fix",
+    "build-prod": "ng build --configuration production --aot"
   },
   "private": true,
   "dependencies": {
