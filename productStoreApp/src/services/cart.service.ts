@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { type Observable, map, BehaviorSubject, tap, take, catchError, EMPTY } from 'rxjs';
+import {
+  type Observable,
+  map,
+  BehaviorSubject,
+  tap,
+  take,
+  catchError,
+  EMPTY,
+} from 'rxjs';
 import environment from '../environments/environment.development';
 import { ICartItem, ICartItemResponse } from '../interfaces/ICartItem';
 import ProductService from './product.service';
 import type IAddCartItemModel from '../interfaces/models/IAddCartItemModel';
-import UserService from './user.service';
 import { IImage, IImageResponse } from '../interfaces/IImage';
 import { ICart, ICartResponse } from '../interfaces/ICart';
 
@@ -22,10 +29,7 @@ export default class CartService {
 
   public cart: Observable<ICart | null> = this.cartSubject.asObservable();
 
-  constructor(
-    private readonly http: HttpClient,
-    private readonly userService: UserService
-  ) {}
+  constructor(private readonly http: HttpClient) {}
 
   /**
    * Retrieves user's cart from the server.
@@ -97,6 +101,7 @@ export default class CartService {
   static adaptCart(apiCartItem: ICartResponse): ICart {
     return {
       items: (apiCartItem.items ?? []).map((item) => this.adaptCartItem(item)),
+      total: apiCartItem.total,
     };
   }
 

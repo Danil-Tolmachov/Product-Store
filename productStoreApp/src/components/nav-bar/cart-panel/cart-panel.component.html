@@ -1,11 +1,22 @@
 <div *ngIf="isActive" [@fadeInOutAnimation] class="container">
-  <div class="cart-item-list">
-    <app-cart-item *ngFor="let item of (cart$ | async)?.items" [item]="item" />
-  </div>
-  <div class="bottom">
-    <p>Summary:</p>
-    <button (click)="checkoutButtonClick()">Checkout</button>
-  </div>
+  @if (this.user$ | async) {
+    <div class="cart-item-list">
+      <app-cart-item
+        *ngFor="let item of (cart$ | async)?.items"
+        [item]="item"
+      />
+    </div>
+    <div class="bottom">
+      <p>Summary: {{ (this.cart$ | async)?.total }}</p>
+      <button (click)="checkoutButtonClick()">Checkout</button>
+    </div>
+  } @else {
+    <div class="not-authorized-text">
+      <app-image-container imageUrl="assets\no-pic.svg" altText="Forbidden">
+      </app-image-container>
+      <p>For Authorized Users Only</p>
+    </div>
+  }
 </div>
 
 <button *ngIf="isActive" (click)="switchCartPanel()" class="close-trigger">

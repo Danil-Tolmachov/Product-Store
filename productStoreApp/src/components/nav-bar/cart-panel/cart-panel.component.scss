@@ -19,7 +19,7 @@
 }
 
 .container {
-  width: 400px;
+  width: $cart-panel-width;
   height: calc(100vh - 56px);
   padding-top: 56px;
 
@@ -38,13 +38,14 @@
 }
 
 .bottom {
-  width: 100%;
+  width: calc($cart-panel-width - 6px * 2);
   height: 40px;
+  padding: 6px;
 
-  position: fixed;
   bottom: 0;
 
   display: flex;
+  position: fixed;
 }
 
 .bottom > * {
@@ -55,13 +56,16 @@
 .bottom p {
   margin: 0;
 
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
   padding-left: 10px;
+  font-size: 1.1rem;
   line-height: 40px;
 }
 
 .bottom button {
-  background-color: transparent;
-
   transition: background 0.2s ease-out;
 
   color: #353535;
@@ -72,14 +76,34 @@
   cursor: pointer;
 
   border: none;
-  border-bottom-right-radius: 4px;
+  background-color: $light-mode-background-color;
+  border-radius: 2.75rem;
 }
 
 .bottom button:hover {
-  background: #35353547;
-
+  background-color: color-mix(in srgb, #3a3a3a 75%, black);
   border: none;
-  border-bottom-right-radius: 4px;
+}
+
+.not-authorized-text {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.not-authorized-text app-image-container img {
+  filter: invert(76%);
+}
+
+.not-authorized-text p {
+  margin: 0;
+  height: 30px;
+  font-size: 1.3rem;
+  color: $light-mode-main-font-color;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -93,5 +117,10 @@
 
   .bottom button {
     color: $dark-mode-main-font-color;
+    background-color: color-mix(in srgb, #3a3a3a 90%, black);
+  }
+
+  .not-authorized-text p {
+    color: $dark-mode-dark-font-color;
   }
 }
