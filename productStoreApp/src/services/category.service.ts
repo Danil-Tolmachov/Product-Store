@@ -9,8 +9,8 @@ import { type IProduct, type IProductResponse } from '../interfaces/IProduct';
 import environment from '../environments/environment';
 import { IImage, IImageResponse } from '../interfaces/IImage';
 
-const url = environment.apiUrl;
-const urlImg = `${url}/image/product`;
+const url = environment.apiUrl + 'v1';
+const urlImg = url + '/image/product';
 
 @Injectable({
   providedIn: 'root',

@@ -18,8 +18,8 @@ import { ICategory } from '../interfaces/ICategory';
 import { IProduct, IProductResponse } from '../interfaces/IProduct';
 import { IImage, IImageResponse } from '../interfaces/IImage';
 
-const url = environment.apiUrl;
-const urlImg = `${url}/image/product`;
+const url = environment.apiUrl + 'v1';
+const urlImg = url + '/image/product';
 
 interface ICancelOrderRequest {
   orderId: number;

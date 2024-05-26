@@ -10,8 +10,8 @@ import UserService from './user.service';
 import { IImage, IImageResponse } from '../interfaces/IImage';
 import { ICart, ICartResponse } from '../interfaces/ICart';
 
-const url = environment.apiUrl;
-const urlImg = `${url}/image/product`;
+const url = environment.apiUrl + 'v1';
+const urlImg = url + '/image/product';
 
 @UntilDestroy()
 @Injectable({

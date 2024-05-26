@@ -21,8 +21,9 @@ import environment from '../environments/environment';
 import IRegistrationModel from '../interfaces/models/IRegistrationModel';
 import TokenService from './token.service';
 
-const url = `${environment.apiUrl}/auth`;
-const urlImg = `${url}/image/product`;
+const urlBase = environment.apiUrl + 'v1';
+const url = urlBase + '/auth';
+const urlImg = urlBase + '/image/product';
 
 /**
  * Interface representing a token response from the server.
