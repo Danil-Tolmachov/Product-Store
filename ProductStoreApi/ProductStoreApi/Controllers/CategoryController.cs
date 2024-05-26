@@ -1,12 +1,14 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using StoreBLL.Interfaces.Services;
 using StoreBLL.Models.Dto;
 
 namespace ProductStoreApi.Controllers
 {
+	[ApiVersion(1)]
 	[ApiController]
-	[Route("/api/category")]
+	[Route("/api/v{v:apiVersion}/category")]
 	public class CategoryController : ControllerBase
 	{
 		private readonly ICategoryService _categoryService;

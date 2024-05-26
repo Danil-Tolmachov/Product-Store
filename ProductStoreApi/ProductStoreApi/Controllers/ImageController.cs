@@ -1,19 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ProductStoreApi.Extensions;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using StoreBLL.Interfaces.Services;
-using StoreBLL.Models;
-using StoreBLL.Services;
-using System.Net;
 
 namespace ProductStoreApi.Controllers
 {
+	[ApiVersion(1)]
 	[ApiController]
-	[Route("/api/image")]
+	[Route("/api/v{v:apiVersion}/image")]
 	public class ImageController : ControllerBase
 	{
 		private readonly IProductImageService _imageService;
 
-		public ImageController(IProductImageService imageService, ILogger<ImageController> logger)
+		public ImageController(IProductImageService imageService)
 		{
 			_imageService = imageService;
 		}

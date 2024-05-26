@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductStoreApi.Authentication;
@@ -10,8 +11,9 @@ using StoreBLL.Models.Extra;
 
 namespace ProductStoreApi.Controllers
 {
+	[ApiVersion(1)]
 	[ApiController]
-	[Route("/api/auth")]
+	[Route("/api/v{v:apiVersion}/auth")]
 	public class UserController : ControllerBase
 	{
 		private readonly IMapper _mapper;
@@ -49,7 +51,7 @@ namespace ProductStoreApi.Controllers
 		}
 
 		[HttpPost("login")]
-		[ProducesResponseType(typeof(object), 200)] // return: JWT Tokens
+		[ProducesResponseType(typeof(TokensDto), 200)] // return: JWT Tokens
 		[ProducesResponseType(typeof(string), 401)]
 		public async Task<ActionResult<TokensDto>> Login([FromBody] LoginModel model)
 		{

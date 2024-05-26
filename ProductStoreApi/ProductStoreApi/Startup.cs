@@ -1,7 +1,10 @@
 ﻿
+using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using ProductStoreApi.Authentication;
 using ProductStoreApi.Extensions;
 using ProductStoreApi.Filters;
@@ -15,19 +18,18 @@ namespace ProductStoreApi
 {
 	public class Startup
 	{
-		public IConfiguration Configuration { get; }
+		public IConfiguration Config { get; }
 		public IWebHostEnvironment Env { get; }
 
 		public Startup(IConfiguration configuration, IWebHostEnvironment env)
 		{
-			Configuration = configuration;
+			Config = configuration;
 			Env = env;
 		}
 
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddEndpointsApiExplorer();
-			services.AddSwaggerGen();
 			services.AddControllers();
 			services.AddCors();
 
@@ -44,11 +46,11 @@ namespace ProductStoreApi
 
 				if (bool.TryParse(variable, out bool isDockerContainer) && isDockerContainer)
 				{
-					options.UseSqlServer(this.Configuration.GetConnectionString("DockerConnection"));
+					options.UseSqlServer(this.Config.GetConnectionString("DockerConnection"));
 				}
 				else
 				{
-					options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
+					options.UseSqlServer(this.Config.GetConnectionString("DefaultConnection"));
 				}
 			});
 
@@ -72,7 +74,7 @@ namespace ProductStoreApi
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 					.AddJwtBearer(options =>
 					{
-						var authOptions = new AuthOptions(Configuration);
+						var authOptions = new AuthOptions(Config);
 
 						options.TokenValidationParameters = new TokenValidationParameters
 						{
@@ -86,9 +88,33 @@ namespace ProductStoreApi
 							ClockSkew = TimeSpan.FromSeconds(60),
 						};
 					});
+
+			// Add API versioning.
+			services.AddApiVersioning(options =>
+			{
+				options.DefaultApiVersion = new ApiVersion(1);
+				options.ReportApiVersions = true;
+				options.AssumeDefaultVersionWhenUnspecified = true;
+				options.ApiVersionReader = new UrlSegmentApiVersionReader();
+			}).AddApiExplorer(options =>
+			{
+				options.GroupNameFormat = "'v'V";
+				options.SubstituteApiVersionInUrl = true;
+			});
+
+			// Generate swagger docs
+			services.AddSwaggerGen((options =>
+			{
+				options.SwaggerDoc("v1", new OpenApiInfo
+				{
+					Version = "Version 1",
+					Title = "ProductStore API V1",
+					Description = "Default version of API."
+				});
+			}));
 		}
 
-		public void Configure(IApplicationBuilder app)
+		public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider provider)
 		{
 			// Configure the HTTP request pipeline.
 
@@ -96,7 +122,14 @@ namespace ProductStoreApi
 			if (Env.IsDevelopment())
 			{
 				app.UseSwagger();
-				app.UseSwaggerUI();
+				app.UseSwaggerUI(options =>
+				{
+					foreach (var groupName in provider.ApiVersionDescriptions.Select(description => description.GroupName))
+					{
+						options.SwaggerEndpoint(
+							$"/swagger/{groupName}/swagger.json", groupName.ToUpperInvariant());
+					}
+				});
 			}
 			else
 			{

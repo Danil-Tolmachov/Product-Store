@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductStoreApi.Filters;
@@ -9,8 +10,9 @@ using StoreBLL.Models.Extra;
 
 namespace ProductStoreApi.Controllers
 {
+	[ApiVersion(1)]
 	[ApiController]
-	[Route("api/cart")]
+	[Route("api/v{v:apiVersion}/cart")]
 	[ServiceFilter(typeof(FetchUserFilter))]
 	public class CartController : ControllerBase
 	{

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductStoreApi.Filters;
@@ -9,8 +10,9 @@ using StoreBLL.Models.Extra;
 
 namespace ProductStoreApi.Controllers
 {
+	[ApiVersion(1)]
 	[ApiController]
-	[Route("api/order")]
+	[Route("api/v{v:apiVersion}/order")]
 	[ServiceFilter(typeof(FetchUserFilter))]
 	public class OrderController : ControllerBase
 	{
@@ -96,6 +98,7 @@ namespace ProductStoreApi.Controllers
 		[HttpPost("cancel")]
 		[Authorize]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(400)]
 		[ProducesResponseType(401)]
 		public async Task<ActionResult> CancelOrder(CancelOrderModel model)
 		{
