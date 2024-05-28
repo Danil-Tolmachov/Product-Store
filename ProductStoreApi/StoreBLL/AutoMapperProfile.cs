@@ -145,7 +145,8 @@ namespace StoreBLL
 				.ForMember(cd => cd.Product, ci => ci.MapFrom(x => x.Product));
 
 			CreateMap<CartModel, CartDto>()
-				.ForMember(cd => cd.Items, cm => cm.MapFrom(x => x.CartItems));
+				.ForMember(cd => cd.Items, cm => cm.MapFrom(x => x.CartItems))
+				.ForMember(cd => cd.Total, cm => cm.MapFrom(x => x.CartItems.Sum(y => y.Product.Price * y.Quantity)));
 
 			CreateMap<UserModel, UserDto>()
 				.ForMember(ud => ud.Cart, um => um.MapFrom(x => x.Cart));
