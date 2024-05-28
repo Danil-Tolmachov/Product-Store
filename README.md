@@ -8,6 +8,12 @@ Description: ProductStore is a comprehensive RESTful e-commerce platform designe
 
 .Net Version: 7.0
 
+### Test account credentials
+
+Username - <i>johnsmith</i>
+<br>
+Password - <i>Password1</i>
+
 // TODO
 
 ## Angular App:
