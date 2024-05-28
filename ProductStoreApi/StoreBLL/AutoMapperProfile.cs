@@ -127,7 +127,9 @@ namespace StoreBLL
 				.ForPath(pd => pd.Category!.Id, p => p.MapFrom(x => x.CategoryId))
 				.ForPath(pd => pd.Category!.Name, p => p.MapFrom(x => x.CategoryName))
 				.ForMember(pd => pd.Specifications, p => p.MapFrom(x => x.Specifications))
-				.ForMember(pd => pd.Images, p => p.MapFrom(x => x.Images));
+				.ForMember(pd => pd.Images, p => p.MapFrom(x => x.Images))
+				.ForMember(pd => pd.Price, p => p.MapFrom(x => Math.Round(x.Price - (x.Price * x.Discount), 2)))
+				.ForMember(pd => pd.OriginalPrice, p => p.MapFrom(x => x.Price));
 
 			CreateMap<ContactModel, ContactDto>()
 				.ForMember(cd => cd.Type, cm => cm.MapFrom(x => x.Name));
