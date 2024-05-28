@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -15,7 +16,7 @@ const SHOWN_PAGES_LIMIT = 5;
 @Component({
   selector: 'app-page-bar',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, CommonModule],
   templateUrl: './page-bar.component.html',
   styleUrl: './page-bar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,15 +26,15 @@ export class PageBarComponent implements OnInit {
 
   @Input() currentPage$: Observable<number> | null = null;
 
-  currentPage: number = 1;
+  currentPage: number | null = null;
 
   @Input() pagesCount$: Observable<number | null> | null = null;
 
-  pagesCount: number = 1;
+  pagesCount: number | null = null;
 
   @Input() countQuery$: Observable<number> | null = null;
 
-  countQuery: number = 10;
+  countQuery: number | null = null;
 
   constructor(
     protected readonly cdr: ChangeDetectorRef,
@@ -76,7 +77,7 @@ export class PageBarComponent implements OnInit {
   }
 
   previousButtonClick(): void {
-    if (this.currentPage <= 1) {
+    if (this.currentPage === null || this.currentPage <= 1) {
       return;
     }
 
@@ -86,7 +87,11 @@ export class PageBarComponent implements OnInit {
   }
 
   nextButtonClick(): void {
-    if (this.currentPage >= this.pagesCount) {
+    if (
+      this.currentPage === null ||
+      this.pagesCount === null ||
+      this.currentPage >= this.pagesCount
+    ) {
       return;
     }
 
@@ -96,26 +101,45 @@ export class PageBarComponent implements OnInit {
   }
 
   protected updateArray(): void {
-    let firstPage = +this.currentPage - Math.floor(SHOWN_PAGES_LIMIT / 2);
-    let lastPage;
+    if (this.currentPage === null || this.pagesCount === null) {
+      return;
+    }
 
-    if (firstPage < 1) {
-      firstPage = 1;
-      lastPage = SHOWN_PAGES_LIMIT;
+    // Define boundaries of visible pages
+    let leftPage = +this.currentPage - Math.floor(SHOWN_PAGES_LIMIT / 2);
+    let rightPage;
+
+    // Adjust the right page index if first first page is visible
+    if (leftPage < 1) {
+      leftPage = 1;
+      rightPage = SHOWN_PAGES_LIMIT;
     } else {
-      lastPage = +this.currentPage + Math.floor(SHOWN_PAGES_LIMIT / 2);
+      rightPage = +this.currentPage + Math.floor(SHOWN_PAGES_LIMIT / 2);
+    }
+
+    // Adjust the left page index if last page is visible
+    if (rightPage > this.pagesCount) {
+      leftPage = this.pagesCount - SHOWN_PAGES_LIMIT + 1;
+
+      if (leftPage < 1) {
+        leftPage = 1;
+      }
     }
 
     // Clear array
     this.pagesArray = [];
 
     // Fill the pagesArray
-    for (let i = firstPage; i <= lastPage && i <= this.pagesCount; i++) {
+    for (let i = leftPage; i <= rightPage && i <= this.pagesCount; i++) {
       this.pagesArray.push(i);
     }
   }
 
   protected increaseArray(): void {
+    if (this.pagesCount === null) {
+      return;
+    }
+
     const firstPage = this.pagesArray[this.pagesArray.length - 1] + 1;
     const lastPage = firstPage + SHOWN_PAGES_LIMIT;
 
