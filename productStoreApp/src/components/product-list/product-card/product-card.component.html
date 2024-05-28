@@ -7,8 +7,11 @@
     </p>
   </a>
   <div class="bottom">
-    <p class="product-card-price" title="{{ '$' + product.price }}">
+    <p class="price" title="{{ '$' + product.price }}">
       {{ '$' + product.price }}
+      <ng-container *ngIf="product.discount > 0">
+        <span>-{{ product.discount * 100 }}%</span>
+      </ng-container>
     </p>
     <button (click)="addButtonClick(product.id)">Add</button>
   </div>

@@ -96,6 +96,7 @@ export default class CategoryService {
       name: apiProduct.name,
       price: apiProduct.price,
       discount: apiProduct.discount,
+      originalPrice: apiProduct.originalPrice,
       unitMeasure: apiProduct.unitMeasure,
       category,
       description: apiProduct.description,

@@ -66,7 +66,7 @@ app-image-container {
   color: #353535;
 }
 
-.product-card-price {
+.price {
   padding: 6px;
   max-width: 50%;
 
@@ -77,6 +77,12 @@ app-image-container {
   font-weight: 500;
   color: $light-mode-special-font-color;
   margin-left: 10px !important;
+}
+
+.price span {
+  font-size: 0.7rem;
+  vertical-align: sub;
+  color: $product-card-discount-color;
 }
 
 .bottom {
@@ -124,7 +130,7 @@ app-image-container {
     color: $dark-mode-main-font-color;
   }
 
-  .product-card-price {
+  .price {
     color: $dark-mode-special-font-color;
   }
 

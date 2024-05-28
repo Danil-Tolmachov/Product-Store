@@ -149,6 +149,7 @@ export default class ProductService {
       price: apiProduct.price,
       discount: apiProduct.discount,
       unitMeasure: apiProduct.unitMeasure,
+      originalPrice: apiProduct.originalPrice,
       category,
       description: apiProduct.description,
       specifications: apiProduct.specifications,

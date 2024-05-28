@@ -32,6 +32,7 @@ export default class ProductCardComponent {
     name: 'null',
     price: 0,
     discount: 0,
+    originalPrice: 0,
     unitMeasure: '',
     imagePaths: [],
     category: null,

@@ -90,7 +90,7 @@ export default class UserService {
           return EMPTY;
         }
 
-        this.currentUserSubject.next(null)
+        this.currentUserSubject.next(null);
         return caught;
       })
     );
@@ -254,6 +254,7 @@ export default class UserService {
       name: apiProduct.name,
       price: apiProduct.price,
       discount: apiProduct.discount,
+      originalPrice: apiProduct.originalPrice,
       unitMeasure: apiProduct.unitMeasure,
       category,
       description: apiProduct.description,

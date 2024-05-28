@@ -29,6 +29,7 @@ export default class CartItemComponent implements OnInit {
       name: '',
       price: 0,
       discount: 0,
+      originalPrice: 0,
       unitMeasure: '',
       imagePaths: [],
       category: null,

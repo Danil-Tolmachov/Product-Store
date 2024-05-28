@@ -81,7 +81,7 @@
 }
 
 .bottom button:hover {
-  background-color: color-mix(in srgb, #3a3a3a 75%, black);
+  background-color: color-mix(in srgb, $light-mode-foreground-color 75%, black);
   border: none;
 }
 
@@ -118,6 +118,10 @@
   .bottom button {
     color: $dark-mode-main-font-color;
     background-color: color-mix(in srgb, #3a3a3a 90%, black);
+  }
+
+  .bottom button:hover {
+    background-color: color-mix(in srgb, #3a3a3a 75%, black);
   }
 
   .not-authorized-text p {

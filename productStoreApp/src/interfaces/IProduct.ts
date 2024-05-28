@@ -6,6 +6,7 @@ export interface IProduct {
   name: string;
   price: number;
   discount: number;
+  originalPrice: number;
   unitMeasure: string;
 
   category: ICategory | null;
@@ -19,6 +20,7 @@ export interface IProductResponse {
   name: string;
   price: number;
   discount: number;
+  originalPrice: number;
   description: string;
   unitMeasure: string;
 

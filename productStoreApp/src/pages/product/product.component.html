@@ -17,7 +17,14 @@
       <p class="product-description">{{ product.description }}</p>
 
       <div class="bottom">
-        <p class="price">${{ product.price }}</p>
+        <p class="price">
+          <ng-container *ngIf="product.discount > 0">
+            <span>
+              <s>${{ product.originalPrice }}</s>
+            </span>
+          </ng-container>
+          ${{ product.price }}
+        </p>
         <input
           #quantityInput
           class="quantity-input"
@@ -31,9 +38,9 @@
       </div>
     </div>
   </div>
-  <hr>
+  <hr />
 
   <ng-container *ngIf="showSpecifications">
-    <app-specifications-container [specifications]="product.specifications"/>
+    <app-specifications-container [specifications]="product.specifications" />
   </ng-container>
 </ng-container>
