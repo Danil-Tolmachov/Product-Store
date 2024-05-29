@@ -1,0 +1,18 @@
+<div class="product-card" [@fadeInOutAnimation]>
+  <a routerLink="/product/{{ product.id }}">
+    <p class="product-card-id">{{ product.id }}</p>
+    <app-image-container [imageUrl]="product.imagePaths[0].path" />
+    <p class="product-card-name" [title]="product.name">
+      {{ product.name }}
+    </p>
+  </a>
+  <div class="bottom">
+    <p class="price" title="{{ '$' + product.price }}">
+      {{ '$' + product.price }}
+      <ng-container *ngIf="product.discount > 0">
+        <span>-{{ product.discount * 100 }}%</span>
+      </ng-container>
+    </p>
+    <button (click)="addButtonClick(product.id)">Add</button>
+  </div>
+</div>

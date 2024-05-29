@@ -1,3 +1,5 @@
+@import '../../shared/variables.scss';
+
 :host {
   display: block;
 
@@ -34,4 +36,11 @@ button {
 
 button:hover {
   opacity: 0.8;
+}
+
+@media (prefers-color-scheme: dark) {
+  button {
+    color: $dark-mode-main-font-color;
+    background-color: $dark-mode-foreground-color;
+  }
 }

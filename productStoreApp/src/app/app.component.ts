@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { LayoutModule } from '@angular/cdk/layout';
 import NavBarComponent from '../components/nav-bar/nav-bar.component';
-import ProductItemBriefComponent from '../components/product-list/product-item-brief/product-item-brief.component';
+import ProductCardComponent from '../components/product-list/product-card/product-card.component';
 import FooterComponent from '../components/footer/footer.component';
 import MessageScreenComponent from '../components/message-screen/message-screen.component';
-import UserService from '../services/user.service';
-import { CheckoutScreenComponent } from '../components/checkout-screen/checkout-screen.component';
+import CheckoutScreenComponent from '../components/checkout-screen/checkout-screen.component';
 
 @Component({
   selector: 'app-root',
@@ -14,12 +14,12 @@ import { CheckoutScreenComponent } from '../components/checkout-screen/checkout-
   imports: [
     RouterOutlet,
     NavBarComponent,
-    ProductItemBriefComponent,
+    ProductCardComponent,
     FooterComponent,
     MessageScreenComponent,
     CheckoutScreenComponent,
   ],
-  providers: [HttpClientModule, UserService],
+  providers: [HttpClientModule, LayoutModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

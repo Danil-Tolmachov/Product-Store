@@ -9,12 +9,15 @@ import { Observable } from 'rxjs';
 import CartItemComponent from './cart-item/cart-item.component';
 import CartService from '../../../services/cart.service';
 import { ICart } from '../../../interfaces/ICart';
-import { CheckoutScreenService } from '../../../services/checkout-screen.service';
+import CheckoutScreenService from '../../../services/checkout-screen.service';
+import UserService from '../../../services/user.service';
+import { IUser } from '../../../interfaces/IUser';
+import ImageContainerComponent from '../../image-container/image-container.component';
 
 @Component({
   selector: 'app-cart-panel',
   standalone: true,
-  imports: [CommonModule, CartItemComponent],
+  imports: [CommonModule, CartItemComponent, ImageContainerComponent],
   templateUrl: './cart-panel.component.html',
   styleUrl: './cart-panel.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,10 +35,12 @@ export default class CartPanelComponent {
   isActive: boolean = false;
 
   cart$: Observable<ICart | null> = this.cartService.cart;
+  user$: Observable<IUser | null> = this.userService.currentUser;
 
   constructor(
     private readonly cartService: CartService,
     private readonly checkoutScreenService: CheckoutScreenService,
+    private readonly userService: UserService,
     private readonly cdr: ChangeDetectorRef
   ) {}
 

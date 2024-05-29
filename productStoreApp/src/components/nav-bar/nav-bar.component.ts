@@ -7,8 +7,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { Observable, take, tap } from 'rxjs';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Observable, tap } from 'rxjs';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import {
+  BreakpointObserver,
+  BreakpointState,
+  Breakpoints,
+} from '@angular/cdk/layout';
 import CartPanelComponent from './cart-panel/cart-panel.component';
 import UserService from '../../services/user.service';
 import AuthDropdownComponent from '../auth-dropdown/auth-dropdown.component';
@@ -37,47 +42,56 @@ export default class NavBarComponent implements OnInit {
   @ViewChild(CartPanelComponent)
   cartPanelInstance: CartPanelComponent | null = null;
 
-  user$: Observable<IUser | null> = this.userService.currentUser;
+  user$: Observable<IUser | null> = this.userService.currentUser.pipe(
+    tap(() => this.cdr.markForCheck())
+  );
+
+  isMobile: boolean = false;
+
+  isMobileLinksDropdownActive: boolean = false;
 
   navButtons: INavButton[] = [
     {
       title: 'About Us',
       link: '/about-us',
-      styles: {
-        '--pill-accent': 'var(--french-violet)',
-      },
+      styles: {},
     },
     {
       title: 'Delivery',
       link: '/delivery',
-      styles: {
-        '--pill-accent': 'var(--french-violet)',
-      },
+      styles: {},
     },
     {
       title: 'Home',
       link: '/home',
-      styles: {
-        '--pill-accent': 'var(--french-violet)',
-      },
+      styles: {},
     },
   ];
 
   constructor(
     private readonly userService: UserService,
     private readonly router: Router,
-    private readonly cdr: ChangeDetectorRef
+    private readonly cdr: ChangeDetectorRef,
+    private readonly breakpointObserver: BreakpointObserver
   ) {}
 
   ngOnInit(): void {
-    // Get user
-    if (this.userService.checkAuthenticated()) {
-      this.userService.getUser().pipe(
-        take(1),
-        untilDestroyed(this),
-        tap(() => this.cdr.markForCheck())
-      );
-    }
+    this.breakpointObserver
+      .observe([
+        Breakpoints.TabletPortrait,
+        Breakpoints.HandsetPortrait,
+        Breakpoints.WebPortrait,
+      ])
+      .subscribe((state: BreakpointState) => {
+        if (state.matches) {
+          this.isMobile = true;
+        } else {
+          this.isMobile = false;
+          this.isMobileLinksDropdownActive = false;
+        }
+
+        this.cdr.markForCheck();
+      });
   }
 
   loginButtonClick(): void {
@@ -93,6 +107,10 @@ export default class NavBarComponent implements OnInit {
   cartButtonClick(): void {
     // Show cart panel
     this.cartPanelInstance?.switchCartPanel();
+  }
+
+  mobileDropdownLinksButton(): void {
+    this.isMobileLinksDropdownActive = !this.isMobileLinksDropdownActive;
   }
 }
 

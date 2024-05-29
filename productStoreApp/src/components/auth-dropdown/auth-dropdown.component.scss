@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Ubuntu&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+@import '../../shared/variables.scss';
 
 :host {
   display: block;
@@ -31,7 +32,7 @@
 
   list-style-type: none;
 
-  background-color: white;
+  background-color: $light-mode-foreground-color;
   border-radius: 3px;
 
   z-index: 10000;
@@ -58,9 +59,28 @@
 }
 
 .dropdown-button:hover {
-  background: rgba(53, 53, 53, 0.2784313725);
+  background: rgba(53, 53, 53, 0.28);
   border: none;
   border-bottom-right-radius: 4px;
 
   transition: 0.1s;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dropdown {
+    background-color: $dark-mode-foreground-color;
+  }
+
+  .dropdown-button {
+    color: $dark-mode-secondary-font-color;
+  }
+
+  button.dropdown-button {
+    color: $dark-mode-secondary-font-color;
+    background-color: $dark-mode-background-color;
+  }
+
+  .dropdown-button:hover {
+    background: rgba(53, 53, 53, 0.7);
+  }
 }

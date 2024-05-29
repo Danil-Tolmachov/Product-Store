@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { type Observable, map, BehaviorSubject } from 'rxjs';
+import { type Observable, map, BehaviorSubject, catchError, EMPTY } from 'rxjs';
 import {
   type ICategory,
   type ICategoryResponse,
 } from '../interfaces/ICategory';
 import { type IProduct, type IProductResponse } from '../interfaces/IProduct';
 import environment from '../environments/environment';
-import { IImageResponse } from '../interfaces/IImage';
+import { IImage, IImageResponse } from '../interfaces/IImage';
 
-const url = environment.apiUrl;
-const urlImg = `${url}/image/product`;
+const url = environment.apiUrl + 'v1';
+const urlImg = url + '/image/product';
 
 @Injectable({
   providedIn: 'root',
@@ -25,37 +25,49 @@ export default class CategoryService {
 
   /**
    * Retrieves all categories from the server.
-   * @returns An observable emitting an array of categories.
+   * @returns {Observable<ICategory[]>} An observable emitting an array of categories.
    */
   getCategories(): Observable<ICategory[]> {
     const link = `${url}/category`;
 
-    return this.http
-      .get<ICategoryResponse[]>(link)
-      .pipe(
-        map((response) =>
-          response.map((category) => CategoryService.adaptCategory(category))
-        )
-      );
+    return this.http.get<ICategoryResponse[]>(link).pipe(
+      map((response) =>
+        response.map((category) => CategoryService.adaptCategory(category))
+      ),
+      catchError((error, caught) => {
+        if (error.status === 0) {
+          return EMPTY;
+        }
+
+        return caught;
+      })
+    );
   }
 
   /**
    * Retrieves a category by its ID from the server.
-   * @param id The ID of the category to retrieve.
-   * @returns An observable emitting the category with the specified ID.
+   * @param {number} id - The ID of the category to retrieve.
+   * @returns {Observable<ICategory>} An observable emitting the category with the specified ID.
    */
   getCategory(id: number): Observable<ICategory> {
     const link = `${url}/category/${id}`;
 
-    return this.http
-      .get<ICategoryResponse>(link)
-      .pipe(map((category) => CategoryService.adaptCategory(category)));
+    return this.http.get<ICategoryResponse>(link).pipe(
+      map((category) => CategoryService.adaptCategory(category)),
+      catchError((error, caught) => {
+        if (error.status === 0) {
+          return EMPTY;
+        }
+
+        return caught;
+      })
+    );
   }
 
   /**
    * Adapts a category received from the server to the client-side model.
-   * @param apiCategory The category received from the server.
-   * @returns The adapted client-side category.
+   * @param {ICategoryResponse} apiCategory - The category received from the server.
+   * @returns {ICategory} The adapted client-side category.
    */
   static adaptCategory(apiCategory: ICategoryResponse): ICategory {
     return {
@@ -69,8 +81,8 @@ export default class CategoryService {
 
   /**
    * Adapts a product received from the server to the client-side model.
-   * @param apiProduct The product received from the server.
-   * @returns The adapted client-side product.
+   * @param {IProductResponse} apiProduct - The product received from the server.
+   * @returns {IProduct} The adapted client-side product.
    */
   static adaptProduct(apiProduct: IProductResponse): IProduct {
     const category: ICategory = {
@@ -84,6 +96,7 @@ export default class CategoryService {
       name: apiProduct.name,
       price: apiProduct.price,
       discount: apiProduct.discount,
+      originalPrice: apiProduct.originalPrice,
       unitMeasure: apiProduct.unitMeasure,
       category,
       description: apiProduct.description,
@@ -94,7 +107,12 @@ export default class CategoryService {
     };
   }
 
-  static adaptImageResponse(apiImage: IImageResponse) {
+  /**
+   * Adapts an image response from the server to the client-side model.
+   * @param {IImageResponse} apiImage - The image response from the server.
+   * @returns {IImage} The adapted client-side image.
+   */
+  static adaptImageResponse(apiImage: IImageResponse): IImage {
     const convertedPath = `${urlImg}/${apiImage.path}`;
 
     return {

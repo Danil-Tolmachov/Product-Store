@@ -1,3 +1,10 @@
+@import '../../shared/variables.scss';
+
+:host {
+  display: flex;
+  justify-content: center;
+}
+
 .container {
   width: 200px;
 }
@@ -6,20 +13,19 @@
   display: flex;
   flex-direction: column;
 
-  width: 100%;
-
   margin-bottom: 10px;
 }
 
 .field label {
   margin: 5px;
-
-  font-weight: 300;
+  position: sticky;
+  font-weight: 400;
 }
 
 .field input {
   height: 30px;
-  width: 100%;
+
+  border-radius: 3px;
 
   border: none;
   box-shadow: 1px 1px 2px 0px #00000029;
@@ -38,4 +44,31 @@ app-button {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.alert-text {
+  color: $alert-text-color;
+}
+
+.validator-alert {
+  width: calc(100% - 8px);
+
+  margin-top: 10px;
+  padding: 4px;
+
+  color: $validator-alert-text-color;
+
+  background-color: $validator-alert-background-color;
+  border-radius: 3px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .field label {
+    color: $dark-mode-secondary-font-color;
+  }
+
+  .field input {
+    color: $dark-mode-main-font-color;
+    background-color: $dark-mode-foreground-color;
+  }
 }

@@ -6,6 +6,7 @@ export interface IProduct {
   name: string;
   price: number;
   discount: number;
+  originalPrice: number;
   unitMeasure: string;
 
   category: ICategory | null;
@@ -19,12 +20,31 @@ export interface IProductResponse {
   name: string;
   price: number;
   discount: number;
+  originalPrice: number;
   description: string;
   unitMeasure: string;
 
   category: ICategoryResponse;
   specifications: ISpecification[];
   images: IImageResponse[];
+}
+
+export interface IProductPage {
+  products: IProduct[];
+
+  currentPage: number | null;
+  totalCount: number | null;
+  pagesCount: number | null;
+  pageSize: number | null;
+}
+
+export interface IProductPageResponse {
+  products: IProductResponse[];
+
+  currentPage: number | null;
+  totalCount: number | null;
+  pagesCount: number | null;
+  pageSize: number | null;
 }
 
 export interface ICategory {

@@ -1,8 +1,10 @@
+@import '../../../shared/variables.scss';
+
 .container {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  align-items: center
+  align-items: center;
 }
 
 .field {
@@ -56,4 +58,20 @@ app-button {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+@media (prefers-color-scheme: dark) {
+  .field label {
+    color: $dark-mode-secondary-font-color;
+  }
+
+  .field input {
+    color: $dark-mode-main-font-color;
+    background-color: $dark-mode-foreground-color;
+  }
+
+  .field textarea {
+    color: $dark-mode-main-font-color;
+    background-color: $dark-mode-foreground-color;
+  }
 }

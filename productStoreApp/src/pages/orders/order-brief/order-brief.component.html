@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container {{ order?.isCompleted || order?.isCanceled ? 'finished' : ''}}">
   <h3 class="header">Order - {{ order?.id }}</h3>
 
   <hr />
@@ -34,8 +34,8 @@
   </div>
   <p class="margin-tb-20"><b>Total:</b> ${{ order?.total }}</p>
   @if (!order?.isCanceled && !order?.isCompleted) {
-    <app-button (click)="order?.id ? cancelButtonClick(order?.id!) : null">
+    <button class="cancel" (click)="order?.id ? cancelButtonClick(order?.id!) : null">
       Cancel
-    </app-button>
+    </button>
   }
 </div>

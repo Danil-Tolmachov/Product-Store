@@ -21,7 +21,7 @@ export default class MessageService {
 
   /**
    * Shows a message by updating the message subject.
-   * @param message The message to be shown.
+   * @param {IMessageModel} message - The message to be shown.
    */
   showMessage(message: IMessageModel): void {
     this.messageSubject.next(message);

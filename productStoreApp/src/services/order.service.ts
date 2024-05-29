@@ -1,17 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { type Observable, map, BehaviorSubject, tap, switchMap } from 'rxjs';
+import {
+  type Observable,
+  map,
+  BehaviorSubject,
+  tap,
+  switchMap,
+  EMPTY,
+  catchError,
+} from 'rxjs';
 import environment from '../environments/environment.development';
 import UserService from './user.service';
 import { IOrder, IOrderResponse } from '../interfaces/IOrder';
 import { IOrderDetail, IOrderDetailResponse } from '../interfaces/IOrderItem';
 import { ICategory } from '../interfaces/ICategory';
 import { IProduct, IProductResponse } from '../interfaces/IProduct';
-import { IImageResponse } from '../interfaces/IImage';
+import { IImage, IImageResponse } from '../interfaces/IImage';
 
-const url = environment.apiUrl;
-const urlImg = `${url}/image/product`;
+const url = environment.apiUrl + 'v1';
+const urlImg = url + '/image/product';
 
 interface ICancelOrderRequest {
   orderId: number;
@@ -44,15 +52,31 @@ export default class OrderService {
       .subscribe();
   }
 
+  /**
+   * Retrieves an order by its ID from the server.
+   * @param {number} orderId - The ID of the order to retrieve.
+   * @returns {Observable<IOrder>} An observable emitting the order with the specified ID.
+   */
   getOrder(orderId: number): Observable<IOrder> {
     const link = `${url}/order/${orderId}`;
 
     return this.http.get<IOrderResponse>(link).pipe(
       untilDestroyed(this),
-      map((response) => OrderService.adaptOrder(response))
+      map((response) => OrderService.adaptOrder(response)),
+      catchError((error, caught) => {
+        if (error.status === 0) {
+          return EMPTY;
+        }
+
+        return caught;
+      })
     );
   }
 
+  /**
+   * Retrieves all orders from the server.
+   * @returns {Observable<IOrder[]>} An observable emitting an array of orders.
+   */
   getOrders(): Observable<IOrder[]> {
     const link = `${url}/order`;
 
@@ -63,10 +87,22 @@ export default class OrderService {
       }),
       tap((orders) => {
         this.ordersSubject.next(orders);
+      }),
+      catchError((error, caught) => {
+        if (error.status === 0) {
+          return EMPTY;
+        }
+
+        return caught;
       })
     );
   }
 
+  /**
+   * Submits the current cart as an order.
+   * @param {ISubmitCartModel} data - The data for submitting the cart.
+   * @returns {Observable<void>} An observable indicating the completion of the operation.
+   */
   submitCart(data: ISubmitCartModel): Observable<void> {
     const link = `${url}/order`;
 
@@ -75,12 +111,15 @@ export default class OrderService {
       switchMap(() => {
         return this.getOrders();
       }),
-      map(() => {
-        return;
-      })
+      map(() => {})
     );
   }
 
+  /**
+   * Cancels an order by its ID.
+   * @param {number} orderId - The ID of the order to cancel.
+   * @returns {Observable<void>} An observable indicating the completion of the operation.
+   */
   cancelOrder(orderId: number): Observable<void> {
     const link = `${url}/order/cancel`;
     const data: ICancelOrderRequest = {
@@ -92,20 +131,21 @@ export default class OrderService {
       switchMap(() => {
         return this.getOrders();
       }),
-      map(() => {
-        return;
-      })
+      map(() => {})
     );
   }
 
+  /**
+   * Clears the current orders.
+   */
   clearOrders(): void {
     this.ordersSubject.next(null);
   }
 
   /**
    * Adapts an order response from the server to the client-side model.
-   * @param apiOrder The order response received from the server.
-   * @returns The adapted client-side order model.
+   * @param {IOrderResponse} apiOrder - The order response received from the server.
+   * @returns {IOrder} The adapted client-side order model.
    */
   static adaptOrder(apiOrder: IOrderResponse): IOrder {
     return {
@@ -122,6 +162,11 @@ export default class OrderService {
     };
   }
 
+  /**
+   * Adapts an order detail response from the server to the client-side model.
+   * @param {IOrderDetailResponse} apiDetail - The order detail response received from the server.
+   * @returns {IOrderDetail} The adapted client-side order detail model.
+   */
   static adaptDetail(apiDetail: IOrderDetailResponse): IOrderDetail {
     return {
       unitPrice: apiDetail.unitPrice,
@@ -132,8 +177,8 @@ export default class OrderService {
 
   /**
    * Adapts a product received from the server to the client-side model.
-   * @param apiProduct The product received from the server.
-   * @returns The adapted client-side product.
+   * @param {IProductResponse} apiProduct - The product received from the server.
+   * @returns {IProduct} The adapted client-side product.
    */
   static adaptProduct(apiProduct: IProductResponse): IProduct {
     const category: ICategory = {
@@ -147,6 +192,7 @@ export default class OrderService {
       name: apiProduct.name,
       price: apiProduct.price,
       discount: apiProduct.discount,
+      originalPrice: apiProduct.originalPrice,
       unitMeasure: apiProduct.unitMeasure,
       category,
       description: apiProduct.description,
@@ -157,7 +203,12 @@ export default class OrderService {
     };
   }
 
-  static adaptImageResponse(apiImage: IImageResponse) {
+  /**
+   * Adapts an image response from the server to the client-side model.
+   * @param {IImageResponse} apiImage - The image response from the server.
+   * @returns {IImage} The adapted client-side image.
+   */
+  static adaptImageResponse(apiImage: IImageResponse): IImage {
     const convertedPath = `${urlImg}/${apiImage.path}`;
 
     return {

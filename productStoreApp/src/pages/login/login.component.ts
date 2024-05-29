@@ -1,9 +1,16 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { take } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { trigger, transition, style, animate } from '@angular/animations';
 import UserService from '../../services/user.service';
 import MessageService from '../../services/message.service';
 import LinkButtonComponent from '../../components/link-button/link-button.component';
@@ -14,6 +21,7 @@ import ButtonComponent from '../../components/button/button.component';
   selector: 'app-login',
   standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     RouterLink,
     LinkButtonComponent,
@@ -22,12 +30,35 @@ import ButtonComponent from '../../components/button/button.component';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('fadeInOutAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('0.1s', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [animate('0.1s', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export default class LoginComponent {
   loginForm = this.formBuilder.group({
-    username: '',
-    password: '',
+    username: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
   });
+
+  get username() {
+    return this.loginForm.get('username')!;
+  }
+
+  get password() {
+    return this.loginForm.get('password')!;
+  }
 
   constructor(
     private readonly router: Router,
@@ -37,10 +68,10 @@ export default class LoginComponent {
   ) {}
 
   onSubmit(): void {
-    if (!this.validateInputValues()) {
+    if (!this.loginForm.valid) {
       this.messageService.showMessage({
         header: 'Invalid input',
-        message: ['Required fields should not be empty'],
+        message: ['Fill the fields correctly.'],
       });
       return;
     }

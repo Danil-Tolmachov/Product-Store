@@ -1,0 +1,5 @@
+<div class="app-product-list-skeleton" [@fadeInOutAnimation]>
+  @for (item of [].constructor(skeletonProductsCount$ | async); track $index) {
+    <div class="app-product-skeleton"></div>
+  }
+</div>

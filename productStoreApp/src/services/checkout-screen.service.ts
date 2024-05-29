@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class CheckoutScreenService {
+export default class CheckoutScreenService {
   private isActiveSubject: Subject<null>;
 
   public isActive: Observable<null>;
@@ -16,8 +16,7 @@ export class CheckoutScreenService {
   }
 
   /**
-   * Shows a message by updating the message subject.
-   * @param message The message to be shown.
+   * Activates the checkout screen by emitting a value through the isActiveSubject.
    */
   showScreen(): void {
     this.isActiveSubject.next(null);

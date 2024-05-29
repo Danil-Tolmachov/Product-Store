@@ -1,23 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import {
   HttpEvent,
   HttpHandler,
   HttpRequest,
-  HttpErrorResponse,
   HttpInterceptor,
 } from '@angular/common/http';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import UserService from '../services/user.service';
 import TokenService from '../services/token.service';
+import { IUser } from '../interfaces/IUser';
+import MessageService from '../services/message.service';
 
 @UntilDestroy()
 @Injectable()
 export default class RefreshInterceptor implements HttpInterceptor {
-  constructor(
-    private readonly userService: UserService,
-    private readonly tokenService: TokenService
-  ) {}
+  constructor(private readonly injector: Injector) {}
 
   /**
    * Intercepts outgoing HTTP requests and handles token expiration errors.
@@ -30,23 +28,26 @@ export default class RefreshInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // Skip interception for logout and refresh requests
-    if (req.url.endsWith('/logout') || req.url.endsWith('/refresh')) {
-      return next.handle(req);
-    }
+    const userService: UserService = this.injector.get(UserService);
+    const tokenService: TokenService = this.injector.get(TokenService);
+    const messageService: MessageService = this.injector.get(MessageService);
 
     // Skip interception if no tokens are available
-    if (!this.tokenService.hasTokens()) {
+    if (!tokenService.hasTokens()) {
       return next.handle(req);
     }
 
-    // Refresh if token is expired
-    if (this.tokenService.hasTokens()) {
-      const expiration = this.tokenService.getExpiration();
+    // Skip interception if refreshing
+    if (req.url.endsWith('refresh')) {
+      return next.handle(req);
+    }
+
+    // Refresh if token has expired
+    if (tokenService.hasTokens()) {
+      const expiration = tokenService.getExpiration();
 
       if (expiration === null || expiration <= new Date()) {
-        return this.ifTokenExpired().pipe(
-          untilDestroyed(this),
+        return this.handle401Error(userService, messageService).pipe(
           switchMap(() => {
             return next.handle(req);
           })
@@ -54,75 +55,40 @@ export default class RefreshInterceptor implements HttpInterceptor {
       }
     }
 
-    // Intercept the request and handle errors
+    // Refresh if suddenly unauthorized
     return next.handle(req).pipe(
-      catchError((error, caught) => {
-        if (error instanceof HttpErrorResponse) {
-          // Check if the error indicates a token expiration
-          if (RefreshInterceptor.checkTokenExpiryErr(error)) {
-            // Skip interception if no tokens are available
-            if (!this.tokenService.hasTokens()) {
+      catchError((error) => {
+        if (error.status === 401) {
+          return this.handle401Error(userService, messageService).pipe(
+            switchMap(() => {
               return next.handle(req);
-            }
-
-            // If token expired, attempt to refresh the tokens and retry the original request
-            return this.ifTokenExpired().pipe(
-              untilDestroyed(this),
-              switchMap(() => {
-                return next.handle(req);
-              })
-            );
-          }
-          // If error does not indicate token expiration, re-throw the error
-          return throwError(() => error);
+            })
+          );
         }
 
-        // If error is not an instance of HttpErrorResponse, return the caught observable
-        return caught;
+        return throwError(() => error);
       })
     );
   }
 
-  /**
-   * Handles token expiration by attempting to refresh the tokens.
-   * If the refresh token is also expired, it logs out the user.
-   * @returns An observable that emits the refreshed tokens.
-   */
-  private ifTokenExpired(): Observable<void> {
-    return this.userService.refreshSession().pipe(
+  private handle401Error(
+    userService: UserService,
+    messageService: MessageService
+  ): Observable<IUser> {
+    return userService.refreshSession().pipe(
       untilDestroyed(this),
-      catchError((error, caught) => {
+      catchError((error) => {
         // If the refresh token is also expired, log out the user
-        this.ifRefreshTokenExpired();
+        if (error.status === 401) {
+          messageService.showMessage({
+            header: 'Expired session',
+            message: ['Unauthorized'],
+          });
+          userService.logoutSession();
+        }
 
-        // Return the caught observable
-        return caught;
+        return throwError(() => error);
       })
     );
-  }
-
-  /**
-   * Logs out the user if the refresh token is expired.
-   */
-  private ifRefreshTokenExpired() {
-    this.userService.logoutSession();
-  }
-
-  /**
-   * Checks if the error indicates a token expiration.
-   * @param error The HTTP error response.
-   * @returns True if the error indicates a token expiration, false otherwise.
-   */
-  private static checkTokenExpiryErr(error: HttpErrorResponse): boolean {
-    return error.status !== null && error.status === 401;
-  }
-
-  /**
-   * Checks if the error indicates a refresh token expiration.
-   * @param error The HTTP error response.
-   * @returns True if the error indicates a refresh token expiration, false otherwise.
-   */
-  private static checkRefreshTokenExpiryErr(error: HttpErrorResponse): boolean {
-    return error.status !== null && error.status === 400;
   }
 }

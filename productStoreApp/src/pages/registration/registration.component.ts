@@ -1,7 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { CommonModule } from '@angular/common';
 import UserService from '../../services/user.service';
 import MessageService from '../../services/message.service';
 import LinkButtonComponent from '../../components/link-button/link-button.component';
@@ -10,20 +17,73 @@ import ButtonComponent from '../../components/button/button.component';
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [ReactiveFormsModule, LinkButtonComponent, ButtonComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    LinkButtonComponent,
+    ButtonComponent,
+  ],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('fadeInOutAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('0.1s', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [animate('0.1s', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export default class RegistrationComponent {
   registrationForm = this.formBuilder.group({
-    username: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-    address: null,
-    phone: null,
+    username: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
+    firstName: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
+    lastName: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
+    address: new FormControl(null, Validators.minLength(6)),
+    phone: new FormControl(null, [
+      Validators.pattern('^\\+?[1-9]\\d{0,2}[-.\\s]?(\\(?\\d{1,4}\\)?[-.\\s]?)*\\d{1,4}[-.\\s]?\\d{1,9}$'),
+      Validators.minLength(3),
+    ]),
   });
+
+  get username() {
+    return this.registrationForm.get('username')!;
+  }
+
+  get password() {
+    return this.registrationForm.get('password')!;
+  }
+
+  get firstName() {
+    return this.registrationForm.get('firstName')!;
+  }
+
+  get lastName() {
+    return this.registrationForm.get('lastName')!;
+  }
+
+  get address() {
+    return this.registrationForm.get('address')!;
+  }
+
+  get phone() {
+    return this.registrationForm.get('phone')!;
+  }
 
   constructor(
     private readonly router: Router,
@@ -33,10 +93,10 @@ export default class RegistrationComponent {
   ) {}
 
   onSubmit(): void {
-    if (!this.validateInputValues()) {
+    if (!this.registrationForm.valid) {
       this.messageService.showMessage({
         header: 'Invalid input',
-        message: ['Required fields should not be empty'],
+        message: ['Fill the fields correctly.'],
       });
       return;
     }
@@ -59,38 +119,6 @@ export default class RegistrationComponent {
         },
       })
       .unsubscribe();
-  }
-
-  private validateInputValues(): boolean {
-    if (
-      typeof this.registrationForm.value.username === 'string' &&
-      this.registrationForm.value.username.trim().length === 0
-    ) {
-      return false;
-    }
-
-    if (
-      typeof this.registrationForm.value.password === 'string' &&
-      this.registrationForm.value.password.trim().length === 0
-    ) {
-      return false;
-    }
-
-    if (
-      typeof this.registrationForm.value.firstName === 'string' &&
-      this.registrationForm.value.firstName.trim().length === 0
-    ) {
-      return false;
-    }
-
-    if (
-      typeof this.registrationForm.value.lastName === 'string' &&
-      this.registrationForm.value.lastName.trim().length === 0
-    ) {
-      return false;
-    }
-
-    return true;
   }
 
   private processRequestError(error: HttpErrorResponse) {

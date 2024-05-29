@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import './shared/variables.scss';
 
 html {
     margin: 0;
@@ -6,10 +7,20 @@ html {
 }
 
 body {
-    background-color: whitesmoke;
+    background-color: $light-mode-background-color;
     margin: 0;
+    margin-top: calc($nav-height + $nav-padding * 2);
 }
+
+
 
 router-outlet {
     position: absolute;
+}
+
+@media (prefers-color-scheme: dark)
+{
+    body {
+        background-color: $dark-mode-background-color;
+    }
 }

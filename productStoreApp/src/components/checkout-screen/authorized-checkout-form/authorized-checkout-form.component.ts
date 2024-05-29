@@ -1,10 +1,10 @@
 import { Component, Host } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import ButtonComponent from '../../button/button.component';
-import { CheckoutScreenComponent } from '../checkout-screen.component';
-import OrderService from '../../../services/order.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { switchMap, take } from 'rxjs';
+import ButtonComponent from '../../button/button.component';
+import CheckoutScreenComponent from '../checkout-screen.component';
+import OrderService from '../../../services/order.service';
 import CartService from '../../../services/cart.service';
 
 @UntilDestroy()
@@ -15,7 +15,7 @@ import CartService from '../../../services/cart.service';
   templateUrl: './authorized-checkout-form.component.html',
   styleUrl: './authorized-checkout-form.component.scss',
 })
-export class AuthorizedCheckoutFormComponent {
+export default class AuthorizedCheckoutFormComponent {
   checkoutForm = this.formBuilder.group({
     comment: null,
   });

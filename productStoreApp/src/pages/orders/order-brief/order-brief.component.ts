@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { IOrder } from '../../../interfaces/IOrder';
-import { RouterLink } from '@angular/router';
-import OrderService from '../../../services/order.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { RouterLink } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import OrderService from '../../../services/order.service';
 import ButtonComponent from '../../../components/button/button.component';
 import MessageService from '../../../services/message.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { IOrder } from '../../../interfaces/IOrder';
 
 @UntilDestroy()
 @Component({
@@ -15,7 +15,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './order-brief.component.html',
   styleUrl: './order-brief.component.scss',
 })
-export class OrderBriefComponent {
+export default class OrderBriefComponent {
   @Input() order: IOrder | null = null;
 
   constructor(
@@ -39,7 +39,7 @@ export class OrderBriefComponent {
   }
 
   cancelOrderErrorHandler(error: HttpErrorResponse): void {
-    if (error.status == 0) {
+    if (error.status === 0) {
       this.messageService.showMessage({
         header: 'Cancelation failed',
         message: ['Server connection error.'],
@@ -47,7 +47,7 @@ export class OrderBriefComponent {
       return;
     }
 
-    if (error.status == 400) {
+    if (error.status === 400) {
       this.messageService.showMessage({
         header: 'Cancelation failed',
         message: ['Invalid action.'],
@@ -55,7 +55,7 @@ export class OrderBriefComponent {
       return;
     }
 
-    if (error.status == 401) {
+    if (error.status === 401) {
       this.messageService.showMessage({
         header: 'Cancelation failed',
         message: ['Authentication failed.'],
@@ -63,12 +63,11 @@ export class OrderBriefComponent {
       return;
     }
 
-    if (error.status == 500) {
+    if (error.status === 500) {
       this.messageService.showMessage({
         header: 'Cancelation failed',
         message: ['Server error.'],
       });
-      return;
     }
   }
 }

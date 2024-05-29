@@ -1,10 +1,10 @@
 <div class="container">
   <app-image-container [imageUrl]="item.product.imagePaths[0].path" />
   <div class="right">
-    <p>{{ item.product.name }}</p>
+    <p class="product-name">{{ item.product.name }}</p>
     <div class="controls">
-      <p title="${{ item.product.price }}">Price: ${{ item.product.price }}</p>
-      <input #quantityInput type="number" value="{{ item.quantity }}" (change)="onInputChange(quantityInput.value)" />
+      <p class="price" title="${{ item.product.price }}">Price: ${{ item.product.price }}</p>
+      <input class="quantity" #quantityInput type="number" value="{{ item.quantity }}" (change)="onInputChange(quantityInput.value)" />
       <button (click)="deleteButtonClick(item.product.id)">
         <div class="pill">Delete</div>
       </button>

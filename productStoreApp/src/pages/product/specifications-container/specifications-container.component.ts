@@ -8,6 +8,6 @@ import { ISpecification } from '../../../interfaces/ISpecification';
   templateUrl: './specifications-container.component.html',
   styleUrl: './specifications-container.component.scss',
 })
-export class SpecificationsContainerComponent {
+export default class SpecificationsContainerComponent {
   @Input() specifications: ISpecification[] = [];
 }

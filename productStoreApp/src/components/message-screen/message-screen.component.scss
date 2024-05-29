@@ -1,3 +1,5 @@
+@import '../../shared/variables.scss';
+
 $box-radius: 3px;
 $box-padding: 7px;
 
@@ -36,7 +38,7 @@ $box-padding: 7px;
 
   overflow: hidden;
 
-  background-color: whitesmoke;
+  background-color: $light-mode-background-color;
   border-radius: $box-radius;
 
   z-index: 11001;
@@ -53,13 +55,15 @@ $box-padding: 7px;
 
   text-align: center;
 
-  background-color: white;
+  background-color: $light-mode-foreground-color;
   border-radius: $box-radius;
 }
 
 .text {
   padding: $box-padding;
   overflow-y: auto;
+
+  color: $light-mode-main-font-color;
 }
 
 .text p:first-child {
@@ -68,4 +72,20 @@ $box-padding: 7px;
 
 .text p {
   overflow-wrap: anywhere;
+}
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    color: $dark-mode-main-font-color;
+    background-color: $dark-mode-foreground-color;
+  }
+
+  .container {
+    color: $dark-mode-secondary-font-color;
+    background-color: $dark-mode-background-color;
+  }
+
+  .text {
+    color: $dark-mode-main-font-color;
+  }
 }

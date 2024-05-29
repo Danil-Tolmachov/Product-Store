@@ -1,1 +1,11 @@
-<app-product-list [productsList]="(category | async)?.items!" />
+@defer (when productsSignal()) {
+  <app-product-list [productsList]="productsSignal()?.products!" />
+  <app-page-bar
+    [pagesCount$]="pagesCountSubject$"
+    [currentPage$]="pageSubject$"
+    [countQuery$]="countSubject$"
+  />
+} @placeholder {
+  <app-product-list-skeleton [skeletonProductsCount$]="countSubject$" />
+  <app-page-bar-skeleton />
+}

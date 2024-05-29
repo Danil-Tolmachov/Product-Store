@@ -5,11 +5,11 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+import { Subject, debounceTime, switchMap, take } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import ImageContainerComponent from '../../../image-container/image-container.component';
 import { type ICartItem } from '../../../../interfaces/ICartItem';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import CartService from '../../../../services/cart.service';
-import { Subject, debounceTime, switchMap, take } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -29,6 +29,7 @@ export default class CartItemComponent implements OnInit {
       name: '',
       price: 0,
       discount: 0,
+      originalPrice: 0,
       unitMeasure: '',
       imagePaths: [],
       category: null,
@@ -57,7 +58,7 @@ export default class CartItemComponent implements OnInit {
   }
 
   onInputChange(quantity: string): void {
-    const quantityNumber = parseInt(quantity);
+    const quantityNumber = parseInt(quantity, 10);
     this.inputChangeSubject.next(quantityNumber);
   }
 

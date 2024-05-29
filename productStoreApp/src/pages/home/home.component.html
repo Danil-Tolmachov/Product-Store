@@ -1,2 +1,16 @@
-<app-controls-filter-bar [categories]="categoriesList$ | async" />
-<app-product-list [productsList]="productsList$ | async" />
+@defer (when categoriesListSignal() && productsPageSignal()) {
+  <app-controls-filter-bar
+    [categories]="categoriesListSignal()!"
+    [chosenCountPreset]="countSubject$"
+  />
+  <app-product-list [productsList]="productsPageSignal()!.products" />
+  <app-page-bar
+    [pagesCount$]="pagesCountSubject$"
+    [currentPage$]="pageSubject$"
+    [countQuery$]="countSubject$"
+  />
+} @placeholder {
+  <app-controls-filter-bar-skeleton />
+  <app-product-list-skeleton [skeletonProductsCount$]="countSubject$" />
+  <app-page-bar-skeleton />
+}

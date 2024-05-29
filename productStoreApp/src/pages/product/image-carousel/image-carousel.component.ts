@@ -4,9 +4,9 @@ import {
   Component,
   Input,
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { IImage } from '../../../interfaces/IImage';
 import ImageContainerComponent from '../../../components/image-container/image-container.component';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-image-carousel',
@@ -16,9 +16,11 @@ import { CommonModule } from '@angular/common';
   styleUrl: './image-carousel.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ImageCarouselComponent {
+export default class ImageCarouselComponent {
   protected selectedImage: number = 0;
+
   protected showControls: boolean = true;
+
   @Input() imagePaths: IImage[] = [];
 
   constructor(private readonly cdr: ChangeDetectorRef) {
@@ -29,7 +31,7 @@ export class ImageCarouselComponent {
     if (this.selectedImage >= this.imagePaths.length) {
       this.selectedImage = 0;
     } else {
-      this.selectedImage++;
+      this.selectedImage += 1;
     }
 
     this.cdr.markForCheck();
@@ -39,7 +41,7 @@ export class ImageCarouselComponent {
     if (this.selectedImage <= 0) {
       this.selectedImage = this.imagePaths.length;
     } else {
-      this.selectedImage--;
+      this.selectedImage -= 1;
     }
 
     this.cdr.markForCheck();

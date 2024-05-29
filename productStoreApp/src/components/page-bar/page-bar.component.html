@@ -1,0 +1,22 @@
+<div class="container" *ngIf ="this.currentPage !== null && this.pagesCount !== null">
+  <button class="previous" (click)="previousButtonClick()"><</button>
+  <hr />
+
+  @for (page of pagesArray; track $index) {
+    <a
+      class="{{ +this.currentPage === page ? 'selected' : '' }}"
+      [routerLink]="[]"
+      [queryParams]="{ page, count: this.countQuery }"
+      (click)="updateArray()"
+    >
+      {{ page }}
+    </a>
+  }
+
+  @if (pagesArray[pagesArray.length - 1] < this.pagesCount) {
+    <a (click)="increaseArray()">...</a>
+  }
+
+  <hr />
+  <button class="next" (click)="nextButtonClick()">></button>
+</div>

@@ -5,5 +5,5 @@ export interface IImage {
 
 export interface IImageResponse {
   path: string;
-  alt: string | null; 
+  alt: string | null;
 }
