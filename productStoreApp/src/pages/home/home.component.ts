@@ -50,8 +50,11 @@ export default class HomeComponent implements OnInit {
   title: string = 'Product Store';
 
   pageSubject$ = new BehaviorSubject<number>(DEFAULT_PAGE);
+  countSubject$ = new BehaviorSubject<number>(PRODUCTS_PER_PAGE);
+  pagesCountSubject$ = new BehaviorSubject<number>(1);
 
   pageQuery: Observable<number> = this.route.queryParams.pipe(
+    untilDestroyed(this),
     map((params) => {
       return params['page'] ?? DEFAULT_PAGE;
     }),
@@ -60,9 +63,8 @@ export default class HomeComponent implements OnInit {
     })
   );
 
-  countSubject$ = new BehaviorSubject<number>(PRODUCTS_PER_PAGE);
-
   countQuery: Observable<number> = this.route.queryParams.pipe(
+    untilDestroyed(this),
     map((params) => {
       return params['count'] ?? PRODUCTS_PER_PAGE;
     }),
@@ -72,16 +74,14 @@ export default class HomeComponent implements OnInit {
   );
 
   productsPage$: Observable<IProductPage> = this.pageQuery.pipe(
+    untilDestroyed(this),
     switchMap((page) =>
       this.countQuery.pipe(
         switchMap((count) => this.productService.getProductsPage(page, count))
       )
-    )
-  );
-
-  pagesCount$: Observable<number | null> = this.productsPage$.pipe(
-    map((page) => {
-      return page.pagesCount;
+    ),
+    tap((page) => {
+      this.pagesCountSubject$.next(+(page.pagesCount ?? 1));
     })
   );
 

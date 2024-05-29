@@ -5,7 +5,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BehaviorSubject, Observable, map, switchMap, take, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { type ICategory } from '../../interfaces/ICategory';
 import ProductListComponent from '../../components/product-list/product-list.component';
 import ControlsFilterBarComponent from '../../components/controls-filter-bar/controls-filter-bar.component';
 import CategoryService from '../../services/category.service';
@@ -14,6 +13,7 @@ import ProductService from '../../services/product.service';
 import { IProductPage } from '../../interfaces/IProduct';
 import { PageBarComponent } from '../../components/page-bar/page-bar.component';
 import { PageBarSkeletonComponent } from '../../components/page-bar/page-bar-skeleton/page-bar-skeleton.component';
+import { ICategory } from '../../interfaces/ICategory';
 
 const DEFAULT_PAGE = 1;
 const PRODUCTS_PER_PAGE = 8;
@@ -35,6 +35,10 @@ const PRODUCTS_PER_PAGE = 8;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class CategoryComponent implements OnInit {
+  pageSubject$ = new BehaviorSubject<number>(DEFAULT_PAGE);
+  countSubject$ = new BehaviorSubject<number>(PRODUCTS_PER_PAGE);
+  pagesCountSubject$ = new BehaviorSubject<number>(1);
+
   categoryId$: Observable<number> = this.route.paramMap.pipe(
     untilDestroyed(this),
     take(1),
@@ -43,20 +47,13 @@ export default class CategoryComponent implements OnInit {
     })
   );
 
-  products$: Observable<ICategory> = this.categoryId$.pipe(
-    switchMap((id) =>
-      this.categoryService.getCategory(id).pipe(
-        tap((category) => {
-          // Set title
-          this.titleService.setTitle(`Category - ${category.name}`);
-        })
-      )
-    )
+  category$: Observable<ICategory> = this.categoryId$.pipe(
+    untilDestroyed(this),
+    switchMap((id) => this.categoryService.getCategory(id))
   );
 
-  pageSubject$ = new BehaviorSubject<number>(DEFAULT_PAGE);
-
   pageQuery: Observable<number> = this.route.queryParams.pipe(
+    untilDestroyed(this),
     map((params) => {
       return params['page'] ?? DEFAULT_PAGE;
     }),
@@ -65,9 +62,8 @@ export default class CategoryComponent implements OnInit {
     })
   );
 
-  countSubject$ = new BehaviorSubject<number>(PRODUCTS_PER_PAGE);
-
   countQuery: Observable<number> = this.route.queryParams.pipe(
+    untilDestroyed(this),
     map((params) => {
       return params['count'] ?? PRODUCTS_PER_PAGE;
     }),
@@ -77,6 +73,7 @@ export default class CategoryComponent implements OnInit {
   );
 
   productsPage$: Observable<IProductPage> = this.pageQuery.pipe(
+    untilDestroyed(this),
     switchMap((page) =>
       this.countQuery.pipe(
         switchMap((count) =>
@@ -87,17 +84,14 @@ export default class CategoryComponent implements OnInit {
                 page,
                 count
               )
-            )
+            ),
+            tap((page) => {
+              this.pagesCountSubject$.next(+(page.pagesCount ?? 1));
+            })
           )
         )
       )
     )
-  );
-
-  pagesCount$: Observable<number | null> = this.productsPage$.pipe(
-    map((page) => {
-      return page.pagesCount;
-    })
   );
 
   productsSignal = toSignal(this.productsPage$);
@@ -114,12 +108,20 @@ export default class CategoryComponent implements OnInit {
     // Redirect '/home' if No Category
     this.categoryId$
       .pipe(
-        untilDestroyed(this),
         take(1),
         tap((id) => {
           if (id === 0) {
             this.router.navigate(['/home']);
           }
+        })
+      )
+      .subscribe();
+
+    this.category$
+      .pipe(
+        tap((category) => {
+          // Set title
+          this.titleService.setTitle(`Category - ${category.name}`);
         })
       )
       .subscribe();

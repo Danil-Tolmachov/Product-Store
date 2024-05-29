@@ -25,15 +25,12 @@ export class PageBarComponent implements OnInit {
   protected pagesArray: number[] = [];
 
   @Input() currentPage$: Observable<number> | null = null;
-
   currentPage: number | null = null;
 
   @Input() pagesCount$: Observable<number | null> | null = null;
-
   pagesCount: number | null = null;
 
   @Input() countQuery$: Observable<number> | null = null;
-
   countQuery: number | null = null;
 
   constructor(

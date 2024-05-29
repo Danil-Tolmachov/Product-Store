@@ -1,7 +1,7 @@
 @defer (when productsSignal()) {
   <app-product-list [productsList]="productsSignal()?.products!" />
   <app-page-bar
-    [pagesCount$]="pagesCount$"
+    [pagesCount$]="pagesCountSubject$"
     [currentPage$]="pageSubject$"
     [countQuery$]="countSubject$"
   />

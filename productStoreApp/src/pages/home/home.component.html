@@ -5,7 +5,7 @@
   />
   <app-product-list [productsList]="productsPageSignal()!.products" />
   <app-page-bar
-    [pagesCount$]="pagesCount$"
+    [pagesCount$]="pagesCountSubject$"
     [currentPage$]="pageSubject$"
     [countQuery$]="countSubject$"
   />
