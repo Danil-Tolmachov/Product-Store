@@ -1,0 +1,4 @@
+# All files
+# Sets generated code for all migrations
+[*]
+generated_code = true
