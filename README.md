@@ -11,6 +11,11 @@ Description: ProductStore is a comprehensive RESTful e-commerce platform designe
 
 <br>
 
+## Preview
+
+<img src="misc/screenshot-1.png"/>
+<br>
+
 ## Setup:
 
 1. Clone repository to preferred folder:
@@ -57,3 +62,5 @@ Password - <i>Password1</i>
 
 - Local: https://localhost:4200/
 - Docker: http://localhost:3000/
+
+<br>
