@@ -140,11 +140,14 @@ namespace ProductStoreApi
 			app.UseMiddleware<LoggingRequestMiddleware>();
 
 			// Add Routing Middlewares.
-			app.UseHttpsRedirection();
 			app.UseRouting();
 
+			// Disable HttpsRedirection until there is no normal certificate
+			// Self-signed certificate causes "NET::ERR_CERT_AUTHORITY_INVALID"
+			// app.UseHttpsRedirection();
+
 			app.UseCors(
-				options => options.WithOrigins("http://localhost:4200")
+				options => options.WithOrigins("http://localhost:4200", "http://localhost:3000")
 								  .AllowAnyMethod()
 								  .AllowAnyHeader()
 								  .AllowCredentials()
