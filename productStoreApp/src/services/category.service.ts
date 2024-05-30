@@ -6,7 +6,7 @@ import {
   type ICategoryResponse,
 } from '../interfaces/ICategory';
 import { type IProduct, type IProductResponse } from '../interfaces/IProduct';
-import environment from '../environments/environment';
+import environment from '../environments/environment.prod';
 import { IImage, IImageResponse } from '../interfaces/IImage';
 
 const url = environment.apiUrl + 'v1';

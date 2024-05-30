@@ -1,6 +1,6 @@
 const environment = {
-  production: true,
-  apiUrl: process.env['API_URL'],
+  production: false,
+  apiUrl: 'https:/localhost:7048/api/',
 };
 
 export default environment;

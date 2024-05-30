@@ -10,7 +10,7 @@ import {
   catchError,
   EMPTY,
 } from 'rxjs';
-import environment from '../environments/environment.development';
+import environment from '../environments/environment';
 import { ICartItem, ICartItemResponse } from '../interfaces/ICartItem';
 import ProductService from './product.service';
 import type IAddCartItemModel from '../interfaces/models/IAddCartItemModel';

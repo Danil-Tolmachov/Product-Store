@@ -15,7 +15,7 @@ import {
   type IProductResponse,
 } from '../interfaces/IProduct';
 import { type ICategory } from '../interfaces/ICategory';
-import environment from '../environments/environment.development';
+import environment from '../environments/environment';
 import { IImage, IImageResponse } from '../interfaces/IImage';
 
 const url = environment.apiUrl + 'v1';

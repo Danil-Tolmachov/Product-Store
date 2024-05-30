@@ -10,7 +10,7 @@ import {
   EMPTY,
   catchError,
 } from 'rxjs';
-import environment from '../environments/environment.development';
+import environment from '../environments/environment';
 import UserService from './user.service';
 import { IOrder, IOrderResponse } from '../interfaces/IOrder';
 import { IOrderDetail, IOrderDetailResponse } from '../interfaces/IOrderItem';
