@@ -1,17 +1,17 @@
 {
   "name": "products-app",
   "type": "commonjs",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production --aot",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:sFsr:productsApp": "node dist/products-app/server/server.mjs",
     "lint": "ng lint",
-    "lint:fix": "ng lint --fix",
-    "build-prod": "ng build --configuration production --aot"
+    "lint:fix": "ng lint --fix"
   },
   "private": true,
   "dependencies": {
