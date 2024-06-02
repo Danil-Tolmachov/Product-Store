@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using StoreBLL.Interfaces;
-using StoreBLL.Models;
-using StoreDAL.Entities;
-using StoreDAL.Infrastructure;
-using StoreDAL.Interfaces;
+﻿using AutoMapper;
+using ProductStore.Business.Interfaces;
+using ProductStore.Data.Entities;
+using ProductStore.Data.Interfaces;
 
-namespace StoreBLL.Services.Abstractions
+namespace ProductStore.Business.Services.Abstractions
 {
     public abstract class AbstractCrudService<TEntity, TModel> : ICrud<TModel> where TEntity : class, IBaseEntity
     {

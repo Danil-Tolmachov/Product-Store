@@ -1,7 +1,7 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ProductStoreApi.Controllers
+namespace ProductStore.WebApi.Controllers
 {
 	[ApiVersion(1)]
 	[ApiController]

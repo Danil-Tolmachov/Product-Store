@@ -1,7 +1,7 @@
-﻿using StoreBLL.Models;
-using StoreDAL.Entities;
+﻿using ProductStore.Business.Models;
+using ProductStore.Data.Entities;
 
-namespace StoreBLL.Interfaces.Services
+namespace ProductStore.Business.Interfaces.Services
 {
 	public interface IProductImageService
 	{

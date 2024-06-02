@@ -2,13 +2,13 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProductStoreApi.Filters;
-using StoreBLL.Interfaces.Services;
-using StoreBLL.Models;
-using StoreBLL.Models.Dto;
-using StoreBLL.Models.Extra;
+using ProductStore.WebApi.Filters;
+using ProductStore.Business.Interfaces.Services;
+using ProductStore.Business.Models;
+using ProductStore.Business.Models.Dto;
+using ProductStore.Business.Models.Extra;
 
-namespace ProductStoreApi.Controllers
+namespace ProductStore.WebApi.Controllers
 {
 	[ApiVersion(1)]
 	[ApiController]

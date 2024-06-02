@@ -1,8 +1,8 @@
-﻿using StoreDAL.Interfaces;
-using StoreDAL.Interfaces.Repositories;
-using StoreDAL.Repositories.Repositories;
+﻿using ProductStore.Data.Interfaces;
+using ProductStore.Data.Interfaces.Repositories;
+using ProductStore.Data.Repositories.Repositories;
 
-namespace StoreDAL.Infrastructure
+namespace ProductStore.Data.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {

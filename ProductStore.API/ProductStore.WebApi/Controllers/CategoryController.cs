@@ -1,10 +1,10 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using StoreBLL.Interfaces.Services;
-using StoreBLL.Models.Dto;
+using ProductStore.Business.Interfaces.Services;
+using ProductStore.Business.Models.Dto;
 
-namespace ProductStoreApi.Controllers
+namespace ProductStore.WebApi.Controllers
 {
 	[ApiVersion(1)]
 	[ApiController]

@@ -1,6 +1,6 @@
-﻿using StoreBLL.Models;
+﻿using ProductStore.Business.Models;
 
-namespace StoreBLL.Interfaces.Services
+namespace ProductStore.Business.Interfaces.Services
 {
     public interface ICartService
     {

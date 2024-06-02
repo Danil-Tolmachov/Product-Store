@@ -1,5 +1,5 @@
 
-namespace ProductStoreApi
+namespace ProductStore.WebApi
 {
 	public static class Program
 	{

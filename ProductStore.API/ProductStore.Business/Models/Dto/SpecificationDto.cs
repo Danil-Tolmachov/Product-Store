@@ -1,4 +1,5 @@
-﻿namespace StoreBLL.Models.Dto
+﻿
+namespace ProductStore.Business.Models.Dto
 {
 	public class SpecificationDto
 	{

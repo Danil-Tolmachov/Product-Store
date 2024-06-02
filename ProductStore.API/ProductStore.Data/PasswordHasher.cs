@@ -1,7 +1,7 @@
-﻿using StoreDAL.Interfaces;
+﻿using ProductStore.Data.Interfaces;
 using BC = BCrypt.Net.BCrypt;
 
-namespace StoreDAL
+namespace ProductStore.Data
 {
     public class PasswordHasher : IPasswordHasher
     {

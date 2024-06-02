@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StoreDAL.Entities;
-using StoreDAL.Infrastructure;
-using StoreDAL.Interfaces.Repositories;
+using ProductStore.Data.Entities;
+using ProductStore.Data.Infrastructure;
+using ProductStore.Data.Interfaces.Repositories;
 
-namespace StoreDAL.Repositories.Repositories
+namespace ProductStore.Data.Repositories.Repositories
 {
 	public class ProductImageRepository : AbstractSingleKeyRepository<ProductImage>, IProductImageRepository
 	{

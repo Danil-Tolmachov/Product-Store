@@ -1,6 +1,6 @@
-﻿using ProductStoreApi.Extensions;
+﻿using ProductStore.WebApi.Extensions;
 
-namespace ProductStoreApi.Middleware
+namespace ProductStore.WebApi.Middleware
 {
 	/// <summary>
 	/// Middleware for logging HTTP request details.

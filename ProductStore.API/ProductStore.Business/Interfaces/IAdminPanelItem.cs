@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StoreBLL.Interfaces
+﻿
+namespace ProductStore.Business.Interfaces
 {
 	public interface IAdminPanelItem<TModel> : ICrud<TModel>
 	{

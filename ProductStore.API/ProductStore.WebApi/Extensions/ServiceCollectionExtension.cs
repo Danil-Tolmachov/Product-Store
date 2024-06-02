@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using AutoMapper.Configuration;
-using StoreBLL;
-using StoreBLL.Interfaces.Services;
-using StoreBLL.Services;
+using ProductStore.Business;
+using ProductStore.Business.Interfaces.Services;
+using ProductStore.Business.Services;
 
-namespace ProductStoreApi.Extensions
+namespace ProductStore.WebApi.Extensions
 {
     public static class ServiceCollectionExtension
     {

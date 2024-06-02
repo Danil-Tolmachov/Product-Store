@@ -5,16 +5,16 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ProductStoreApi.Authentication;
-using ProductStoreApi.Extensions;
-using ProductStoreApi.Filters;
-using ProductStoreApi.Middleware;
-using StoreDAL;
-using StoreDAL.Infrastructure;
-using StoreDAL.Infrastructure.Data;
-using StoreDAL.Interfaces;
+using ProductStore.WebApi.Authentication;
+using ProductStore.WebApi.Extensions;
+using ProductStore.WebApi.Filters;
+using ProductStore.WebApi.Middleware;
+using ProductStore.Data;
+using ProductStore.Data.Infrastructure;
+using ProductStore.Data.Infrastructure.Data;
+using ProductStore.Data.Interfaces;
 
-namespace ProductStoreApi
+namespace ProductStore.WebApi
 {
 	public class Startup
 	{

@@ -1,11 +1,6 @@
-﻿using StoreDAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProductStore.Data.Entities;
 
-namespace StoreDAL.Interfaces.Repositories
+namespace ProductStore.Data.Interfaces.Repositories
 {
 	public interface IProductImageRepository : ISingleKeyRepository<ProductImage>
 	{

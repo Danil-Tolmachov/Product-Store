@@ -1,7 +1,5 @@
 ﻿
-using Microsoft.VisualBasic;
-
-namespace StoreDAL.Entities
+namespace ProductStore.Data.Entities
 {
 	public class Category : BaseEntity
 	{

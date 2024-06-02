@@ -1,5 +1,5 @@
 ﻿
-namespace StoreDAL.Entities
+namespace ProductStore.Data.Entities
 {
     public interface IBaseEntity
     {

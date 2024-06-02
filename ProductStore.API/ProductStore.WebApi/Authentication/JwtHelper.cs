@@ -1,10 +1,10 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using StoreBLL.Interfaces.Services;
-using StoreBLL.Models;
+using ProductStore.Business.Interfaces.Services;
+using ProductStore.Business.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace ProductStoreApi.Authentication
+namespace ProductStore.WebApi.Authentication
 {
 	public class JwtHelper
 	{

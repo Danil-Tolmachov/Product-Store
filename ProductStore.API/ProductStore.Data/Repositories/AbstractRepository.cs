@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using StoreDAL.Entities;
-using StoreDAL.Infrastructure;
-using StoreDAL.Interfaces;
+using ProductStore.Data.Entities;
+using ProductStore.Data.Infrastructure;
+using ProductStore.Data.Interfaces;
 
-namespace StoreDAL.Repositories
+namespace ProductStore.Data.Repositories
 {
     public abstract class AbstractRepository<TEntity> : IRepository<TEntity> where TEntity : class, IBaseEntity
     {

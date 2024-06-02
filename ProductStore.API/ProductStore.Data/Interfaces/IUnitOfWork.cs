@@ -1,11 +1,6 @@
-﻿using StoreDAL.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProductStore.Data.Interfaces.Repositories;
 
-namespace StoreDAL.Interfaces
+namespace ProductStore.Data.Interfaces
 {
     public interface IUnitOfWork
     {

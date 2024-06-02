@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Threading.Tasks;
-using StoreDAL.Infrastructure;
-using StoreBLL.Services;
-using StoreBLL.Interfaces.Services;
+using ProductStore.Business.Interfaces.Services;
 using System.Security.Claims;
 
-namespace ProductStoreApi.Filters
+namespace ProductStore.WebApi.Filters
 {
 	/// <summary>
 	/// Action filter for fetching and attaching user details to the HTTP context.

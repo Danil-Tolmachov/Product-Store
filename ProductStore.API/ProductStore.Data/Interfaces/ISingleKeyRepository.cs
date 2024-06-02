@@ -1,11 +1,6 @@
-﻿using StoreDAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProductStore.Data.Entities;
 
-namespace StoreDAL.Interfaces
+namespace ProductStore.Data.Interfaces
 {
     public interface ISingleKeyRepository<TEntity> : IRepository<TEntity> where TEntity : class, IBaseEntity
 	{

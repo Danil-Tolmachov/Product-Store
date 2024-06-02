@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StoreDAL.Entities;
+﻿using ProductStore.Data.Entities;
 
-namespace StoreDAL.Interfaces.Repositories
+namespace ProductStore.Data.Interfaces.Repositories
 {
 	public interface IUserRepository : ISingleKeyRepository<User>
 	{

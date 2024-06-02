@@ -1,8 +1,6 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations;
 
-using System.ComponentModel.DataAnnotations;
-
-namespace StoreBLL.Models.Extra
+namespace ProductStore.Business.Models.Extra
 {
 	public class LoginModel
 	{

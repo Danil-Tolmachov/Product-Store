@@ -1,6 +1,6 @@
-﻿using StoreDAL.Entities;
+﻿using ProductStore.Data.Entities;
 
-namespace StoreDAL.Infrastructure.Data
+namespace ProductStore.Data.Infrastructure.Data
 {
     public interface IDataFactory
     {

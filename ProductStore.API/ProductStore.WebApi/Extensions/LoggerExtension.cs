@@ -1,4 +1,4 @@
-﻿namespace ProductStoreApi.Extensions
+﻿namespace ProductStore.WebApi.Extensions
 {
 	public static class LoggerExtension
 	{

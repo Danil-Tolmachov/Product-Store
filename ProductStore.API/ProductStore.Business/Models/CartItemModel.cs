@@ -1,7 +1,5 @@
 ﻿
-using StoreDAL.Entities;
-
-namespace StoreBLL.Models
+namespace ProductStore.Business.Models
 {
 	public class CartItemModel
 	{

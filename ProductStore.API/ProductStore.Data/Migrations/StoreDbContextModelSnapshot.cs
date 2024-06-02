@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using StoreDAL.Entities;
-using StoreDAL.Infrastructure;
+using ProductStore.Data.Entities;
+using ProductStore.Data.Infrastructure;
 
 #nullable disable
 
-namespace StoreDAL.Migrations
+namespace ProductStore.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
     partial class StoreDbContextModelSnapshot : ModelSnapshot

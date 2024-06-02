@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using StoreDAL.Entities;
+using ProductStore.Data.Entities;
 
 
 
 #nullable disable
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace StoreDAL.Migrations
+namespace ProductStore.Data.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

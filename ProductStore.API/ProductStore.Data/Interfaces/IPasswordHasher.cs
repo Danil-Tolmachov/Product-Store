@@ -1,5 +1,5 @@
 ﻿
-namespace StoreDAL.Interfaces
+namespace ProductStore.Data.Interfaces
 {
 	public interface IPasswordHasher
 	{

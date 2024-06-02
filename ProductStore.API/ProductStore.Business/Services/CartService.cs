@@ -1,11 +1,11 @@
 ﻿
 using AutoMapper;
-using StoreBLL.Interfaces.Services;
-using StoreBLL.Models;
-using StoreDAL.Entities;
-using StoreDAL.Interfaces;
+using ProductStore.Business.Interfaces.Services;
+using ProductStore.Business.Models;
+using ProductStore.Data.Entities;
+using ProductStore.Data.Interfaces;
 
-namespace StoreBLL.Services
+namespace ProductStore.Business.Services
 {
 	/// <summary>
 	/// Provides services for managing the shopping cart.

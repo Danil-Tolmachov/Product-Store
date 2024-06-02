@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using StoreBLL.Models;
-using StoreBLL.Models.Dto;
-using StoreDAL.Entities;
+using ProductStore.Business.Models;
+using ProductStore.Business.Models.Dto;
+using ProductStore.Data.Entities;
 using System.Text;
 
-namespace StoreBLL
+namespace ProductStore.Business
 {
 	public class AutoMapperProfile : Profile
 	{

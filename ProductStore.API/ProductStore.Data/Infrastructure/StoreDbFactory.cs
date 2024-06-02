@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StoreDAL.Infrastructure.Data;
+using ProductStore.Data.Infrastructure.Data;
 
-namespace StoreDAL.Infrastructure
+namespace ProductStore.Data.Infrastructure
 {
     public class StoreDbFactory : IDbContextFactory<StoreDbContext>
     {

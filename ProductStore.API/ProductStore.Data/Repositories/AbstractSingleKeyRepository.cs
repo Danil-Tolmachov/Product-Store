@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StoreDAL.Entities;
-using StoreDAL.Infrastructure;
-using StoreDAL.Interfaces;
+using ProductStore.Data.Entities;
+using ProductStore.Data.Infrastructure;
+using ProductStore.Data.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StoreDAL.Repositories
+namespace ProductStore.Data.Repositories
 {
 	public class AbstractSingleKeyRepository<TEntity> : AbstractRepository<TEntity>, ISingleKeyRepository<TEntity> where TEntity : class, IBaseEntity
 	{

@@ -1,8 +1,8 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using StoreBLL.Interfaces.Services;
+using ProductStore.Business.Interfaces.Services;
 
-namespace ProductStoreApi.Controllers
+namespace ProductStore.WebApi.Controllers
 {
 	[ApiVersion(1)]
 	[ApiController]

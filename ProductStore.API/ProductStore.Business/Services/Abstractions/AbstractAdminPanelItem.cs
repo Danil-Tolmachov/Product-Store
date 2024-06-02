@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using StoreBLL.Interfaces;
-using StoreDAL.Entities;
-using StoreDAL.Interfaces;
+using ProductStore.Business.Interfaces;
+using ProductStore.Data.Entities;
+using ProductStore.Data.Interfaces;
 
-namespace StoreBLL.Services.Abstractions
+namespace ProductStore.Business.Services.Abstractions
 {
 	public class AbstractAdminPanelItem<TEntity, TModel> : AbstractCrudService<TEntity, TModel>, IAdminPanelItem<TModel>
 		where TModel : class

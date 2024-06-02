@@ -1,5 +1,5 @@
 ﻿
-namespace StoreBLL.Models
+namespace ProductStore.Business.Models
 {
 	public class UserModel
 	{

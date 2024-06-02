@@ -1,7 +1,7 @@
-﻿using StoreBLL.Models;
-using StoreBLL.Models.Extra;
+﻿using ProductStore.Business.Models;
+using ProductStore.Business.Models.Extra;
 
-namespace StoreBLL.Interfaces.Services
+namespace ProductStore.Business.Interfaces.Services
 {
     public interface IOrderService : IAdminPanelItem<OrderModel>
     {

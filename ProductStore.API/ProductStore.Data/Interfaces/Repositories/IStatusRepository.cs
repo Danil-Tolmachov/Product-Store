@@ -1,6 +1,6 @@
-﻿using StoreDAL.Entities;
+﻿using ProductStore.Data.Entities;
 
-namespace StoreDAL.Interfaces.Repositories
+namespace ProductStore.Data.Interfaces.Repositories
 {
 	public interface IStatusRepository : ISingleKeyRepository<Status>
 	{

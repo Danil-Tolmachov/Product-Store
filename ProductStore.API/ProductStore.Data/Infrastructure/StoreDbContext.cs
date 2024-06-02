@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StoreDAL.Entities;
-using StoreDAL.Infrastructure.Data;
-using StoreDAL.Interfaces.Repositories;
+using ProductStore.Data.Entities;
+using ProductStore.Data.Infrastructure.Data;
+using ProductStore.Data.Interfaces.Repositories;
 
-namespace StoreDAL.Infrastructure
+namespace ProductStore.Data.Infrastructure
 {
     public class StoreDbContext : DbContext
     {

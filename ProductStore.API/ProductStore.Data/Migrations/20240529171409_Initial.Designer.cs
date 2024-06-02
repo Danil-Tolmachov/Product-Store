@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using StoreDAL.Infrastructure;
+using ProductStore.Data.Infrastructure;
 
 #nullable disable
 
-namespace StoreDAL.Migrations
+namespace ProductStore.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
     [Migration("20240529171409_Initial")]
