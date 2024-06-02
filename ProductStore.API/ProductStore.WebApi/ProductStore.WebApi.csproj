@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StoreBLL\StoreBLL.csproj" />
-    <ProjectReference Include="..\StoreDAL\StoreDAL.csproj" />
+    <ProjectReference Include="..\ProductStore.Business\ProductStore.Business.csproj" />
+    <ProjectReference Include="..\ProductStore.Data\ProductStore.Data.csproj" />
   </ItemGroup>
 
 </Project>

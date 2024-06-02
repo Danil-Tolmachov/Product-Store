@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StoreDAL\StoreDAL.csproj" />
+    <ProjectReference Include="..\ProductStore.Data\ProductStore.Data.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -23,12 +23,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ProductStoreApi\ProductStoreApi.csproj" />
-    <ProjectReference Include="..\StoreDAL\StoreDAL.csproj" />
+    <Folder Include="DAL\Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DAL\Repositories\" />
+    <ProjectReference Include="..\ProductStore.Business\ProductStore.Business.csproj" />
+    <ProjectReference Include="..\ProductStore.Data\ProductStore.Data.csproj" />
+    <ProjectReference Include="..\ProductStore.WebApi\ProductStore.WebApi.csproj" />
   </ItemGroup>
 
 </Project>

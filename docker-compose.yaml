@@ -4,7 +4,7 @@ services:
   angular:
     restart: on-failure
     build:
-      context: /productStoreApp/
+      context: /ProductStore.App/
       dockerfile: /Build.Dockerfile
     ports:
       - "3000:3000"
@@ -15,7 +15,7 @@ services:
   webapi:
     restart: on-failure
     build:
-      context: /ProductStoreApi/
+      context: /ProductStore.Api/
       dockerfile: /Dockerfile
       args:
         CERTIFICATE_PASSWORD: "test"
