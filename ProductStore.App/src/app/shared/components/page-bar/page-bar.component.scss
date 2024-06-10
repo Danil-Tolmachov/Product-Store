@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,500&display=swap');
+@import '../../variables.scss';
+
+$container-height: 40px;
+
+.container {
+  display: flex;
+
+  margin: auto;
+  margin-top: 20px;
+
+  width: fit-content;
+  height: $container-height;
+
+  border-radius: 3px;
+  background-color: $light-mode-foreground-color;
+  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.16);
+}
+
+a {
+  height: 100%;
+  width: $container-height;
+
+  text-align: center;
+  line-height: $container-height;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+
+  text-decoration: none;
+
+  color: $light-mode-main-font-color;
+  background-color: $light-mode-foreground-color;
+  
+  transition: 0.15s;
+}
+
+a:hover {
+  background-color: color-mix(in srgb, $light-mode-foreground-color 90%, black);
+}
+
+button {
+  height: 100%;
+  width: $container-height;
+
+  text-align: center;
+  line-height: $container-height;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+
+  border: none;
+  color: $light-mode-main-font-color;
+  background-color: $light-mode-foreground-color;
+
+  transition: 0.15s;
+}
+
+button:hover {
+  background-color: color-mix(in srgb, $light-mode-foreground-color 90%, black);
+}
+
+button:first-child {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+button:last-child {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+hr {
+  width: 3px;
+  height: 100%;
+
+  margin: 0;
+
+  border: none;
+  background-color: #d3d3d3;
+}
+
+.selected {
+  color: $light-mode-special-font-color;
+  background-color: color-mix(
+    in srgb,
+    $light-mode-foreground-color 90%,
+    $light-mode-special-font-color
+  );
+}
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    background-color: $dark-mode-foreground-color;
+  }
+
+  a {
+    color: $dark-mode-main-font-color;
+    background-color: $dark-mode-foreground-color;
+  }
+
+  a:hover {
+    background-color: color-mix(in srgb, $dark-mode-foreground-color 90%, black);
+  }
+
+  hr {
+    background-color: #626262;
+  }
+
+  button {
+    color: $dark-mode-main-font-color;
+    background-color: $dark-mode-foreground-color;
+  }
+
+  button:hover {
+    background-color: color-mix(in srgb, $dark-mode-foreground-color 90%, black);
+  }
+
+  .selected {
+    color: $dark-mode-special-font-color;
+    background-color: color-mix(
+      in srgb,
+      $dark-mode-foreground-color 90%,
+      black
+    );
+  }
+}

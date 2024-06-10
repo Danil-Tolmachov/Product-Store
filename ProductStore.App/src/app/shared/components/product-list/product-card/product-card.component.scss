@@ -1,0 +1,145 @@
+@import '../../../variables.scss';
+
+:host {
+  display: block;
+  margin: 4px;
+  width: calc(225px - 8px);
+
+  box-shadow: 1px 1px 2px 0px #00000029;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+app-image-container {
+  height: 200px;
+  width: 100%;
+}
+
+.product-card {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+
+  width: 100%;
+  height: 300px;
+
+  background-color: $light-mode-foreground-color;
+  border-radius: 4px;
+}
+
+.product-card p {
+  display: block;
+  margin: 0;
+
+  caret-color: transparent;
+  user-select: text;
+}
+
+.product-card-id {
+  position: absolute;
+  padding: 6px;
+  height: calc(20px - 6px);
+
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #a5a5a5;
+  text-align: right;
+}
+
+.product-card-name {
+  padding: 6px;
+  margin-bottom: 14px !important;
+  max-width: 100%;
+  height: calc(65px - 26px);
+
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  font-weight: 400;
+
+  color: #353535;
+}
+
+.price {
+  padding: 6px;
+  max-width: 50%;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: $light-mode-special-font-color;
+  margin-left: 10px !important;
+}
+
+.price span {
+  font-size: 0.7rem;
+  vertical-align: sub;
+  color: $product-card-discount-color;
+}
+
+.bottom {
+  display: flex;
+  height: 35px;
+}
+
+.bottom > * {
+  width: 50%;
+}
+
+.bottom button {
+  background-color: transparent;
+
+  transition: 0.2s ease-out;
+
+  color: #353535;
+  font-weight: 400;
+  font-size: 1rem;
+
+  user-select: none;
+  cursor: pointer;
+
+  border: none;
+  border-bottom-right-radius: 4px;
+}
+
+.bottom button:hover {
+  background: #efefef;
+
+  border: none;
+  border-bottom-right-radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .product-card {
+    background-color: $dark-mode-foreground-color;
+  }
+
+  .product-card-id {
+    color: $dark-mode-secondary-font-color;
+  }
+
+  .product-card-name {
+    color: $dark-mode-main-font-color;
+  }
+
+  .price {
+    color: $dark-mode-special-font-color;
+  }
+
+  .bottom button {
+    color: $dark-mode-main-font-color;
+  }
+
+  .bottom button:hover {
+    color: $dark-mode-secondary-font-color;
+    background-color: $dark-mode-background-color;
+  }
+}

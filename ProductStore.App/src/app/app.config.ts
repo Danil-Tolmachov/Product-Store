@@ -10,8 +10,8 @@ import {
 } from '@angular/common/http';
 
 import routes from './app.routes';
-import AuthInterceptor from '../interceptors/auth.interceptor';
-import RefreshInterceptor from '../interceptors/refresh.interceptor';
+import AuthInterceptor from '../app/core/interceptors/auth.interceptor';
+import RefreshInterceptor from '../app/core/interceptors/refresh.interceptor';
 
 const appConfig: ApplicationConfig = {
   providers: [
