@@ -488,12 +488,12 @@ namespace ProductStore.Data.Migrations
 			string variable = Environment.GetEnvironmentVariable("IsDockerContainer") ?? string.Empty;
 
 			// Path for local 
-			string seedDir = "..\\StoreDAL\\SeedImages\\";
+			string seedDir = "..\\ProductStore.Data\\SeedImages\\";
 
 			// Path for Docker container
 			if (bool.TryParse(variable, out bool isDockerContainer) && isDockerContainer)
 			{
-				seedDir = "./StoreDAL/SeedImages/";
+				seedDir = "./ProductStore.Data/SeedImages/";
 			}
 
             migrationBuilder.InsertData(

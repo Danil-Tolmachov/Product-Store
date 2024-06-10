@@ -1,0 +1,24 @@
+@import '../../../../shared/variables.scss';
+select {
+  height: 100%;
+  width: 100%;
+
+  margin-left: 10px;
+
+  border-radius: 3px;
+
+  option {
+    color: $light-mode-main-font-color;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  select {
+    color: $dark-mode-secondary-font-color;
+    background-color: $dark-mode-foreground-color;
+
+    option {
+      color: $dark-mode-secondary-font-color;
+    }
+  }
+}

@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+@import '../../../variables.scss';
+
+:host {
+  display: block;
+  width: 100%;
+
+  position: fixed;
+}
+
+.close-trigger {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+
+  opacity: 0;
+
+  z-index: 9998;
+}
+
+.dropdown {
+  width: 200px;
+
+  display: flex;
+  position: relative;
+  padding: 0;
+  flex-direction: column;
+
+  list-style-type: none;
+
+  background-color: $light-mode-foreground-color;
+  border-radius: 3px;
+
+  z-index: 10000;
+
+  box-shadow: 1px 1px 2px 0px #00000029;
+}
+
+.dropdown-button {
+  display: block;
+  width: 100%;
+  height: 45px;
+  line-height: 45px;
+
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: medium;
+
+  border: none;
+  text-decoration: none;
+  text-align: center;
+
+  color: #3f3f3f;
+}
+
+.dropdown-button:hover {
+  background: rgba(53, 53, 53, 0.28);
+  border: none;
+  border-bottom-right-radius: 4px;
+
+  transition: 0.1s;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dropdown {
+    background-color: $dark-mode-foreground-color;
+  }
+
+  .dropdown-button {
+    color: $dark-mode-secondary-font-color;
+  }
+
+  button.dropdown-button {
+    color: $dark-mode-secondary-font-color;
+    background-color: $dark-mode-background-color;
+  }
+
+  .dropdown-button:hover {
+    background: rgba(53, 53, 53, 0.7);
+  }
+}

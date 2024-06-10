@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from '@angular/cdk/layout';
-import NavBarComponent from '../components/nav-bar/nav-bar.component';
-import ProductCardComponent from '../components/product-list/product-card/product-card.component';
-import FooterComponent from '../components/footer/footer.component';
-import MessageScreenComponent from '../components/message-screen/message-screen.component';
-import CheckoutScreenComponent from '../components/checkout-screen/checkout-screen.component';
+import ProductCardComponent from '../app/shared/components/product-list/product-card/product-card.component';
+import CheckoutScreenComponent from './shared/components/checkout-screen/checkout-screen.component';
+import FooterComponent from './shared/components/footer/footer.component';
+import MessageScreenComponent from './shared/components/message-screen/message-screen.component';
+import NavBarComponent from './shared/components/nav-bar/nav-bar.component';
 
 @Component({
   selector: 'app-root',
