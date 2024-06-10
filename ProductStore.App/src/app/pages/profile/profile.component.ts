@@ -15,6 +15,8 @@ import MessageService from '../../core/services/message.service';
 import UserService from '../../core/services/user.service';
 import ButtonComponent from '../../shared/components/button/button.component';
 import TextPanelComponent from '../../shared/components/text-panel/text-panel.component';
+import { FormFieldComponent } from '../../shared/components/form-field/form-field.component';
+import { Router } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -25,6 +27,7 @@ import TextPanelComponent from '../../shared/components/text-panel/text-panel.co
     ReactiveFormsModule,
     TextPanelComponent,
     ButtonComponent,
+    FormFieldComponent,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
@@ -43,22 +46,23 @@ export default class ProfileComponent implements OnInit {
 
   userForm: FormGroup | null = null;
 
-  get firstName() {
-    return this.userForm?.get('firstName')!;
+  get firstName(): FormControl {
+    return this.userForm?.get('firstName') as FormControl;
   }
 
-  get lastName() {
-    return this.userForm?.get('lastName')!;
+  get lastName(): FormControl {
+    return this.userForm?.get('lastName') as FormControl;
   }
 
-  get address() {
-    return this.userForm?.get('address')!;
+  get address(): FormControl {
+    return this.userForm?.get('address') as FormControl;
   }
 
   constructor(
     private readonly userService: UserService,
     private readonly messageService: MessageService,
-    private readonly formBuilder: FormBuilder
+    private readonly formBuilder: FormBuilder,
+    private readonly router: Router
   ) {
     this.userService.currentUser
       .pipe(
@@ -75,6 +79,11 @@ export default class ProfileComponent implements OnInit {
               ]),
               address: new FormControl(user.address, Validators.minLength(6)),
             });
+          }
+        }),
+        tap((user) => {
+          if (user === null) {
+            this.router.navigate(['/home']);
           }
         })
       )

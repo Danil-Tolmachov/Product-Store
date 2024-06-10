@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   FormBuilder,
@@ -15,6 +15,7 @@ import MessageService from '../../core/services/message.service';
 import UserService from '../../core/services/user.service';
 import ButtonComponent from '../../shared/components/button/button.component';
 import LinkButtonComponent from '../../shared/components/link-button/link-button.component';
+import { FormFieldComponent } from '../../shared/components/form-field/form-field.component';
 
 @UntilDestroy()
 @Component({
@@ -26,6 +27,7 @@ import LinkButtonComponent from '../../shared/components/link-button/link-button
     RouterLink,
     LinkButtonComponent,
     ButtonComponent,
+    FormFieldComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -52,19 +54,20 @@ export default class LoginComponent {
     ]),
   });
 
-  get username() {
-    return this.loginForm.get('username')!;
+  get username(): FormControl {
+    return this.loginForm.get('username') as FormControl;
   }
 
-  get password() {
-    return this.loginForm.get('password')!;
+  get password(): FormControl {
+    return this.loginForm.get('password') as FormControl;
   }
 
   constructor(
     private readonly router: Router,
     private readonly userService: UserService,
     private readonly messageService: MessageService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    protected readonly cdr: ChangeDetectorRef,
   ) {}
 
   onSubmit(): void {

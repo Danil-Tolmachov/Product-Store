@@ -13,6 +13,7 @@ import MessageService from '../../core/services/message.service';
 import UserService from '../../core/services/user.service';
 import ButtonComponent from '../../shared/components/button/button.component';
 import LinkButtonComponent from '../../shared/components/link-button/link-button.component';
+import { FormFieldComponent } from '../../shared/components/form-field/form-field.component';
 
 @Component({
   selector: 'app-registration',
@@ -22,6 +23,7 @@ import LinkButtonComponent from '../../shared/components/link-button/link-button
     ReactiveFormsModule,
     LinkButtonComponent,
     ButtonComponent,
+    FormFieldComponent,
   ],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss',
@@ -63,28 +65,28 @@ export default class RegistrationComponent {
     ]),
   });
 
-  get username() {
-    return this.registrationForm.get('username')!;
+  get username(): FormControl {
+    return this.registrationForm.get('username') as FormControl;
   }
 
-  get password() {
-    return this.registrationForm.get('password')!;
+  get password(): FormControl {
+    return this.registrationForm.get('password') as FormControl;
   }
 
-  get firstName() {
-    return this.registrationForm.get('firstName')!;
+  get firstName(): FormControl {
+    return this.registrationForm.get('firstName') as FormControl;
   }
 
-  get lastName() {
-    return this.registrationForm.get('lastName')!;
+  get lastName(): FormControl {
+    return this.registrationForm.get('lastName') as FormControl;
   }
 
-  get address() {
-    return this.registrationForm.get('address')!;
+  get address(): FormControl {
+    return this.registrationForm.get('address') as FormControl;
   }
 
-  get phone() {
-    return this.registrationForm.get('phone')!;
+  get phone(): FormControl {
+    return this.registrationForm.get('phone') as FormControl;
   }
 
   constructor(
@@ -119,8 +121,7 @@ export default class RegistrationComponent {
         error: (error) => {
           this.processRequestError(error);
         },
-      })
-      .unsubscribe();
+      });
   }
 
   private processRequestError(error: HttpErrorResponse) {

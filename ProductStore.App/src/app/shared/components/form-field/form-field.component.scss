@@ -1,0 +1,65 @@
+@import '../../variables.scss';
+
+.field {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 10px;
+}
+
+.field label {
+  margin: 5px;
+  position: sticky;
+  font-weight: 400;
+}
+
+.field input {
+  height: 30px;
+  padding-left: 7px;
+
+  border-radius: 3px;
+
+  border: none;
+  box-shadow: 1px 1px 2px 0px #00000029;
+}
+
+.alert-text {
+  color: $alert-text-color !important;
+}
+
+.validator-alert {
+  width: calc(100% - 8px);
+
+  margin-top: 10px;
+  padding: 4px;
+
+  color: $validator-alert-text-color;
+
+  background-color: $validator-alert-background-color;
+  border-radius: 3px;
+}
+
+.background-color.field {
+  input {
+    color: $light-mode-main-font-color;
+    background-color: $light-mode-background-color;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .field label {
+    color: $dark-mode-secondary-font-color;
+  }
+
+  .field input {
+    color: $dark-mode-main-font-color;
+    background-color: $dark-mode-foreground-color;
+  }
+
+  .background-color.field {
+    input {
+      color: $dark-mode-main-font-color;
+      background-color: $dark-mode-background-color;
+    }
+  }
+}

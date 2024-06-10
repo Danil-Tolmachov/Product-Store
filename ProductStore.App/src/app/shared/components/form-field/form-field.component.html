@@ -1,0 +1,27 @@
+<div class="field" [formGroup]="formGroup" [ngClass]="styleClasses">
+  @if (control.invalid && (control.dirty || control.touched)) {
+    <label class="alert-text" for="{{ name }}"> {{ label }}: </label>
+  } @else {
+    <label for="{{ name }}"> {{ label }}: </label>
+  }
+
+  <input
+    type="{{ type }}"
+    id="{{ name }}"
+    [value]="control.defaultValue"
+    [formControlName]="name"
+    (change)="this.onChange()"
+  />
+  <div
+    *ngIf="control?.invalid && (control?.dirty || control?.touched)"
+    class="validator-alert"
+    [@fadeInOutAnimation]
+  >
+    <div *ngIf="control.errors?.['required']"> {{ label }} is required. </div>
+    <div *ngIf="control.errors?.['minlength']">
+      {{ label }} must be at least
+      {{ control.errors?.['minlength']?.requiredLength }} characters long.
+    </div>
+    <div *ngIf="control.errors?.['pattern']"> {{ label }} format error. </div>
+  </div>
+</div>
