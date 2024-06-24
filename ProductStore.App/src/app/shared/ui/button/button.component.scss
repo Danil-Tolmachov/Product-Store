@@ -1,0 +1,97 @@
+@import '../../variables.scss';
+
+:host {
+  display: block;
+
+  width: fit-content;
+  height: fit-content;
+}
+
+button {
+  transition: 0.2s;
+}
+
+.base {
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+
+  box-sizing: border-box;
+  transition:
+    opacity 0.2s ease-in,
+    top 0.2s ease-in;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+
+  font-size: 11px;
+
+  padding: 0 8px;
+
+  position: relative;
+
+  text-align: center;
+  top: 0;
+  vertical-align: top;
+  white-space: nowrap;
+
+  background-color: color-mix(in srgb, $light-mode-foreground-color 96%, black);
+}
+
+.rounded {
+  width: 60px;
+  height: 30px;
+
+  box-sizing: border-box;
+  transition:
+    background-color 0.2s ease-in-out,
+    top 0.2s ease-in;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+
+  font-size: 0.75rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+
+  padding: 0 8px;
+
+  position: relative;
+
+  text-align: center;
+  top: 0;
+  vertical-align: top;
+  white-space: nowrap;
+
+  background-color: color-mix(in srgb, $light-mode-foreground-color 96%, black);
+}
+
+button:hover {
+  background-color: color-mix(in srgb, transparent 80%, black);
+}
+
+.background-color {
+  background-color: color-mix(in srgb, $light-mode-background-color 96%, black);
+}
+
+@media (prefers-color-scheme: dark) {
+  button:hover {
+    background-color: color-mix(in srgb, transparent 50%, black);
+  }
+
+  .base {
+    color: $dark-mode-main-font-color;
+    background-color: $dark-mode-foreground-color;
+  }
+
+  .background-color {
+    background-color: color-mix(in srgb, $light-mode-background-color 96%, black);
+  }
+
+  .rounded {
+    color: $dark-mode-secondary-font-color;
+    background-color: $dark-mode-background-color;
+  }
+}

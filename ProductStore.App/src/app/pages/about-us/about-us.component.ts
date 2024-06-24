@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import TextPanelComponent from '../../shared/components/text-panel/text-panel.component';
+import TextPanelComponent from '../../shared/ui/text-panel/text-panel.component';
 
 @Component({
   selector: 'app-about-us',

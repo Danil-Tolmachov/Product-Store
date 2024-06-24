@@ -61,36 +61,6 @@ th.unit-price-column {
   opacity: 0.5;
 }
 
-.cancel {
-  width: 60px;
-  height: 30px;
-
-  box-sizing: border-box;
-  transition:
-    opacity 0.2s ease-in,
-    top 0.2s ease-in;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-
-  font-size: 0.75rem;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  font-style: normal;
-
-  padding: 0 8px;
-
-  position: relative;
-
-  text-align: center;
-  top: 0;
-  vertical-align: top;
-  white-space: nowrap;
-
-  background-color: #d8d8d8;
-}
-
 .cancel:hover {
   opacity: 0.8;
 }
@@ -106,10 +76,5 @@ th.unit-price-column {
 
   .container {
     background-color: $dark-mode-foreground-color;
-  }
-
-  .cancel {
-    color: $dark-mode-secondary-font-color;
-    background-color: $dark-mode-background-color;
   }
 }

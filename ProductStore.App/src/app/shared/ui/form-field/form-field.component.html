@@ -1,4 +1,4 @@
-<div class="field" [formGroup]="formGroup" [ngClass]="styleClasses">
+<div class="field" [formGroup]="formGroup" [ngClass]="ngClass">
   @if (control.invalid && (control.dirty || control.touched)) {
     <label class="alert-text" for="{{ name }}"> {{ label }}: </label>
   } @else {

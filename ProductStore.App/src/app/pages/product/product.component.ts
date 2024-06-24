@@ -12,7 +12,7 @@ import SpecificationsContainerComponent from './specifications-container/specifi
 import { IProduct } from '../../core/interfaces/IProduct';
 import CartService from '../../core/services/cart.service';
 import ProductService from '../../core/services/product.service';
-import ButtonComponent from '../../shared/components/button/button.component';
+import ButtonComponent from '../../shared/ui/button/button.component';
 import ImageContainerComponent from '../../shared/components/image-container/image-container.component';
 import ImageCarouselComponent from './image-carousel/image-carousel.component';
 

@@ -5,13 +5,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { IOrder } from '../../../core/interfaces/IOrder';
 import MessageService from '../../../core/services/message.service';
 import OrderService from '../../../core/services/order.service';
-import ButtonComponent from '../../../shared/components/button/button.component';
+import ButtonComponent from '../../../shared/ui/button/button.component';
 
 @UntilDestroy()
 @Component({
   selector: 'app-order-brief',
   standalone: true,
-  imports: [RouterLink, ButtonComponent],
+  imports: [RouterLink, ButtonComponent, ButtonComponent],
   templateUrl: './order-brief.component.html',
   styleUrl: './order-brief.component.scss',
 })

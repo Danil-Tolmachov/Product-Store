@@ -2,7 +2,7 @@ import { Component, Host } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { switchMap, take } from 'rxjs';
-import ButtonComponent from '../../button/button.component';
+import ButtonComponent from '../../../ui/button/button.component';
 import CheckoutScreenComponent from '../checkout-screen.component';
 import CartService from '../../../../core/services/cart.service';
 import OrderService from '../../../../core/services/order.service';

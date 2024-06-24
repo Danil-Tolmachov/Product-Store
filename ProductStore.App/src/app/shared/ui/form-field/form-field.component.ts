@@ -33,7 +33,7 @@ export class FormFieldComponent {
   @Input() name: string = 'null';
   @Input() type: string = 'text';
 
-  @Input() styleClasses: string[] = [];
+  @Input() ngClass: string[] = [];
 
   constructor(protected readonly cdr: ChangeDetectorRef) {}
 

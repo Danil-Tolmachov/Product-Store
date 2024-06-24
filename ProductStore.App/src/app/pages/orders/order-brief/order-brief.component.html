@@ -34,8 +34,8 @@
   </div>
   <p class="margin-tb-20"><b>Total:</b> ${{ order?.total }}</p>
   @if (!order?.isCanceled && !order?.isCompleted) {
-    <button class="cancel" (click)="order?.id ? cancelButtonClick(order?.id!) : null">
+    <app-button (click)="order?.id ? cancelButtonClick(order?.id!) : null" [ngClass]="['background-color', 'rounded']">
       Cancel
-    </button>
+    </app-button>
   }
 </div>

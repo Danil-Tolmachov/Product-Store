@@ -13,9 +13,9 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { take, tap } from 'rxjs';
 import MessageService from '../../core/services/message.service';
 import UserService from '../../core/services/user.service';
-import ButtonComponent from '../../shared/components/button/button.component';
-import TextPanelComponent from '../../shared/components/text-panel/text-panel.component';
-import { FormFieldComponent } from '../../shared/components/form-field/form-field.component';
+import ButtonComponent from '../../shared/ui/button/button.component';
+import TextPanelComponent from '../../shared/ui/text-panel/text-panel.component';
+import { FormFieldComponent } from '../../shared/ui/form-field/form-field.component';
 import { Router } from '@angular/router';
 
 @UntilDestroy()

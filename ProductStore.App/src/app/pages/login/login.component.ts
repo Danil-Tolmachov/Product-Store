@@ -13,9 +13,9 @@ import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import MessageService from '../../core/services/message.service';
 import UserService from '../../core/services/user.service';
-import ButtonComponent from '../../shared/components/button/button.component';
-import LinkButtonComponent from '../../shared/components/link-button/link-button.component';
-import { FormFieldComponent } from '../../shared/components/form-field/form-field.component';
+import ButtonComponent from '../../shared/ui/button/button.component';
+import LinkButtonComponent from '../../shared/ui/link-button/link-button.component';
+import { FormFieldComponent } from '../../shared/ui/form-field/form-field.component';
 
 @UntilDestroy()
 @Component({

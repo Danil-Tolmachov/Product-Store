@@ -1,6 +1,6 @@
 const environment = {
   production: true,
-  apiUrl: 'http://localhost:80/api/',
+  apiUrl: 'https://productstoreapi.azurewebsites.net/api/',
 };
 
 export default environment;
